@@ -9,6 +9,7 @@ import com.example.zahra.intent.RegexMatcher
 import com.example.zahra.knowledge.engine.KnowledgeEngine
 import com.example.zahra.knowledge.model.KnowledgeRetrievalState
 import com.example.zahra.model.*
+import com.example.zahra.model.Sender
 import com.example.zahra.execution.SafeActionExecutor
 import com.example.zahra.execution.ExecutionResult
 import com.example.zahra.reasoning.*
@@ -18,6 +19,14 @@ import com.example.zahra.intelligence.execution.PlanExecutor
 import com.example.zahra.intelligence.planner.StructuredTaskPlanner
 import com.example.zahra.intelligence.planner.StepExecutionStatus
 import org.json.JSONObject
+import com.example.zahra.personality.PersonalityManager
+import com.example.zahra.personality.PersonalityPreferences
+import com.example.zahra.context.ContextManager
+import com.example.zahra.response.ResponseBuilder
+import com.example.zahra.response.TemplateSelector
+import com.example.zahra.response.TemplateExpander
+import com.example.zahra.response.ResponseRanker
+import com.example.zahra.response.ResponseValidator
 
 class ZahraRouter(private val context: Context) {
   val nbClassifier = NaiveBayesClassifier()
@@ -40,6 +49,19 @@ class ZahraRouter(private val context: Context) {
     memoryEngine = memoryEngine,
     translationEngine = translationEngine,
     knowledgeEngine = knowledgeEngine
+  )
+  
+  // New conversational intelligence components
+  val personalityManager = PersonalityManager(context)
+  val contextManager = ContextManager()
+  val responseBuilder = ResponseBuilder(
+    personalityManager = personalityManager,
+    contextManager = contextManager,
+    knowledgeEngine = knowledgeEngine,
+    templateSelector = TemplateSelector(),
+    templateExpander = TemplateExpander(),
+    responseRanker = ResponseRanker(),
+    responseValidator = ResponseValidator()
   )
 
   init {
@@ -73,6 +95,51 @@ class ZahraRouter(private val context: Context) {
   }
 
   fun process(rawInput: String, isDeepThinking: Boolean = false): ZahraResponse {
+    // Phase 6: Personality and Context Integration
+    // Check for personality change commands
+    val personalityCmd = personalityManager.detectPersonalityChange(rawInput)
+    if (personalityCmd != null) {
+      val cmdResult = personalityManager.applyPersonalityCommand(personalityCmd, rawInput)
+      if (cmdResult is com.example.zahra.personality.PersonalityChangeResult.Success) {
+        // Return a confirmation response
+        val personality = personalityManager.getCurrentPersonality()
+        val confirmationText = com.example.zahra.personality.StyleApplier.getPersonalityChangeConfirmation(personality, cmdResult)
+        val trace = EpistemicGroundingPipeline.buildTrace(
+          rawRequest = rawInput,
+          intent = "change_personality",
+          entities = mapOf("change_type" to cmdResult.changeType),
+          appliedRules = listOf("rule_personality_change"),
+          facts = listOf(
+            GroundedFact(
+              claim = "Personality changed to ${personality.tone.name}",
+              evidenceType = EvidenceType.USER_SUPPLIED,
+              source = "User personality preference",
+              confidence = 1.0
+            )
+          ),
+          uncertainty = emptyList(),
+          outcomeState = OutcomeState.SUPPORTED,
+          sourceDesc = "Personality Manager"
+        )
+        val res = ZahraResponse(
+          text = confirmationText,
+          intent = "change_personality",
+          confidence = 0.99,
+          confidenceTier = ConfidenceTier.DIRECT,
+          outcomeState = OutcomeState.SUPPORTED,
+          source = "Personality Manager",
+          evidenceTrace = trace
+        )
+        contextManager.recordTurn(rawInput, res)
+        contextTracker.recordTurn(rawInput, res)
+        return res
+      }
+    }
+
+    // Get current personality and conversation context
+    val personality = personalityManager.getCurrentPersonality()
+    val conversationContext = contextManager.getCurrentConversation()
+
     // Phase 4: Dialect and colloquial normalization
     val adapted = DialectAndColloquialAdapter.adapt(rawInput)
     val effectiveInput = if (adapted.coreQuery.isNotBlank()) adapted.coreQuery else rawInput.trim()
@@ -1008,6 +1075,14 @@ class ZahraRouter(private val context: Context) {
       createdSchedule = createdSchedule
     )
 
+    contextManager.recordTurn(
+      text = rawInput,
+      normalizedText = normalized,
+      speaker = Sender.USER,
+      intent = finalIntent,
+      entities = mapOf("query" to clean),
+      response = finalResponse
+    )
     contextTracker.recordTurn(rawInput, finalResponse)
     return finalResponse
   }
