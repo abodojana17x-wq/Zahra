@@ -50,7 +50,38 @@ object RegexMatcher {
     // 16. Schedule and Alarms (Autonomous Agent Reminders)
     PatternRule("create_schedule", Regex(".*(?:جدول|فكرني|ذكرني|نبهني|ابعتلي|تذكير|منبه|schedule|remind).*\\b.*", RegexOption.IGNORE_CASE), 0.98, 1),
     // 17. List Schedules
-    PatternRule("list_schedules", Regex(".*(?:اعرض\\s+الجداول|المواعيد|مواعيدي|المنبهات|قائمة\\s+التنبيهات|المجدول|schedules).*", RegexOption.IGNORE_CASE), 0.95)
+    PatternRule("list_schedules", Regex(".*(?:اعرض\\s+الجداول|المواعيد|مواعيدي|المنبهات|قائمة\\s+التنبيهات|المجدول|schedules).*", RegexOption.IGNORE_CASE), 0.95),
+    // 18. Wisdom/Quotes
+    PatternRule("ask_wisdom", Regex(".*(?:حكمة|مثل|قولي\\s+حكمة|اقتباس|حكمة\\s+اليوم|كلام\\s+جميل|quote|wisdom).*", RegexOption.IGNORE_CASE), 0.94),
+    // 19. Mood Journal
+    PatternRule("mood_journal", Regex(".*(?:مزاجي|مزاج|كيف\\s+مزاجي|إزاي\\s+مزاجي|mood\\s*journal|melancholy).*", RegexOption.IGNORE_CASE), 0.93),
+    // 20. Semantic Search
+    PatternRule("semantic_search", Regex("^(?:ابحث\\s+عن|دور\\s+على|شوفلي|ابحثلي|find|search)\\s+(.+)", RegexOption.IGNORE_CASE), 0.92, 1),
+    // 21. Image Analysis
+    PatternRule("analyze_image", Regex(".*(?:حلل|تحليل|انظر|شوف|فحص|analyze|examine)\\s*(?:الصورة|الصوره|صوره|صورة|image|photo).*", RegexOption.IGNORE_CASE), 0.96),
+    // 22. Text Extraction (OCR)
+    PatternRule("extract_text", Regex(".*(?:اقرا|اقرأ|استخرج|نص|كلام|مكتوب|read|extract|ocr)\\s*(?:النص|الكلام|من\\s+الصورة|من\\s+الصوره|text|from\\s+image).*", RegexOption.IGNORE_CASE), 0.95),
+    // 23. Face Detection
+    PatternRule("detect_faces", Regex(".*(?:وجوه|وجه|كام\\s+وجه|عدد\\s+الوجوه|faces|detect\\s+face).*", RegexOption.IGNORE_CASE), 0.94),
+    // 24. Voice Input
+    PatternRule("voice_input", Regex(".*(?:سجل|تسجيل|صوت|كلمني|اسمع|voice|record|listen|mic).*", RegexOption.IGNORE_CASE), 0.93),
+    // 25. Speak Response (TTS)
+    PatternRule("speak_response", Regex(".*(?:انطق|نطق|تكلم|قوليلي|speak|say|talk|tts).*", RegexOption.IGNORE_CASE), 0.93),
+    
+    // 26. Islamic Knowledge - General
+    PatternRule("ask_islamic", Regex(".*(?:علمني|فهميني|اشرحي|قولي\\s+لي|ما\\s+هو|ما\\s+هي|عرفيني)\\s*(?:الفقه|السيرة|العقيدة|التزكية|الإسلام|الدين|العبادات|الطهارة|الصلاة|الزكاة|الصيام|الحج|النبي|الرسول|محمد|التوحيد|الإيمان|النفس|القلب|الدنيا).*", RegexOption.IGNORE_CASE), 0.94, 1),
+    
+    // 27. Islamic Knowledge - Fiqh
+    PatternRule("ask_fiqh", Regex(".*(?:فقه|فقه\\s+يسير|أحكام|حكم|الطهارة|الوضوء|الصلاة|الزكاة|الصيام|الحج|العبادات|الفرائض).*", RegexOption.IGNORE_CASE), 0.95),
+    
+    // 28. Islamic Knowledge - Seerah
+    PatternRule("ask_seerah", Regex(".*(?:سيرة|سيرة\\s+يسير|النبي|الرسول|محمد|مولد|هجرة|غزوة|بدر|أحد|فتح|مكة|المدينة|صحابي|صحابية).*", RegexOption.IGNORE_CASE), 0.95),
+    
+    // 29. Islamic Knowledge - Aqeedah
+    PatternRule("ask_aqeedah", Regex(".*(?:عقيدة|عقيدة\\s+يسير|التوحيد|الإيمان|أركان\\s+الإيمان|الملائكة|الكتب|الرسل|القدر|اليوم\\s+الآخر|الجنة|النار|الله|أسماء\\s+الله).*", RegexOption.IGNORE_CASE), 0.95),
+    
+    // 30. Islamic Knowledge - Tazkiyah
+    PatternRule("ask_tazkiyah", Regex(".*(?:تزكية|تزكية\\s+يسيرة|النفس|القلب|الهوى|الإخلاص|الرياء|الدنيا|الآخرة|التغيير|العبودية|الأسباب|القرآن|جهاد\\s+النفس).*", RegexOption.IGNORE_CASE), 0.95)
   )
 
   fun match(normalizedText: String): RegexMatch? {

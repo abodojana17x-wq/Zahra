@@ -39,6 +39,9 @@ class ContextAndCorrectionTracker {
   fun getLastTurn(): DialogTurn? = recentTurns.lastOrNull()
 
   @Synchronized
+  fun getLastZahraResponse(): String? = recentTurns.lastOrNull()?.response?.text
+
+  @Synchronized
   fun clear() {
     recentTurns.clear()
   }
