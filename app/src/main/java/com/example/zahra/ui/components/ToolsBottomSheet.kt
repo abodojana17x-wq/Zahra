@@ -132,7 +132,7 @@ fun ToolsBottomSheet(
             .padding(bottom = 12.dp)
         ) {
           Text(
-            text = "المكونات الإضافية لزهراء",
+            text = "المكونات الإضافية لزهرة",
             fontSize = 17.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,

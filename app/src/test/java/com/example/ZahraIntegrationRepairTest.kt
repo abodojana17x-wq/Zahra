@@ -70,8 +70,8 @@ class ZahraIntegrationRepairTest {
     assertFalse(encrypted!!.contains("مراجعة المشروع"))
 
     val restored = ChatArchiveStore(context).load()
-    assertNotNull(restored)
-    assertEquals(session.id, restored!!.activeSessionId)
+      ?: throw AssertionError("Encrypted archive must be restorable")
+    assertEquals(session.id, restored.activeSessionId)
     assertEquals(setOf(session.id), restored.pinnedSessionIds)
     assertEquals(2, restored.sessions.single().messages.size)
     val payload = restored.sessions.single().messages.last().toolPayload
