@@ -62,10 +62,11 @@ fun ChatScreen(
   val context = LocalContext.current
   val clipboardManager = LocalClipboardManager.current
 
-  // Auto-scroll when new messages arrive or when streaming
-  LaunchedEffect(state.messages.size, state.isStreaming) {
+  // Follow new messages and every streaming chunk, but only in the visible session.
+  LaunchedEffect(state.activeSessionId, state.messages.size, state.activeStreamingText.length) {
     if (state.messages.isNotEmpty()) {
-      listState.animateScrollToItem(state.messages.size - 1)
+      val streamingOffset = if (state.isActiveSessionStreaming) 1 else 0
+      listState.animateScrollToItem((state.messages.size - 1 + streamingOffset).coerceAtLeast(0))
     }
   }
 
@@ -273,7 +274,7 @@ fun ChatScreen(
             contentPadding = PaddingValues(vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
           ) {
-            items(state.messages) { message ->
+            items(state.messages, key = { it.id }) { message ->
               if (message.sender == Sender.USER) {
                 // User Message: Clean bubble aligned to end
                 Row(
@@ -367,15 +368,15 @@ fun ChatScreen(
             }
 
             // Live streaming simulation bubble
-            if (state.isStreaming && state.streamingText.isNotBlank()) {
-              item {
+            if (state.isActiveSessionStreaming && state.activeStreamingText.isNotBlank()) {
+              item(key = "active_streaming_response") {
                 Column(
                   modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 4.dp)
                 ) {
                   Text(
-                    text = state.streamingText,
+                    text = state.activeStreamingText,
                     color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 15.sp,
                     lineHeight = 23.sp
@@ -452,7 +453,7 @@ fun ChatScreen(
           ) {
             if (inputText.isEmpty()) {
               Text(
-                text = "اسأل زهراء",
+                text = "اسأل زهرة",
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 15.sp,
                 modifier = Modifier.fillMaxWidth()
@@ -513,7 +514,7 @@ fun ChatScreen(
               .size(40.dp)
               .clip(CircleShape)
               .background(GptAccentBlue)
-              .clickable {
+              .clickable(enabled = !state.isStreaming) {
                 if (inputText.isNotBlank()) {
                   onSendMessage(inputText)
                   inputText = ""

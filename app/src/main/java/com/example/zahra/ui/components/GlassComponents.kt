@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ui.theme.GptAccentBlue
+import com.example.ui.theme.LocalZahraGlassmorphism
 import com.example.zahra.model.ConfidenceTier
 
 @Composable
@@ -25,13 +26,19 @@ fun GlassCard(
   backgroundColor: Color = MaterialTheme.colorScheme.surface,
   content: @Composable ColumnScope.() -> Unit
 ) {
+  val glassEnabled = LocalZahraGlassmorphism.current
+  val effectiveBackground = if (glassEnabled) {
+    backgroundColor.copy(alpha = backgroundColor.alpha * 0.72f)
+  } else backgroundColor
+  val effectiveBorder = if (glassEnabled) borderColor.copy(alpha = 0.85f) else borderColor
+
   Column(
     modifier = modifier
       .clip(RoundedCornerShape(18.dp))
-      .background(backgroundColor)
+      .background(effectiveBackground)
       .border(
-        width = 0.5.dp,
-        color = borderColor,
+        width = if (glassEnabled) 1.dp else 0.5.dp,
+        color = effectiveBorder,
         shape = RoundedCornerShape(18.dp)
       )
       .padding(16.dp),

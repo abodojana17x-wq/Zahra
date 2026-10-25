@@ -3,13 +3,23 @@ package com.example.zahra.ui
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.zahra.engines.ScheduleRegistrationOutcome
 import com.example.zahra.engines.ZahraRouter
 import com.example.zahra.model.*
+import com.example.zahra.storage.ChatArchiveSnapshot
+import com.example.zahra.storage.ChatArchiveStore
+import com.example.zahra.storage.ZahraPreferences
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 enum class ZahraScreen {
   CHAT,
@@ -34,13 +44,14 @@ data class ZahraUiState(
   val userFacts: List<ZahraUserFact> = emptyList(),
   val isStreaming: Boolean = false,
   val streamingText: String = "",
+  val streamingSessionId: String? = null,
   val isDeepThinkingEnabled: Boolean = false,
   val isGlassmorphismEnabled: Boolean = false,
   val isVoiceModeActive: Boolean = false,
   val showMemoryDetailModal: Boolean = false,
   val showToolsBottomSheet: Boolean = false,
   val userProfileName: String = "المستخدم",
-  val accentColorName: String = "أزرق",
+  val accentColorName: String = ZahraPreferences.DEFAULT_ACCENT,
   val activeSuggestions: List<String> = listOf(
     "ابدأ دردشة صوتية",
     "إنشاء صورة أو ملصق",
@@ -54,35 +65,62 @@ data class ZahraUiState(
 
   val messages: List<ZahraMessage>
     get() = currentSession?.messages ?: emptyList()
+
+  val isActiveSessionStreaming: Boolean
+    get() = isStreaming && streamingSessionId == activeSessionId
+
+  val activeStreamingText: String
+    get() = if (isActiveSessionStreaming) streamingText else ""
 }
 
 class ZahraViewModel(application: Application) : AndroidViewModel(application) {
   val router = ZahraRouter(application)
 
+  private val archiveStore = ChatArchiveStore(application)
+  private val preferences = ZahraPreferences(application)
   private val _uiState = MutableStateFlow(ZahraUiState())
   val uiState: StateFlow<ZahraUiState> = _uiState.asStateFlow()
 
   init {
-    // Initial clean empty session for a fresh offline installation
-    val initialSession = ZahraSession(
-      id = "session_active_main",
-      title = "محادثة جديدة",
-      messages = emptyList()
-    )
+    val restoredArchive = archiveStore.load()
+    val restoredSessions = restoredArchive?.sessions.orEmpty()
+    val sessions = restoredSessions.ifEmpty {
+      listOf(ZahraSession(title = "محادثة جديدة", messages = emptyList()))
+    }
+    val activeSessionId = restoredArchive?.activeSessionId
+      ?.takeIf { id -> sessions.any { it.id == id } }
+      ?: sessions.first().id
 
     val storedFacts = router.memoryEngine.getFacts()
     val knownName = storedFacts.find { it.key.contains("الاسم") }?.value
 
     _uiState.value = _uiState.value.copy(
-      activeSessionId = initialSession.id,
-      sessions = listOf(initialSession),
-      pinnedSessionIds = emptySet(),
+      activeSessionId = activeSessionId,
+      sessions = sessions,
+      pinnedSessionIds = restoredArchive?.pinnedSessionIds.orEmpty(),
       userProfileName = knownName ?: "المستخدم",
+      accentColorName = preferences.accentColorName,
+      isGlassmorphismEnabled = preferences.isGlassmorphismEnabled,
+      isDeepThinkingEnabled = preferences.isDeepThinkingEnabled,
       tasks = router.taskEngine.getTasks(),
       notes = router.noteEngine.getNotes(),
       schedules = router.scheduleEngine.getSchedules(),
       userFacts = storedFacts
     )
+
+    // Persist only durable archive changes, never every streaming animation frame.
+    viewModelScope.launch(Dispatchers.IO) {
+      _uiState
+        .map { state ->
+          ChatArchiveSnapshot(
+            sessions = state.sessions,
+            activeSessionId = state.activeSessionId,
+            pinnedSessionIds = state.pinnedSessionIds
+          )
+        }
+        .distinctUntilChanged()
+        .collect { snapshot -> archiveStore.save(snapshot) }
+    }
   }
 
   fun navigateToScreen(screen: ZahraScreen) {
@@ -94,6 +132,7 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun togglePinSession(sessionId: String) {
+    if (_uiState.value.sessions.none { it.id == sessionId }) return
     val currentPinned = _uiState.value.pinnedSessionIds.toMutableSet()
     if (currentPinned.contains(sessionId)) {
       currentPinned.remove(sessionId)
@@ -104,9 +143,9 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun toggleDeepThinking() {
-    _uiState.value = _uiState.value.copy(
-      isDeepThinkingEnabled = !_uiState.value.isDeepThinkingEnabled
-    )
+    val enabled = !_uiState.value.isDeepThinkingEnabled
+    preferences.isDeepThinkingEnabled = enabled
+    _uiState.value = _uiState.value.copy(isDeepThinkingEnabled = enabled)
   }
 
   fun setVoiceModeActive(active: Boolean) {
@@ -131,10 +170,20 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun setAccentColor(colorName: String) {
+    if (colorName !in ZahraPreferences.SUPPORTED_ACCENTS) return
+    preferences.accentColorName = colorName
     _uiState.value = _uiState.value.copy(accentColorName = colorName)
   }
 
   fun startNewSession() {
+    val existingEmptySession = _uiState.value.sessions.firstOrNull { session ->
+      session.messages.isEmpty() && session.title == "محادثة جديدة"
+    }
+    if (existingEmptySession != null) {
+      switchSession(existingEmptySession.id)
+      return
+    }
+
     val newSession = ZahraSession(
       title = "محادثة جديدة",
       messages = emptyList()
@@ -159,8 +208,15 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
 
   fun deleteSession(sessionId: String) {
     val filtered = _uiState.value.sessions.filter { it.id != sessionId }
+    val updatedPinned = _uiState.value.pinnedSessionIds - sessionId
     if (filtered.isEmpty()) {
-      startNewSession()
+      val replacement = ZahraSession(title = "محادثة جديدة")
+      _uiState.value = _uiState.value.copy(
+        sessions = listOf(replacement),
+        activeSessionId = replacement.id,
+        pinnedSessionIds = emptySet(),
+        currentScreen = ZahraScreen.CHAT
+      )
     } else {
       val nextActiveId = if (_uiState.value.activeSessionId == sessionId) {
         filtered.first().id
@@ -169,7 +225,8 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
       }
       _uiState.value = _uiState.value.copy(
         sessions = filtered,
-        activeSessionId = nextActiveId
+        activeSessionId = nextActiveId,
+        pinnedSessionIds = updatedPinned
       )
     }
   }
@@ -211,17 +268,31 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
       } else s
     }
 
+    val isDeep = _uiState.value.isDeepThinkingEnabled
     _uiState.value = _uiState.value.copy(
       sessions = updatedSessions,
       isStreaming = true,
-      streamingText = ""
+      streamingText = "",
+      streamingSessionId = currentSession.id
     )
 
     viewModelScope.launch {
-      val isDeep = _uiState.value.isDeepThinkingEnabled
-      val response = router.process(query.trim(), isDeep)
+      val response = try {
+        withContext(Dispatchers.IO) { router.process(query.trim(), isDeep) }
+      } catch (cancelled: CancellationException) {
+        throw cancelled
+      } catch (_: Exception) {
+        ZahraResponse(
+          text = "تعذر إكمال معالجة طلبك بسبب خطأ داخلي. رسالتك محفوظة؛ جرّب إرسالها مرة أخرى.",
+          intent = "execution_error",
+          confidence = 0.0,
+          confidenceTier = ConfidenceTier.UNCERTAIN,
+          outcomeState = OutcomeState.EXECUTION_ERROR,
+          source = "مدير تشغيل زهرة"
+        )
+      }
 
-      // Fast, smooth streaming simulation
+      // Reveal the completed local response smoothly without blocking request processing.
       val fullText = response.text
       val chunkSize = (fullText.length / 8).coerceAtLeast(3)
       var currentLen = 0
@@ -246,19 +317,18 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
         toolPayload = response.toolPayload,
         deepThinking = response.deepThinking,
         evidenceTrace = response.evidenceTrace,
-        clarification = response.clarification
+        clarification = response.clarification,
+        executionPlan = response.executionPlan
       )
 
-      val finishedMsgs = currentMsgs.toMutableList()
-      finishedMsgs.add(zahraMsg)
-
-      val finalSessions = _uiState.value.sessions.map { s ->
-        if (s.id == currentSession.id) {
-          s.copy(
-            messages = finishedMsgs,
+      val finalSessions = _uiState.value.sessions.map { session ->
+        if (session.id == currentSession.id) {
+          session.copy(
+            // Append to the latest list so interactive tool changes are not overwritten.
+            messages = session.messages + zahraMsg,
             updatedAt = System.currentTimeMillis()
           )
-        } else s
+        } else session
       }
 
       val finalFacts = router.memoryEngine.getFacts()
@@ -269,6 +339,7 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
         sessions = finalSessions,
         isStreaming = false,
         streamingText = "",
+        streamingSessionId = null,
         userProfileName = effectiveProfileName,
         tasks = router.taskEngine.getTasks(),
         notes = router.noteEngine.getNotes(),
@@ -280,9 +351,9 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun toggleGlassmorphism() {
-    _uiState.value = _uiState.value.copy(
-      isGlassmorphismEnabled = !_uiState.value.isGlassmorphismEnabled
-    )
+    val enabled = !_uiState.value.isGlassmorphismEnabled
+    preferences.isGlassmorphismEnabled = enabled
+    _uiState.value = _uiState.value.copy(isGlassmorphismEnabled = enabled)
   }
 
   // Schedule Management
@@ -300,7 +371,7 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
     )
   }
 
-  fun addSchedule(title: String, message: String, hour: Int, minute: Int, isDaily: Boolean) {
+  fun addSchedule(title: String, message: String, hour: Int, minute: Int, isDaily: Boolean): ScheduleRegistrationOutcome {
     val displayPeriod = if (hour < 12) "ص" else "م"
     val displayHour = if (hour % 12 == 0) 12 else hour % 12
     val timeDisplay = String.format(java.util.Locale.getDefault(), "%02d:%02d %s", displayHour, minute, displayPeriod)
@@ -315,14 +386,20 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
       isEnabled = true,
       actionType = if (isDaily) "DAILY_TASK" else "REMINDER"
     )
-    router.scheduleEngine.addSchedule(sched)
+    val outcome = router.scheduleEngine.registerAndPersistSchedule(sched)
     _uiState.value = _uiState.value.copy(
       schedules = router.scheduleEngine.getSchedules()
     )
+    return outcome
   }
 
   fun testFireScheduleNotification(schedule: ZahraSchedule) {
     router.scheduleEngine.testFireNotification(schedule)
+  }
+
+  fun refreshSchedules() {
+    router.scheduleEngine.reconcileSchedules()
+    _uiState.value = _uiState.value.copy(schedules = router.scheduleEngine.getSchedules())
   }
 
   fun toggleTask(id: String) {
@@ -360,9 +437,9 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
     )
   }
 
-  fun addNote(title: String, content: String) {
-    if (title.isBlank()) return
-    router.noteEngine.createNote("$title $content")
+  fun addNote(content: String, title: String? = null) {
+    if (content.isBlank()) return
+    router.noteEngine.createNote(content.trim(), title?.trim()?.takeIf { it.isNotEmpty() })
     _uiState.value = _uiState.value.copy(
       notes = router.noteEngine.getNotes()
     )
@@ -401,7 +478,13 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
   fun clearMemory() {
     router.memoryEngine.clearMemory()
     _uiState.value = _uiState.value.copy(
-      userFacts = emptyList()
+      userFacts = emptyList(),
+      userProfileName = "المستخدم"
     )
+  }
+
+  override fun onCleared() {
+    router.release()
+    super.onCleared()
   }
 }

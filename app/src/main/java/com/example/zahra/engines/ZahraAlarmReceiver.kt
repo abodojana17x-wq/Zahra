@@ -70,7 +70,7 @@ class ZahraAlarmReceiver : BroadcastReceiver() {
     )
 
     val notification = NotificationCompat.Builder(context, channelId)
-      .setSmallIcon(android.R.drawable.ic_dialog_info)
+      .setSmallIcon(com.example.R.drawable.ic_zahra_monochrome)
       .setContentTitle(title)
       .setContentText(message)
       .setStyle(NotificationCompat.BigTextStyle().bigText(message))

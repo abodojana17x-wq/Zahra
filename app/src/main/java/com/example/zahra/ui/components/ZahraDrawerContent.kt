@@ -38,6 +38,7 @@ fun ZahraDrawerContent(
   userProfileName: String,
   onSearchQueryChange: (String) -> Unit,
   onSelectSession: (String) -> Unit,
+  onTogglePinSession: (String) -> Unit,
   onNewChat: () -> Unit,
   onOpenSettings: () -> Unit,
   onCloseDrawer: () -> Unit,
@@ -208,7 +209,9 @@ fun ZahraDrawerContent(
               onClick = {
                 onSelectSession(session.id)
                 onCloseDrawer()
-              }
+              },
+              isPinned = true,
+              onTogglePin = { onTogglePinSession(session.id) }
             )
           }
         }
@@ -233,7 +236,9 @@ fun ZahraDrawerContent(
               onClick = {
                 onSelectSession(session.id)
                 onCloseDrawer()
-              }
+              },
+              isPinned = false,
+              onTogglePin = { onTogglePinSession(session.id) }
             )
           }
         }
@@ -353,7 +358,9 @@ private fun DrawerSessionItem(
   title: String,
   isSelected: Boolean,
   icon: ImageVector?,
-  onClick: () -> Unit
+  onClick: () -> Unit,
+  isPinned: Boolean,
+  onTogglePin: () -> Unit
 ) {
   Row(
     verticalAlignment = Alignment.CenterVertically,
@@ -383,6 +390,20 @@ private fun DrawerSessionItem(
         imageVector = icon,
         contentDescription = null,
         tint = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = Modifier.size(16.dp)
+      )
+    }
+
+    IconButton(
+      onClick = onTogglePin,
+      modifier = Modifier
+        .size(32.dp)
+        .testTag(if (isPinned) "unpin_session_button" else "pin_session_button")
+    ) {
+      Icon(
+        imageVector = if (isPinned) Icons.Filled.PushPin else Icons.Outlined.PushPin,
+        contentDescription = if (isPinned) "إلغاء تثبيت المحادثة" else "تثبيت المحادثة",
+        tint = if (isPinned) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = Modifier.size(16.dp)
       )
     }

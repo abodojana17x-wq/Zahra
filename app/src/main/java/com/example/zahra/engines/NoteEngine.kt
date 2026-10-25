@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.zahra.core.ZahraNormalizer
 import com.example.zahra.model.ZahraNote
+import com.example.zahra.security.ZahraCrypto
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -46,8 +47,9 @@ class NoteEngine(context: Context? = null) {
     return ok
   }
 
-  private fun saveNotes() {
-    prefs?.let { p ->
+  private fun saveNotes(): Boolean {
+    val p = prefs ?: return true // Pure in-memory engine used by local unit tests.
+    return try {
       val arr = JSONArray()
       for (n in notesList) {
         val obj = JSONObject().apply {
@@ -61,13 +63,27 @@ class NoteEngine(context: Context? = null) {
         }
         arr.put(obj)
       }
-      p.edit().putString("notes_data", arr.toString()).commit()
+      val encrypted = ZahraCrypto.encrypt(arr.toString())
+      p.edit()
+        .putString(KEY_ENCRYPTED_NOTES, encrypted)
+        .remove(KEY_LEGACY_NOTES)
+        .commit()
+    } catch (_: Exception) {
+      false
     }
   }
 
   private fun loadNotes() {
     notesList.clear()
-    val raw = prefs?.getString("notes_data", null) ?: return
+    val p = prefs ?: return
+    val encrypted = p.getString(KEY_ENCRYPTED_NOTES, null)
+    val legacy = p.getString(KEY_LEGACY_NOTES, null)
+    val raw = try {
+      if (encrypted != null) ZahraCrypto.decrypt(encrypted) else legacy
+    } catch (_: Exception) {
+      legacy // Recover a pre-migration copy if one still exists.
+    } ?: return
+
     try {
       val arr = JSONArray(raw)
       for (i in 0 until arr.length()) {
@@ -89,7 +105,18 @@ class NoteEngine(context: Context? = null) {
           )
         )
       }
-    } catch (_: Exception) {}
+    } catch (_: Exception) {
+      notesList.clear()
+    }
+
+    if (encrypted == null && legacy != null && notesList.isNotEmpty()) {
+      saveNotes() // One-time migration from the old plaintext representation.
+    }
+  }
+
+  private companion object {
+    const val KEY_LEGACY_NOTES = "notes_data"
+    const val KEY_ENCRYPTED_NOTES = "notes_data_encrypted_v1"
   }
 
   private fun extractRakeTags(text: String, maxTags: Int = 4): List<String> {

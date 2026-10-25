@@ -1045,7 +1045,7 @@ class ZahraRouter(private val context: Context) {
 
       // Phase 6.7: Voice and Vision Commands
       "analyze_image" -> {
-        responseText = "📸 لإ分析 صورة، استخدم زر الكاميرا أو اختر صورة من المعرض.\n\n" +
+        responseText = "📸 لتحليل صورة، استخدم زر الكاميرا أو اختر صورة من المعرض.\n\n" +
           "سأقوم بـ:\n" +
           "• تحليل الألوان السائدة\n" +
           "• حساب السطوع والإضاءة\n" +
@@ -1087,20 +1087,12 @@ class ZahraRouter(private val context: Context) {
       }
 
       "voice_input" -> {
-        if (!voiceEngine.isListening()) {
-          voiceEngine.startListening()
-          responseText = "🎤 جاري الاستماع...\n\nتكلم الآن وسأحول كلامك إلى نص.\n\n" +
-            "اضغط مرة أخرى للإيقاف."
-          source = "محرك التعرف على الكلام لزهرة"
-          confidence = 0.99
-          outcomeState = OutcomeState.SUPPORTED
-        } else {
-          voiceEngine.stopListening()
-          responseText = "⏹️ تم إيقاف التسجيل."
-          source = "محرك التعرف على الكلام لزهرة"
-          confidence = 0.99
-          outcomeState = OutcomeState.SUPPORTED
-        }
+        // SpeechRecognizer belongs to the UI/main-thread lifecycle. Starting it here without a
+        // listener used to be a compile-time error and could never return a transcript.
+        responseText = "🎤 افتح الوضع الصوتي من زر الميكروفون بجوار حقل الكتابة. بعد السماح بإذن الميكروفون، تحدث وسأحول كلامك إلى رسالة مباشرة."
+        source = "محرك التعرف على الكلام لزهرة"
+        confidence = 0.99
+        outcomeState = OutcomeState.SUPPORTED
         followups = listOf("انطق الرد", "حلل الصورة", "اقرا النص")
       }
 
@@ -1416,5 +1408,11 @@ class ZahraRouter(private val context: Context) {
     
     // Phase 6.5: Apply mood-adaptive wrapping to fallback too
     return applyMoodAdaptation(input, fallback)
+  }
+
+  /** Releases platform resources owned by the router when its ViewModel is destroyed. */
+  fun release() {
+    voiceEngine.release()
+    visionEngine.release()
   }
 }
