@@ -27,6 +27,16 @@ import com.example.zahra.response.TemplateSelector
 import com.example.zahra.response.TemplateExpander
 import com.example.zahra.response.ResponseRanker
 import com.example.zahra.response.ResponseValidator
+import com.example.zahra.intelligence.mood.MoodAnalyzer
+import com.example.zahra.intelligence.mood.MoodAdaptiveResponseBuilder
+import com.example.zahra.memory.UnifiedMemoryManager
+import com.example.zahra.memory.GreetingVariator
+import com.example.zahra.knowledge.SemanticSearchEngine
+import com.example.zahra.mood.MoodJournal
+import com.example.zahra.wisdom.WisdomBank
+import com.example.zahra.voice.VoiceEngine
+import com.example.zahra.vision.VisionEngine
+import com.example.zahra.islamic.IslamicKnowledgeBase
 
 class ZahraRouter(private val context: Context) {
   val nbClassifier = NaiveBayesClassifier()
@@ -63,11 +73,35 @@ class ZahraRouter(private val context: Context) {
     responseRanker = ResponseRanker(),
     responseValidator = ResponseValidator()
   )
+  
+  // Phase 6.5: Mood-Aware Adaptive Response System
+  val moodAnalyzer = MoodAnalyzer()
+  val moodAdaptiveBuilder = MoodAdaptiveResponseBuilder()
+  
+  // Phase 6.6: Unified 3-Tier Memory System + Greeting Variator
+  val unifiedMemory = UnifiedMemoryManager(context)
+  val greetingVariator = GreetingVariator()
+  
+  // Phase 6.7: Semantic Search + Mood Journal + Wisdom Bank
+  val semanticSearch = SemanticSearchEngine()
+  val moodJournal = MoodJournal(context)
+  val wisdomBank = WisdomBank()
+  
+  // Phase 6.7: Voice and Vision Engines
+  val voiceEngine = VoiceEngine(context)
+  val visionEngine = VisionEngine(context)
+  
+  // Phase 6.7: Islamic Knowledge Base
+  val islamicKnowledge = IslamicKnowledgeBase()
 
   init {
     loadTrainingCorpus()
     // Reconcile pending reminders and alarms on initialization
     scheduleEngine.reconcileSchedules()
+    // Phase 6.6: Load unified memory from persistent storage
+    unifiedMemory.loadAll()
+    // Phase 6.7: Initialize Vision OCR (Arabic + English)
+    visionEngine.initializeOCR("ara+eng")
   }
 
   private fun loadTrainingCorpus() {
@@ -179,7 +213,8 @@ class ZahraRouter(private val context: Context) {
         evidenceTrace = trace
       )
       contextTracker.recordTurn(rawInput, res)
-      return res
+      // Phase 6.5: Mood-adaptive wrapping for religious responses
+      return applyMoodAdaptation(rawInput, res)
     }
 
     // Phase 4: Context and user corrections detection
@@ -313,16 +348,34 @@ class ZahraRouter(private val context: Context) {
     if (memoryQueryKeywords.any { normalized.contains(ZahraNormalizer.normalize(it)) }) {
       val memSummary = memoryEngine.summarizeKnownMemory()
       val firstFact = memoryEngine.getFacts().firstOrNull()
-      return ZahraResponse(
-        text = memSummary,
+      
+      // Phase 6.6: Combine old memory summary with new unified profile + topics
+      val profileSummary = unifiedMemory.getUserProfileSummary()
+      val topicSummary = unifiedMemory.getTopicSummary()
+      
+      val combinedText = buildString {
+        append(profileSummary)
+        append("\n\n")
+        if (memSummary.isNotBlank() && memSummary != "لا توجد معلومات محفوظة حالياً.") {
+          append("📋 معلومات محفوظة إضافية:\n")
+          append(memSummary)
+          append("\n\n")
+        }
+        append(topicSummary)
+      }
+      
+      val memRes = ZahraResponse(
+        text = combinedText,
         intent = "query_memory",
         confidence = 0.99,
         confidenceTier = ConfidenceTier.DIRECT,
         outcomeState = OutcomeState.SUPPORTED,
-        source = "مستودع الذاكرة الذاتية المشفرة لزهرة 3",
-        followups = listOf("تذكر أنني أفضل الشاي", "ما هي مواقيت الصلاة؟", "أضف مهمة جديدة"),
+        source = "نظام الذاكرة الموحّد لزهرة (Phase 6.6)",
+        followups = listOf("تذكر أن اسمي أحمد", "أنا بحب القراءة", "أنا من مصر", "مواقيت الصلاة؟"),
         toolPayload = firstFact?.let { ZahraToolPayload.MemoryFactPayload(it, isNew = false) }
       )
+      contextTracker.recordTurn(rawInput, memRes)
+      return applyMoodAdaptation(rawInput, memRes)
     }
 
     // Check if user is asking to delete/forget a memory
@@ -826,18 +879,34 @@ class ZahraRouter(private val context: Context) {
       }
 
       "greet" -> {
-        val userName = memoryEngine.getFacts().find { it.key.contains("الاسم") }?.value ?: ""
-        val greetingPrefix = if (userName.isNotBlank()) "أهلاً بك يا $userName! " else "وعليكم السلام ورحمة الله وبركاته! "
-        responseText = "${greetingPrefix}أنا زهرة 3 (Zahra 3) — وكيلك الذكي المستقل فائق القدرة. أستطيع تنفيذ مهامك كاملة، الجدولة، إنشاء الصور والبطاقات الإجرائية، الحساب، الترجمة، حفظ تفضيلاتك في الذاكرة، وكل ذلك محلياً 100% دون إنترنت."
-        source = "نظام زهرة 3 الترحيبي"
+        // Phase 6.6: Use GreetingVariator for dynamic, varied greetings
+        val greetingContext = GreetingVariator.GreetingContext(
+          userName = unifiedMemory.getUserName(),
+          timeOfDay = GreetingVariator.detectTimeOfDay(),
+          isFirstSession = unifiedMemory.isFirstTimeUser(),
+          previousTopics = unifiedMemory.getPreviousTopics().take(3).map { it.topic },
+          isReturningUser = unifiedMemory.isReturningUser(),
+          userGender = unifiedMemory.getUserGender()
+        )
+        responseText = greetingVariator.generateGreeting(clean, greetingContext)
+        source = "نظام التحيات المتنوع لزهرة (Phase 6.6)"
         outcomeState = OutcomeState.SUPPORTED
         followups = listOf("إنشاء صورة أو ملصق", "فكرني كل يوم الساعة 8 صباحاً", "احسب 150 * 4", "مواقيت الصلاة اليوم", "ماذا تعرف عني؟")
+        // Save all memory after greeting (in case profile was updated)
+        unifiedMemory.saveAll()
       }
 
       "farewell" -> {
-        responseText = "في أمان الله وحفظه! جميع سجلاتك ومواعيدك وملاحظاتك محفوظة ومشفرة محلياً على جهازك."
-        source = "نظام زهرة 3"
+        // Phase 6.6: Varied farewell too
+        val farewellContext = GreetingVariator.GreetingContext(
+          userName = unifiedMemory.getUserName(),
+          userGender = unifiedMemory.getUserGender()
+        )
+        responseText = greetingVariator.generateFarewell(farewellContext)
+        source = "نظام التحيات المتنوع لزهرة (Phase 6.6)"
         outcomeState = OutcomeState.SUPPORTED
+        // Save all memory on farewell
+        unifiedMemory.saveAll()
       }
 
       "help" -> {
@@ -937,8 +1006,208 @@ class ZahraRouter(private val context: Context) {
         }
       }
 
+      // Phase 6.7: Wisdom Bank — طلب حكمة أو اقتباس
+      "ask_wisdom", "wisdom", "quote" -> {
+        val wisdom = wisdomBank.getRandomWisdom()
+        responseText = wisdomBank.formatWisdom(wisdom)
+        source = "بنك الحكم والأمثال لزهرة (${wisdomBank.getCount()} حكمة)"
+        outcomeState = OutcomeState.SUPPORTED
+        followups = listOf("قولي حكمة تانية", "حكمة عن الصبر", "آية تريحني", "حكمة ملهمة")
+      }
+
+      // Phase 6.7: Mood Journal — عرض ملخص المزاج
+      "mood_summary", "mood_journal" -> {
+        responseText = moodJournal.getMoodSummary()
+        source = "مذكرات المزاج اليومية لزهرة (Phase 6.7)"
+        outcomeState = OutcomeState.SUPPORTED
+        followups = listOf("سجل إني مبسوط", "قولي حكمة", "إيه نصيحتك ليا؟")
+      }
+
+      // Phase 6.7: Semantic Search — بحث دلالي
+      "semantic_search", "find_similar" -> {
+        val query = clean.replace(Regex("^(ابحث عن|دور على|شوفلي|ابحثلي|find|search)\\s*", RegexOption.IGNORE_CASE), "").trim()
+        val results = semanticSearch.hybridSearch(query.ifBlank { rawInput }, topK = 3)
+        if (results.isNotEmpty()) {
+          responseText = results.joinToString("\n\n") { r ->
+            "📌 ${r.document.title}\n${r.document.content.take(200)}${if (r.document.content.length > 200) "..." else ""}"
+          }
+          source = "محرك البحث الدلالي لزهرة (Phase 6.7)"
+          confidence = results.first().score
+          outcomeState = OutcomeState.SUPPORTED
+        } else {
+          responseText = "مفيش نتائج مشابهة لـ \"$query\" في قاعدة المعرفة الحالية 🤔\nجرب تصيغ البحث بشكل تاني!"
+          source = "محرك البحث الدلالي لزهرة"
+          confidence = 0.3
+          outcomeState = OutcomeState.UNSUPPORTED
+        }
+        followups = listOf("ابحث عن الصبر", "دور على السعادة", "حكمة عن الأمل")
+      }
+
+      // Phase 6.7: Voice and Vision Commands
+      "analyze_image" -> {
+        responseText = "📸 لإ分析 صورة، استخدم زر الكاميرا أو اختر صورة من المعرض.\n\n" +
+          "سأقوم بـ:\n" +
+          "• تحليل الألوان السائدة\n" +
+          "• حساب السطوع والإضاءة\n" +
+          "• استخراج النص المكتوب (OCR)\n" +
+          "• كشف الوجوه والتعبيرات\n\n" +
+          "جرب الآن: التقط صورة أو اختر من المعرض!"
+        source = "محرك الرؤية المتقدم لزهرة (Phase 6.7)"
+        confidence = 0.99
+        outcomeState = OutcomeState.SUPPORTED
+        followups = listOf("اقرا النص من الصورة", "كم وجه في الصورة؟", "حلل ألوان الصورة")
+      }
+
+      "extract_text" -> {
+        responseText = "📝 لاستخراج النص من صورة:\n\n" +
+          "1. التقط صورة تحتوي على نص\n" +
+          "2. أو اختر صورة من المعرض\n\n" +
+          "سأستخدم OCR متقدم يدعم العربية والإنجليزية لقراءة النص بدقة.\n\n" +
+          "نصيحة: تأكد من وضوح الصورة والإضاءة الجيدة لنتائج أفضل!"
+        source = "محرك OCR لزهرة (Tesseract)"
+        confidence = 0.99
+        outcomeState = OutcomeState.SUPPORTED
+        followups = listOf("حلل الصورة", "اكشف الوجوه", "اقرا صورة أخرى")
+      }
+
+      "detect_faces" -> {
+        responseText = "👤 لكشف الوجوه في صورة:\n\n" +
+          "1. التقط صورة تحتوي على وجوه\n" +
+          "2. أو اختر صورة من المعرض\n\n" +
+          "سأقوم بـ:\n" +
+          "• كشف عدد الوجوه\n" +
+          "• تحليل التعبيرات (مبتسم/غير مبتسم)\n" +
+          "• كشف حالة العيون (مفتوحة/مغلقة)\n" +
+          "• تتبع الوجوه المتعددة\n\n" +
+          "ML Kit Face Detection يعمل offline بالكامل!"
+        source = "محرك كشف الوجوه لزهرة (ML Kit)"
+        confidence = 0.99
+        outcomeState = OutcomeState.SUPPORTED
+        followups = listOf("حلل الصورة", "اقرا النص", "كم وجه في الصورة؟")
+      }
+
+      "voice_input" -> {
+        if (!voiceEngine.isListening()) {
+          voiceEngine.startListening()
+          responseText = "🎤 جاري الاستماع...\n\nتكلم الآن وسأحول كلامك إلى نص.\n\n" +
+            "اضغط مرة أخرى للإيقاف."
+          source = "محرك التعرف على الكلام لزهرة"
+          confidence = 0.99
+          outcomeState = OutcomeState.SUPPORTED
+        } else {
+          voiceEngine.stopListening()
+          responseText = "⏹️ تم إيقاف التسجيل."
+          source = "محرك التعرف على الكلام لزهرة"
+          confidence = 0.99
+          outcomeState = OutcomeState.SUPPORTED
+        }
+        followups = listOf("انطق الرد", "حلل الصورة", "اقرا النص")
+      }
+
+      "speak_response" -> {
+        if (!voiceEngine.isSpeaking()) {
+          val lastResponse = contextTracker.getLastZahraResponse() ?: "مرحباً! أنا زهرة."
+          voiceEngine.speak(lastResponse)
+          responseText = "🔊 جاري نطق الرد...\n\n" +
+            "اضغط مرة أخرى للإيقاف."
+          source = "محرك تحويل النص إلى كلام لزهرة"
+          confidence = 0.99
+          outcomeState = OutcomeState.SUPPORTED
+        } else {
+          voiceEngine.stopSpeaking()
+          responseText = "⏹️ تم إيقاف النطق."
+          source = "محرك تحويل النص إلى كلام لزهرة"
+          confidence = 0.99
+          outcomeState = OutcomeState.SUPPORTED
+        }
+        followups = listOf("سجل صوت", "حلل الصورة", "حكمة اليوم")
+      }
+
+      // Phase 6.7: Islamic Knowledge Base Commands
+      "ask_islamic" -> {
+        val lesson = islamicKnowledge.getRandomLesson()
+        responseText = islamicKnowledge.formatLesson(lesson)
+        source = "القاعدة الإسلامية الأساسية لزهرة (Phase 6.7)"
+        confidence = 0.95
+        outcomeState = OutcomeState.SUPPORTED
+        followups = listOf("علمني عن الفقه", "قولي عن السيرة", "اشرحي العقيدة", "فهميني التزكية")
+      }
+
+      "ask_fiqh" -> {
+        val lesson = islamicKnowledge.getLessonByCategory(IslamicKnowledgeBase.Category.FIQH)
+        if (lesson != null) {
+          responseText = islamicKnowledge.formatLesson(lesson)
+          source = "القاعدة الإسلامية - فقه يسير"
+          confidence = 0.95
+          outcomeState = OutcomeState.SUPPORTED
+          followups = listOf("علمني عن الصلاة", "ما حكم الزكاة؟", "كيف أصوم؟", "أحكام الحج")
+        } else {
+          responseText = "📖 لا توجد دروس في الفقه حالياً."
+          source = "القاعدة الإسلامية"
+          confidence = 0.70
+          outcomeState = OutcomeState.UNSUPPORTED
+        }
+      }
+
+      "ask_seerah" -> {
+        val lesson = islamicKnowledge.getLessonByCategory(IslamicKnowledgeBase.Category.SEERAH)
+        if (lesson != null) {
+          responseText = islamicKnowledge.formatLesson(lesson)
+          source = "القاعدة الإسلامية - سيرة يسير"
+          confidence = 0.95
+          outcomeState = OutcomeState.SUPPORTED
+          followups = listOf("قولي عن مولد النبي", "احكي عن الهجرة", "ما هي غزوة بدر؟", "فتح مكة")
+        } else {
+          responseText = "🕌 لا توجد دروس في السيرة حالياً."
+          source = "القاعدة الإسلامية"
+          confidence = 0.70
+          outcomeState = OutcomeState.UNSUPPORTED
+        }
+      }
+
+      "ask_aqeedah" -> {
+        val lesson = islamicKnowledge.getLessonByCategory(IslamicKnowledgeBase.Category.AQEEDAH)
+        if (lesson != null) {
+          responseText = islamicKnowledge.formatLesson(lesson)
+          source = "القاعدة الإسلامية - عقيدة يسير"
+          confidence = 0.95
+          outcomeState = OutcomeState.SUPPORTED
+          followups = listOf("ما هو التوحيد؟", "أركان الإيمان", "الإيمان بالقدر", "اليوم الآخر")
+        } else {
+          responseText = "🌟 لا توجد دروس في العقيدة حالياً."
+          source = "القاعدة الإسلامية"
+          confidence = 0.70
+          outcomeState = OutcomeState.UNSUPPORTED
+        }
+      }
+
+      "ask_tazkiyah" -> {
+        val lesson = islamicKnowledge.getLessonByCategory(IslamicKnowledgeBase.Category.TAZKIYAH)
+        if (lesson != null) {
+          responseText = islamicKnowledge.formatLesson(lesson)
+          source = "القاعدة الإسلامية - تزكية يسيرة"
+          confidence = 0.95
+          outcomeState = OutcomeState.SUPPORTED
+          followups = listOf("كيف أغير نفسي؟", "ما هي العبودية؟", "جهاد النفس", "القرآن دواء")
+        } else {
+          responseText = "💚 لا توجد دروس في التزكية حالياً."
+          source = "القاعدة الإسلامية"
+          confidence = 0.70
+          outcomeState = OutcomeState.UNSUPPORTED
+        }
+      }
+
       else -> {
-        // Check if query matches a verified knowledge entry before generic fallback
+        // Phase 6.7: Auto-detect wisdom requests before generic fallback
+        val wisdomKeywords = listOf("حكمة", "مثل", "قولي حكمة", "اقتباس", "حكمة اليوم", "كلام جميل", "آية", "حديث")
+        if (wisdomKeywords.any { normalized.contains(it) }) {
+          val wisdom = wisdomBank.searchWisdoms(clean).firstOrNull() ?: wisdomBank.getRandomWisdom()
+          responseText = wisdomBank.formatWisdom(wisdom)
+          source = "بنك الحكم والأمثال لزهرة (Phase 6.7)"
+          confidence = 0.85
+          outcomeState = OutcomeState.SUPPORTED
+          followups = listOf("حكمة تانية", "حكمة عن الصبر", "حكمة ملهمة", "آية تريحني")
+        } else {
         val kRes = knowledgeEngine.query(rawInput)
         if (kRes.state == KnowledgeRetrievalState.VERIFIED_MATCH && (kRes.bestMatch?.relevanceScore ?: 0.0) >= 0.50) {
           val best = kRes.bestMatch!!
@@ -963,6 +1232,7 @@ class ZahraRouter(private val context: Context) {
         } else {
           return generateFallback(rawInput)
         }
+        } // close inner else
       }
     }
 
@@ -1084,7 +1354,35 @@ class ZahraRouter(private val context: Context) {
       response = finalResponse
     )
     contextTracker.recordTurn(rawInput, finalResponse)
-    return finalResponse
+    
+    // Phase 6.6: Record in unified memory (auto-extracts profile + detects topics)
+    unifiedMemory.recordTurn(rawInput, finalResponse.text, finalIntent)
+    
+    // Phase 6.5: Apply mood-adaptive composed response
+    return applyMoodAdaptation(rawInput, finalResponse)
+  }
+
+  /**
+   * Phase 6.5: Mood-Adaptive Response Wrapping
+   * 
+   * Analyzes user's emotional state and adapts the response presentation
+   * (opening, empathy bridge, enrichment, closing) while preserving the core answer.
+   * 
+   * Design Principles:
+   * - Core factual content is NEVER changed by mood
+   * - Only presentation layers (opening, empathy, enrichment, closing) adapt
+   * - Positive bias: adds warmth above user's mood level
+   * - Honest: doesn't fake positivity for serious issues
+   * - Respects personality preferences (serious tone gets less emoji)
+   */
+  private fun applyMoodAdaptation(rawInput: String, response: ZahraResponse): ZahraResponse {
+    return try {
+      val personality = personalityManager.getCurrentPersonality()
+      moodAdaptiveBuilder.buildAdaptiveResponse(response, rawInput, personality)
+    } catch (e: Exception) {
+      // Safety fallback: if mood adaptation fails, return original response unchanged
+      response
+    }
   }
 
   private fun generateFallback(input: String): ZahraResponse {
@@ -1115,6 +1413,8 @@ class ZahraRouter(private val context: Context) {
       )
     )
     contextTracker.recordTurn(input, fallback)
-    return fallback
+    
+    // Phase 6.5: Apply mood-adaptive wrapping to fallback too
+    return applyMoodAdaptation(input, fallback)
   }
 }

@@ -127,6 +127,11 @@ dependencies {
   implementation(libs.okhttp)
   // implementation(libs.play.services.location)
   implementation(libs.retrofit)
+  
+  // Phase 6.7: OCR and Face Detection
+  implementation("cz.adaptech.tesseract4android:tesseract4android:4.8.0")
+  implementation("com.google.mlkit:face-detection:16.1.7")
+  
   testImplementation(libs.androidx.compose.ui.test.junit4)
   testImplementation(libs.androidx.core)
   testImplementation(libs.androidx.junit)
