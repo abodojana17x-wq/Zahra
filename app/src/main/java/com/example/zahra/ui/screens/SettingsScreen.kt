@@ -213,7 +213,7 @@ fun SettingsScreen(
             icon = Icons.Outlined.WorkOutline,
             trailingText = "شخصي مستقل",
             onClick = {
-              Toast.makeText(context, "مساحة عمل خاصة ومشفرة محلياً على هاتفك", Toast.LENGTH_SHORT).show()
+              Toast.makeText(context, "مساحة عمل خاصة؛ المحادثات والذاكرة والملاحظات مشفرة على هاتفك", Toast.LENGTH_LONG).show()
             }
           )
         }
@@ -325,11 +325,11 @@ fun SettingsScreen(
           }
           HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
           SettingsRowItem(title = "التخزين المحلي", icon = Icons.Outlined.Storage) {
-            Toast.makeText(context, "جميع البيانات محفوظة ومشفرة على جهازك فقط", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "الذاكرة والمحادثات والملاحظات مشفرة، وجميع بيانات التشغيل محفوظة على جهازك", Toast.LENGTH_LONG).show()
           }
           HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
           SettingsRowItem(title = "مركز الخصوصية", icon = Icons.Outlined.Policy) {
-            Toast.makeText(context, "خصوصية مطلقة: صفر بايت تخرج من هاتفك", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "لا يطلب التطبيق إذن الإنترنت، والنسخ الاحتياطي السحابي معطل", Toast.LENGTH_LONG).show()
           }
           HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
           SettingsRowItem(title = "السجل والبيانات", icon = Icons.Outlined.Archive) {

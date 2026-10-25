@@ -1,7 +1,14 @@
 package com.example.zahra.ui.screens
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
+import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -27,7 +34,10 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import com.example.ui.theme.GptAccentBlue
+import com.example.zahra.engines.ScheduleRegistrationOutcome
 import com.example.zahra.model.ZahraSchedule
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,8 +46,9 @@ fun ScheduleScreen(
   schedules: List<ZahraSchedule>,
   onToggleSchedule: (String) -> Unit,
   onDeleteSchedule: (String) -> Unit,
-  onAddSchedule: (String, String, Int, Int, Boolean) -> Unit,
+  onAddSchedule: (String, String, Int, Int, Boolean) -> ScheduleRegistrationOutcome,
   onTestNotification: (ZahraSchedule) -> Unit,
+  onRefreshSchedules: () -> Unit,
   onBackToChat: () -> Unit,
   modifier: Modifier = Modifier
 ) {
@@ -50,6 +61,29 @@ fun ScheduleScreen(
   var newHour by remember { mutableIntStateOf(8) }
   var newMinute by remember { mutableIntStateOf(0) }
   var newIsDaily by remember { mutableStateOf(true) }
+  var notificationsEnabled by remember {
+    mutableStateOf(NotificationManagerCompat.from(context).areNotificationsEnabled())
+  }
+
+  val notificationPermissionLauncher = rememberLauncherForActivityResult(
+    ActivityResultContracts.RequestPermission()
+  ) { granted ->
+    notificationsEnabled = granted && NotificationManagerCompat.from(context).areNotificationsEnabled()
+    onRefreshSchedules()
+  }
+
+  fun requestNotifications() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+      ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+    ) {
+      notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+    } else {
+      val settingsIntent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+        putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+      }
+      context.startActivity(settingsIntent)
+    }
+  }
 
   Scaffold(
     topBar = {
@@ -159,6 +193,42 @@ fun ScheduleScreen(
         }
       }
 
+      if (!notificationsEnabled) {
+        Surface(
+          shape = RoundedCornerShape(14.dp),
+          color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.45f),
+          modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp)
+            .testTag("notification_permission_card")
+        ) {
+          Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp)
+          ) {
+            Column(modifier = Modifier.weight(1f)) {
+              Text(
+                text = "إذن الإشعارات غير مفعل",
+                color = MaterialTheme.colorScheme.onSurface,
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Bold
+              )
+              Text(
+                text = "فعّله حتى تصلك التذكيرات في موعدها.",
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontSize = 11.sp
+              )
+            }
+            TextButton(
+              onClick = { requestNotifications() },
+              modifier = Modifier.testTag("enable_notifications_button")
+            ) {
+              Text("تفعيل")
+            }
+          }
+        }
+      }
+
       if (schedules.isEmpty()) {
         Box(
           contentAlignment = Alignment.Center,
@@ -201,7 +271,9 @@ fun ScheduleScreen(
               schedule = item,
               onToggle = { onToggleSchedule(item.id) },
               onDelete = { onDeleteSchedule(item.id) },
-              onTest = { onTestNotification(item) }
+              onTest = {
+                if (notificationsEnabled) onTestNotification(item) else requestNotifications()
+              }
             )
           }
         }
@@ -268,17 +340,26 @@ fun ScheduleScreen(
         Button(
           onClick = {
             if (newTitle.isNotBlank()) {
-              onAddSchedule(
+              val outcome = onAddSchedule(
                 newTitle.trim(),
                 newMessage.ifBlank { "تنبيه مجدول من وكيل زهرة 3: $newTitle" },
                 newHour,
                 newMinute,
                 newIsDaily
               )
-              showAddDialog = false
-              newTitle = ""
-              newMessage = ""
-              Toast.makeText(context, "تمت جدولة التنبيه بنجاح!", Toast.LENGTH_SHORT).show()
+              if (outcome.isPersisted) {
+                showAddDialog = false
+                newTitle = ""
+                newMessage = ""
+              }
+              val resultMessage = when {
+                !outcome.isPersisted -> "تعذر حفظ التذكير. راجع مساحة التخزين وحاول مجددًا."
+                !outcome.isSchedulerRegistered -> "حُفظ التذكير، لكن تعذر تسجيل المنبه في النظام"
+                !outcome.isNotificationPermissionGranted -> "تمت الجدولة؛ فعّل إذن الإشعارات ليصلك التنبيه"
+                !outcome.isExactAlarmRegistered -> "تمت جدولة منبه تقريبي لغياب إذن المنبهات الدقيقة"
+                else -> "تمت جدولة التنبيه بنجاح"
+              }
+              Toast.makeText(context, resultMessage, Toast.LENGTH_LONG).show()
             }
           }
         ) {
@@ -389,6 +470,16 @@ private fun ScheduleListItem(
           text = schedule.message,
           fontSize = 12.sp,
           color = MaterialTheme.colorScheme.onSurfaceVariant,
+          lineHeight = 16.sp
+        )
+      }
+
+      if (!schedule.failureReason.isNullOrBlank()) {
+        Spacer(modifier = Modifier.height(6.dp))
+        Text(
+          text = schedule.failureReason.orEmpty(),
+          fontSize = 11.sp,
+          color = MaterialTheme.colorScheme.error,
           lineHeight = 16.sp
         )
       }

@@ -24,7 +24,10 @@ fun ZahraApp(
 
   // Native Arabic RTL Layout Direction
   CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-    ZahraTheme {
+    ZahraTheme(
+      accentColorName = uiState.accentColorName,
+      glassmorphismEnabled = uiState.isGlassmorphismEnabled
+    ) {
       // Global BackHandler: Close drawer if open, else navigate back to chat
       BackHandler(enabled = drawerState.isOpen || uiState.currentScreen != ZahraScreen.CHAT) {
         if (drawerState.isOpen) {
@@ -46,6 +49,7 @@ fun ZahraApp(
             userProfileName = uiState.userProfileName,
             onSearchQueryChange = { viewModel.setSearchDrawerQuery(it) },
             onSelectSession = { viewModel.switchSession(it) },
+            onTogglePinSession = { viewModel.togglePinSession(it) },
             onNewChat = { viewModel.startNewSession() },
             onOpenSettings = { viewModel.navigateToScreen(ZahraScreen.SETTINGS) },
             onCloseDrawer = { scope.launch { drawerState.close() } },
@@ -81,6 +85,7 @@ fun ZahraApp(
                   viewModel.addSchedule(title, msg, h, min, isDaily)
                 },
                 onTestNotification = { viewModel.testFireScheduleNotification(it) },
+                onRefreshSchedules = { viewModel.refreshSchedules() },
                 onBackToChat = { viewModel.navigateToScreen(ZahraScreen.CHAT) }
               )
             }
@@ -115,7 +120,7 @@ fun ZahraApp(
             ZahraScreen.NOTES -> {
               NotesScreen(
                 notes = uiState.notes,
-                onAddNote = { title, content -> viewModel.addNote(title, content ?: "") },
+                onAddNote = { content, title -> viewModel.addNote(content, title) },
                 onDeleteNote = { viewModel.deleteNote(it) }
               )
             }
@@ -151,6 +156,7 @@ fun ZahraApp(
       // Voice Mode Interactive Overlay Dialog
       if (uiState.isVoiceModeActive) {
         VoiceModeDialog(
+          voiceEngine = viewModel.router.voiceEngine,
           onDismiss = { viewModel.setVoiceModeActive(false) },
           onVoiceInputCompleted = { speechText ->
             viewModel.sendMessage(speechText)

@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 78dp container × 84% visible artwork ≈ 66dp adaptive-icon safe zone. -->
     <item
-        android:width="66dp"
-        android:height="66dp"
+        android:width="78dp"
+        android:height="78dp"
         android:drawable="@drawable/ic_zahra_logo"
         android:gravity="center" />
 </layer-list>

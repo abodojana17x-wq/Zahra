@@ -66,8 +66,8 @@ class VoiceEngine(private val context: Context) {
      * تهيئة المحرك
      */
     fun initialize() {
-        initSTT()
-        initTTS()
+        if (speechRecognizer == null) initSTT()
+        if (tts == null) initTTS()
     }
     
     /**
@@ -116,10 +116,13 @@ class VoiceEngine(private val context: Context) {
                 val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                 val confidences = results?.getFloatArray(SpeechRecognizer.CONFIDENCE_SCORES)
                 
+                isListening = false
                 if (!matches.isNullOrEmpty()) {
                     val text = matches[0]
                     val confidence = confidences?.getOrNull(0) ?: 0.8f
                     sttListener?.onResult(text, confidence)
+                } else {
+                    sttListener?.onError(SpeechRecognizer.ERROR_NO_MATCH, "لم يتم التعرف على الكلام")
                 }
             }
             
@@ -168,22 +171,33 @@ class VoiceEngine(private val context: Context) {
      * بدء الاستماع (STT)
      */
     fun startListening(language: String = "ar-EG", listener: STTListener) {
+        sttListener = listener
+        if (isListening) return
         if (!SpeechRecognizer.isRecognitionAvailable(context)) {
-            listener.onError(-1, "التعرف على الكلام غير متاح")
+            listener.onError(-1, "التعرف على الكلام غير متاح على هذا الجهاز")
             return
         }
-        
-        sttListener = listener
-        isListening = true
-        
+        if (speechRecognizer == null) initSTT()
+        val recognizer = speechRecognizer ?: run {
+            listener.onError(-1, "تعذر تهيئة محرك التعرف على الكلام")
+            return
+        }
+
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
             putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
             putExtra(RecognizerIntent.EXTRA_LANGUAGE, language)
             putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
+            putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true)
             putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5)
         }
-        
-        speechRecognizer?.startListening(intent)
+
+        try {
+            recognizer.startListening(intent)
+            isListening = true
+        } catch (e: Exception) {
+            isListening = false
+            listener.onError(-1, "تعذر بدء الاستماع: ${e.message ?: "خطأ غير معروف"}")
+        }
     }
     
     /**
@@ -313,8 +327,16 @@ class VoiceEngine(private val context: Context) {
      * تحرير الموارد
      */
     fun release() {
+        speechRecognizer?.cancel()
         speechRecognizer?.destroy()
+        speechRecognizer = null
+        sttListener = null
         tts?.stop()
         tts?.shutdown()
+        tts = null
+        ttsListener = null
+        ttsReady = false
+        isListening = false
+        isSpeaking = false
     }
 }

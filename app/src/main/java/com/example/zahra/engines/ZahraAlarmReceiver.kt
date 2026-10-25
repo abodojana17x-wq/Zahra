@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.example.MainActivity
 
 /**
@@ -26,6 +27,9 @@ class ZahraAlarmReceiver : BroadcastReceiver() {
     if (intent.action != ACTION_ALARM_TRIGGER) return
 
     val scheduleId = intent.getStringExtra("EXTRA_SCHEDULE_ID") ?: return
+    // Permission can be revoked after an alarm is registered; never mark it delivered or crash.
+    if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return
+
     val title = intent.getStringExtra("EXTRA_TITLE") ?: "تنبيه من زهرة 3"
     val message = intent.getStringExtra("EXTRA_MESSAGE") ?: "حان موعد المهمة المجدولة المعتمدة."
 
@@ -70,7 +74,7 @@ class ZahraAlarmReceiver : BroadcastReceiver() {
     )
 
     val notification = NotificationCompat.Builder(context, channelId)
-      .setSmallIcon(android.R.drawable.ic_dialog_info)
+      .setSmallIcon(com.example.R.drawable.ic_zahra_monochrome)
       .setContentTitle(title)
       .setContentText(message)
       .setStyle(NotificationCompat.BigTextStyle().bigText(message))
@@ -79,6 +83,10 @@ class ZahraAlarmReceiver : BroadcastReceiver() {
       .setContentIntent(pendingIntent)
       .build()
 
-    notificationManager.notify(notificationId, notification)
+    try {
+      notificationManager.notify(notificationId, notification)
+    } catch (_: SecurityException) {
+      // The user may revoke notification access between the state check and delivery.
+    }
   }
 }
