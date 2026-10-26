@@ -6,14 +6,19 @@
 
 ```
 evidence/
-  phase-00/  gradle-test.log · eval-run.log · assemble.log · failing-tests.md · SUMMARY-after.md
-  phase-01/  router-decision-map.md · confidence-calibration.csv · run.log · SUMMARY-after.md
-  phase-02/  run.log · SUMMARY-after.md · no-eval-audit.txt · before-after.csv
-  phase-03/  build-index.log · weights.json · paraphrase-report.md · run.log · SUMMARY-after.md
-  phase-04/  run.log · SUMMARY-after.md · fake-memory-scan.txt · mood-matrix-before-after.md
-  phase-05/  validation.json · license-audit.md · pack-impact.csv · run.log · SUMMARY-after.md
-  phase-06/  commit.txt · corpus.sha256 · final-eval.log · final-build.log · blind-sheet.csv · performance.md · FINAL-SUMMARY.md
+  phase-00/  research.md · gradle-test.log · eval-run.log · assemble.log · failing-tests.md · SUMMARY-after.md
+  phase-01/  research.md · router-decision-map.md · confidence-calibration.csv · run.log · SUMMARY-after.md
+  phase-02/  research.md · run.log · SUMMARY-after.md · no-eval-audit.txt · before-after.csv
+  phase-03/  research.md · build-index.log · weights.json · paraphrase-report.md · run.log · SUMMARY-after.md
+  phase-04/  research.md · run.log · SUMMARY-after.md · fake-memory-scan.txt · mood-matrix-before-after.md
+  phase-05/  research.md · validation.json · license-audit.md · pack-impact.csv · run.log · SUMMARY-after.md
+  phase-06/  research.md · commit.txt · corpus.sha256 · final-eval.log · final-build.log · blind-sheet.csv · performance.md · FINAL-SUMMARY.md
+  phase-07/  research.md · model-licenses.md · model.sha256 · device-perf.log · run.log · model-licenses.md
+  phase-08/  research.md · trace-samples.md · reasoning-score.md · audit.json · run.log · SUMMARY-after.md
+  phase-09/  research.md · blind-sheet.csv · snapshots/ · parity-set.sha256 · commit.txt · PARITY.md
 ```
+
+> 🔒 **`research.md` إلزامي في كل مجلد** — هو إثبات قاعدة R0 ([`plans/PRE-FLIGHT.md`](../plans/PRE-FLIGHT.md))، والـ CI job `preflight` يفشل لو غاب أو قلت مصادره عن 5.
 
 ## قواعد الحفظ
 

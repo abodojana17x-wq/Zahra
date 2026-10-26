@@ -2,7 +2,7 @@
 
 **Offline · Zero-LLM · Zero-Network (افتراضيًا) · Kotlin + Jetpack Compose**
 
-> هذا الملف هو نقطة الدخول الوحيدة للمشروع. **كل المخططات والتقارير القديمة أُزيلت** واستُبدلت بخطة مرحلية واحدة، لكل مرحلة ملف مستقل يكلّف فئة متخصصة من الوكلاء ببذل أقصى جهد: [`plans/README.md`](plans/README.md).
+> هذا الملف هو نقطة الدخول الوحيدة للمشروع. **كل المخططات والتقارير القديمة أُزيلت** واستُبدلت بخطة مرحلية واحدة من **10 مراحل (0–9)**، لكل مرحلة ملف مستقل يكلّف فئة متخصصة من الوكلاء ببذل أقصى جهد، وتبدأ بقاعدة بحث إلزامية: [`plans/README.md`](plans/README.md).
 
 ---
 
@@ -38,10 +38,15 @@
 
 | الملف | المحتوى |
 |---|---|
-| [`plans/README.md`](plans/README.md) | الخريطة الكاملة: القواعد الذهبية، جدول المراحل، الأبواب وفئات الوكلاء، آلية المتابعة |
-| [`plans/DECISIONS.md`](plans/DECISIONS.md) | سجل القرارات المعلّقة (الشبكة، الـ embeddings، تشغيل الكود، حجم الـ APK) |
-| [`plans/00-measurement.md`](plans/00-measurement.md) ← [`06-final-evaluation.md`](plans/06-final-evaluation.md) | ملف مستقل لكل مرحلة، كل واحد **تكليف رسمي** لفئة وكيل متخصصة |
+| [`plans/README.md`](plans/README.md) | الخريطة الكاملة: 10 مراحل، القواعد الذهبية، الأبواب وفئات الوكلاء، جدول الحالة |
+| [`plans/PRE-FLIGHT.md`](plans/PRE-FLIGHT.md) | 🔒 **قاعدة R0 الواجبة**: بحث إلزامي قبل تنفيذ أي مرحلة، مع قائمة أشياء معيّنة لكل مرحلة وقالب `research.md` |
+| [`plans/DECISIONS.md`](plans/DECISIONS.md) | سجل القرارات D1…D15 (الشبكة، embeddings، النموذج المحلي، التكافؤ…) |
+| [`plans/00-measurement.md`](plans/00-measurement.md) … [`plans/06-final-evaluation.md`](plans/06-final-evaluation.md) | **المسار الأساسي (الإثبات):** 7 ملفات مستقلة |
+| [`plans/07-on-device-llm.md`](plans/07-on-device-llm.md) … [`plans/09-frontier-parity.md`](plans/09-frontier-parity.md) | **مسار التقارب:** نموذج محلي اختياري + استدلال وكيلي + قياس تكافؤ مع GPT · Claude · Grok · Gemini · DeepSeek |
 | [`reference/`](reference/README.md) | خطة المنافس، تقرير قياسه، المقارنة، ونسخ HTML للدراسة فقط |
+| [`evidence/`](evidence/README.md) | قواعد حفظ أدلة التنفيذ لكل مرحلة |
+
+> 📌 **سقف صادق:** الهدف من المراحل 7–9 هو **تقليص فجوة مُقاسة** مع النماذج الكبرى في قدرات محددة، لا ادعاء المساواة بنماذج سحابية. النواة (0–6) تبقى Zero-LLM / Zero-Network، وأي نموذج محلي اختياري ومعزول خلف موافقة المستخدم.
 
 ---
 
