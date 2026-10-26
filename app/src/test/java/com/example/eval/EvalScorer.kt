@@ -85,6 +85,10 @@ object EvalScorer {
     if (refused) {
       return ScoreOutcome(false, "unexpected_refusal(${outcomeState})")
     }
+    // منع «الصدى»: رد يكرر السؤال حرفيًا ليس إجابة (كشفته مراجعة R0 على 89 حالة)
+    if (norm.isNotEmpty() && norm == TextNorm.normalize(case.question)) {
+      return ScoreOutcome(false, "pure_echo")
+    }
 
     return when (type) {
       "numeric" -> {

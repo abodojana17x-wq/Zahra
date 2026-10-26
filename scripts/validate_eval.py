@@ -143,6 +143,40 @@ def check_dataset() -> None:
             ok(f"هاش {name} مطابق للمجمّد")
 
 
+def normalize_ar(text: str) -> str:
+    for a, b in (("أ", "ا"), ("إ", "ا"), ("آ", "ا"), ("ٱ", "ا"), ("ة", "ه"), ("ى", "ي"), ("ؤ", "و"), ("ئ", "ي")):
+        text = text.replace(a, b)
+    text = re.sub(r"[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED\u0640]", "", text)
+    return re.sub(r"\s+", " ", text).strip().lower()
+
+
+def audit_case_quality() -> None:
+    """مراجعة جودة (تحذيرات لا تُفشل): صدى الإجابة داخل السؤال + محارف غريبة."""
+    rows = read_jsonl(EVAL / "cases.jsonl") + read_jsonl(EVAL / "held-out.jsonl")
+    echoes, odd = [], []
+    for r in rows:
+        terms = r["expect"].get("value")
+        if isinstance(terms, list):
+            q = normalize_ar(r["question"])
+            for t in terms:
+                nt = normalize_ar(str(t))
+                if len(nt) >= 3 and nt in q:
+                    echoes.append(f"{r['id']}:{t}")
+        blob = r["question"] + " " + (" ".join(str(t) for t in terms) if isinstance(terms, list) else str(terms))
+        for ch in blob:
+            code = ord(ch)
+            if code > 0x2FFF and not (0x0600 <= code <= 0x06FF):
+                odd.append(f"{r['id']}:{ch!r}")
+                break
+    print(f"INFO · مراجعة الجودة: {len(echoes)} مصطلح إجابة يظهر داخل سؤاله (معظمها حالات برمجة/كتابة كود مقبولة)")
+    if echoes:
+        print("       أمثلة: " + ", ".join(echoes[:8]))
+    if odd:
+        fail(f"محارف غير متوقعة في نصوص الحالات: {odd[:8]}")
+    else:
+        ok("لا محارف غريبة (CJK/Cyrillic) في الأسئلة أو التوقعات")
+
+
 def check_research(phase: str) -> None:
     path = ROOT / "evidence" / f"phase-{phase}" / "research.md"
     if not path.exists():
@@ -201,6 +235,7 @@ def main(argv: list[str]) -> int:
     args = ap.parse_args(argv)
 
     check_dataset()
+    audit_case_quality()
     if args.phase is not None:
         check_research(args.phase)
     if not args.skip_pending_scan:
