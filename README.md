@@ -8,29 +8,50 @@
 
 ## 1) الحالة الصادقة (آخر تحديث: 2026-10-26)
 
-| البند | الوضع الموثّق |
-|---|---|
-| الكود | 85 ملف Kotlin إنتاجي + 25 ملف اختبار + 452 وسم `@Test` |
-| التنفيذ | `minSdk 24` · `targetSdk 36` · AGP 9.1.1 · Kotlin 2.2.10 · Gradle 9.3.1 |
-| الاختبارات | **مكتوبة لكن لم يثبت تشغيلها**: التقرير القديم كان يقول حرفيًا `Tests Created, Execution Pending`، ولا يوجد CI ولا سجل تشغيل منشور |
-| الإطلاق | لا يوجد APK جاهز في الـ releases، ولا تعليمات بناء موثقة |
-| المحتوى | `general_kb.json` ≈ 3.6KB، `religion_kb.json` ≈ 11.9KB، `translation_kb.json` ≈ 5.8KB، و`intent_corpus.json` فيه 25 نية فقط |
-| الحساب | `MathEngine` فيه 10 أزواج تحويل وحدات مثبتة يدويًا فقط |
-| الفهم | `SemanticSearchEngine` يعتمد TF-IDF + cosine + مرادفات، **لا يوجد BM25 ولا embeddings** |
+| البند | الوضع الموثّق | الدليل |
+|---|---|---|
+| الكود | 87 ملف Kotlin إنتاجي + 33 ملف اختبار + 452 وسم `@Test` | `find app/src -name '*.kt' \| wc -l` |
+| التنفيذ | `minSdk 24` · `targetSdk 36` · AGP 9.1.1 · Kotlin 2.2.10 · Gradle 9.3.1 | `app/build.gradle.kts` |
+| الـ wrapper | **كان ناقصًا** (لا `gradlew` ولا `gradle-wrapper.jar`) — أُضيف في المرحلة 0 | `gradle/wrapper/gradle-wrapper.jar` + `gradlew` |
+| الـ CI | الملف جاهز (5 وظائف) في `ci/github-actions.yml`، لكن `.github/workflows` **غير مفعّل بعد** لأن توكن التنفيذ لا يملك صلاحية `workflows` | `./scripts/install_ci.sh --commit` |
+| الاختبارات | **لم يُشغَّل منها شيء بعد بأمر موثّق**: التقرير القديم قال `Tests Created, Execution Pending`، ولا يوجد سجل تشغيل منشور | سيتغيّر عند أول تشغيل CI (artifact باسم `junit-report`) |
+| مجموعة القياس | **223 حالة + 50 held-out** مجمّدة بهاش | `eval/MANIFEST.sha256` · `eval/CHANGELOG.md` |
+| أدوات القياس المُختبرة فعليًا | بوابة R0 + تحقق المجموعة + إحصاءات (Wilson/bootstrap/McNemar) تعمل وتنجح الآن | `python3 scripts/validate_eval.py --phase 00` · `python3 scripts/test_stats.py` |
+| الإطلاق | لا يوجد APK منشور بعد؛ مسار البناء جاهز في CI (artifact باسم `zahra-debug-apk`) | بعد تفعيل CI |
+| المحتوى | `general_kb.json` ≈ 3.6KB، `religion_kb.json` ≈ 11.9KB، `translation_kb.json` ≈ 5.8KB، و`intent_corpus.json` فيه 25 نية فقط | `app/src/main/assets/` |
+| الحساب | `MathEngine` فيه 10 أزواج تحويل وحدات مثبتة يدويًا فقط | `app/src/main/java/com/example/zahra/engines/MathEngine.kt` |
+| الفهم | `SemanticSearchEngine` يعتمد TF-IDF + cosine + مرادفات، **لا يوجد BM25 ولا embeddings** | المرحلة 3 |
 
-**الخلاصة الاستراتيجية:** زهرة عمارة أكبر من منافسها المباشر (رقيم 2.0)، لكنها «غير مُثبتة». الهدف من الخطة الجديدة ليس كتابة ميزات أكثر، بل تحويل كل وعود المشروع إلى **دليل قابل لإعادة التشغيل**. انظر [`reference/comparison-raqim-vs-zahra.md`](reference/comparison-raqim-vs-zahra.md).
+**الخلاصة الاستراتيجية:** زهرة عمارة أكبر من منافسها المباشر (رقيم 2.0)، لكنها «غير مُثبتة». المرحلة 0 بَنَت **أداة الإثبات** (مجموعة أسئلة مجمّدة + هارنس 223×8 + إحصاءات عيّنة صغيرة + بوابة CI + زر تشخيص داخل التطبيق)، ولم تُثبت بعد تشغيل الـ 452 اختبارًا. لا يُنشر رقم قبل تشغيل حقيقي — التفصيل الصادق (المنفَّذ مقابل المنتظر) في [`evidence/phase-00/README.md`](evidence/phase-00/README.md).
 
 ---
 
-## 2) البناء والتشغيل (يُحدَّث ويُثبَّت في المرحلة 0)
+## 2) البناء والتشغيل
 
 ```bash
-./gradlew :app:testDebugUnitTest        # اختبارات الوحدة (Robolectric + JUnit4)
-./gradlew :app:assembleDebug            # إنتاج APK للتجربة
-./gradlew :app:connectedDebugAndroidTest # اختبارات الجهاز — تحتاج Emulator
+# 0) بوابة المرحلة 0 (تعمل بلا JDK ولا شبكة — Python فقط)
+python3 scripts/validate_eval.py --phase 00     # بحث R0 + تجميد المجموعة + AC-0.7
+python3 scripts/test_stats.py                   # Wilson/bootstrap/McNemar (مرجع مستقل)
+
+# 1) كل الاختبارات (يحتاج JDK 21 + Android SDK)
+./gradlew :app:testDebugUnitTest --no-daemon
+
+# 2) هارنس القياس: 223 حالة × 8 تكرارات ⇒ build/reports/zahra-eval/{results.json,SUMMARY.md}
+./gradlew :app:testDebugUnitTest --tests 'com.example.eval.EvalReportTest' --no-daemon
+#    خيارات: -PzahraEvalRepeats=4 -PzahraEvalSeed=42
+
+# 3) APK للتجربة (ثم زر «تشخيص» في الإعدادات يعرض فحوصات حقيقية على الجهاز)
+./gradlew :app:assembleDebug
+
+# 4) اختبارات الجهاز (تحتاج Emulator) — لم تُشغَّل بعد في CI عمدًا
+./gradlew :app:connectedDebugAndroidTest
+
+# 5) تفعيل CI (مرة واحدة من صاحب المستودع — دفع .github/workflows يحتاج صلاحية workflows)
+./scripts/install_ci.sh --commit && git push
 ```
 
 > ⚠️ أي رقم أداء أو دقة يُذكر في أي ملف لازم يكون مصحوبًا بأمر التشغيل ومخرجاته. **ممنوع نشر «اختبارات معلّقة التنفيذ» مرة أخرى.**
+> 🧊 مجموعة الأسئلة مجمّدة بهاش (`eval/MANIFEST.sha256`): أي تعديل يلزمه إصدار v2 + إعادة قياس كل المراحل ([`eval/CHANGELOG.md`](eval/CHANGELOG.md)).
 
 ---
 

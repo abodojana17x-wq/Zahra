@@ -30,7 +30,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ui.theme.GptAccentBlue
+import com.example.zahra.diagnostics.DiagnosticsEngine
+import com.example.zahra.diagnostics.DiagnosticsReport
 import com.example.zahra.model.FactCategory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import com.example.zahra.model.ZahraUserFact
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,6 +58,9 @@ fun SettingsScreen(
   BackHandler { onBackToChat() }
 
   var showMemorySheet by remember { mutableStateOf(false) }
+  // المرحلة 0: زر «تشخيص» — يشغّل فحوصات حقيقية على الجهاز (DiagnosticsEngine)
+  var showDiagnostics by remember { mutableStateOf(false) }
+  var diagnosticsReport by remember { mutableStateOf<DiagnosticsReport?>(null) }
   var showColorPicker by remember { mutableStateOf(false) }
   var showEditNameDialog by remember { mutableStateOf(false) }
   var editNameValue by remember { mutableStateOf(userProfileName) }
@@ -66,6 +73,19 @@ fun SettingsScreen(
   var editingFact by remember { mutableStateOf<ZahraUserFact?>(null) }
   var editFactKey by remember { mutableStateOf("") }
   var editFactValue by remember { mutableStateOf("") }
+
+  LaunchedEffect(showDiagnostics) {
+    if (showDiagnostics && diagnosticsReport == null) {
+      diagnosticsReport = withContext(Dispatchers.IO) { DiagnosticsEngine.run(context) }
+    }
+  }
+
+  if (showDiagnostics) {
+    DiagnosticsDialog(
+      report = diagnosticsReport,
+      onDismiss = { showDiagnostics = false }
+    )
+  }
 
   Scaffold(
     containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
@@ -205,6 +225,16 @@ fun SettingsScreen(
             trailingText = "محلي 100% (أوفلاين)",
             onClick = {
               Toast.makeText(context, "البرنامج يعمل محلياً بالكامل دون أي اتصال بالإنترنت أو حسابات سحابية", Toast.LENGTH_SHORT).show()
+            }
+          )
+          HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+          SettingsRowItem(
+            title = "تشخيص",
+            icon = Icons.Outlined.BugReport,
+            trailingText = "فحوصات حقيقية",
+            onClick = {
+              showDiagnostics = true
+              diagnosticsReport = null
             }
           )
           HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)

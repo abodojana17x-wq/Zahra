@@ -1,5 +1,9 @@
 name: CI
 
+# ⚠️ التفعيل: هذا الملف محفوظ في ci/github-actions.yml لأن دفع .github/workflows
+# يحتاج صلاحية «workflows» في توكن GitHub (غير متاحة لوكيل التنفيذ).
+# التفعيل بأمر واحد: ./scripts/install_ci.sh --commit && git push
+#
 # المرحلة 0 (plans/00-measurement.md · المسار D): 5 وظائف
 #   preflight · unit · eval · apk · guard
 # كل وظيفة ترفع مخرجاتها حتى عند الفشل (if: always()) حتى لا يضيع أي دليل.
@@ -70,8 +74,14 @@ jobs:
           java-version: "21"
 
       - uses: android-actions/setup-android@v3
-        with:
-          packages: "platform-tools platforms;android-36 build-tools;36.0.0"
+
+      - name: تثبيت منصات Android اللازمة
+        run: |
+          yes | sdkmanager --licenses > /dev/null || true
+          for pkg in "platform-tools" "platforms;android-36" "platforms;android-36.1" "build-tools;36.0.0" "build-tools;36.1.0"; do
+            sdkmanager "$pkg" > /dev/null 2>&1 || echo "تخطي: $pkg"
+          done
+          sdkmanager --list_installed | head -40
 
       - uses: gradle/actions/setup-gradle@v4
 
@@ -112,8 +122,14 @@ jobs:
           java-version: "21"
 
       - uses: android-actions/setup-android@v3
-        with:
-          packages: "platform-tools platforms;android-36 build-tools;36.0.0"
+
+      - name: تثبيت منصات Android اللازمة
+        run: |
+          yes | sdkmanager --licenses > /dev/null || true
+          for pkg in "platform-tools" "platforms;android-36" "platforms;android-36.1" "build-tools;36.0.0" "build-tools;36.1.0"; do
+            sdkmanager "$pkg" > /dev/null 2>&1 || echo "تخطي: $pkg"
+          done
+          sdkmanager --list_installed | head -40
 
       - uses: gradle/actions/setup-gradle@v4
 
@@ -152,7 +168,7 @@ jobs:
   # ---------------------------------------------------------------------------------
   apk:
     name: debug apk (AC-0.5)
-    needs: preflight
+    needs: [preflight, eval]
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -164,10 +180,31 @@ jobs:
           java-version: "21"
 
       - uses: android-actions/setup-android@v3
-        with:
-          packages: "platform-tools platforms;android-36 build-tools;36.0.0"
+
+      - name: تثبيت منصات Android اللازمة
+        run: |
+          yes | sdkmanager --licenses > /dev/null || true
+          for pkg in "platform-tools" "platforms;android-36" "platforms;android-36.1" "build-tools;36.0.0" "build-tools;36.1.0"; do
+            sdkmanager "$pkg" > /dev/null 2>&1 || echo "تخطي: $pkg"
+          done
+          sdkmanager --list_installed | head -40
 
       - uses: gradle/actions/setup-gradle@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-report
+          path: build/reports/zahra-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: تضمين آخر نتيجة قياس داخل الـ APK (زر «تشخيص»)
+        run: |
+          RESULTS=$(find build/reports/zahra-eval -name results.json | head -1)
+          echo "results=$RESULTS"
+          python3 scripts/export_eval_summary.py "$RESULTS" app/src/main/assets/eval_summary.json
 
       - name: صلاحية الـ wrapper
         run: chmod +x ./gradlew

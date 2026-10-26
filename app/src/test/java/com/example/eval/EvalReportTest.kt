@@ -23,7 +23,7 @@ class EvalReportTest {
 
   @Test
   fun runFullSuite() {
-    val context: Context = ApplicationProvider.getApplicationContext()
+    val context: Context = ApplicationProvider.getApplicationContext<Context>()
     val cases = EvalDataset.loadAll()
     assertTrue("ملف الأسئلة فارغ — راجع eval/cases.jsonl", cases.size >= 200)
 
