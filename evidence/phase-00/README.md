@@ -14,6 +14,7 @@
 | 2 | `python3 scripts/test_stats.py` | [`stats-selftest.log`](stats-selftest.log) | ✅ 15 فحصًا مرجعيًا ناجحًا (Wilson من جداول منشورة، تماثل، bootstrap حتمي، McNemar دقيق) |
 | 3 | `python3 scripts/gen_eval_cases.py --check` | مخرَج الطرفية | ✅ المُولّد يُنتج نفس البايتات (حتمية التوليد — شرط إعادة الإنتاج) |
 | 4 | `sha256sum eval/cases.jsonl eval/held-out.jsonl` | [`../../eval/MANIFEST.sha256`](../../eval/MANIFEST.sha256) | ✅ التجميد مثبت |
+| 5 | `./tools/offline-typecheck/run.sh` | [`kotlin-logic-check.log`](kotlin-logic-check.log) | ✅ ترجمة فعلية لكل ملفات القياس (`kotlinc`) + تنفيذ `EvalStats`/`TextNorm` ومطابقة أرقامها بمرجع Python (Wilson 60/100 = 0.502003/0.690599 · McNemar 0,5 = 0.0625 · interval(180/223) = 75.0%–85.4%) |
 
 ```
 $ python3 scripts/validate_eval.py --phase 00
@@ -39,7 +40,7 @@ PASS · لا يوجد أي «Pending Execution» في المستودع (AC-0.7)
 | البند | الحالة | السبب الفعلي |
 |---|---|---|
 | `./gradlew :app:testDebugUnitTest` (AC-0.2، 452 وسم `@Test`) | **لم يُشغَّل** | بيئة الوكيل بلا JDK وبلا Android SDK، والوصول الشبكي محصور في `github.com` (لا `services.gradle.org` ولا `repo1.maven.org`) ⇒ لا يمكن جلب Gradle ولا التبعيات. انظر §3 |
-| هارنس القياس 223×8 (AC-0.4) | **جاهز، لم يُشغَّل** | نفس السبب — يحتاج بناء Kotlin + Robolectric |
+| هارنس القياس 223×8 (AC-0.4) | **جاهز ومترجم، لم يُنفَّذ** | الكود يُترجم فعليًا (تحقق §1/5) لكن تشغيل الراوتر يحتاج Robolectric + android.jar عبر Gradle ⇒ نفس سبب التعطّل |
 | `:app:assembleDebug` (APK، AC-0.5) | **جاهز، لم يُشغَّل** | نفس السبب |
 | خط أساس رقمي (AC-0.3) | **مؤجَّل** | لا يُخترع رقم. أول تشغيل حقيقي يكتب `eval/BASELINE.md` بوضع `pending` (D19) |
 | وظائف CI الخمس | **جاهزة في `ci/github-actions.yml` وجاهزة للتثبيت** | دفع الملفات داخل `.github/workflows` يحتاج صلاحية `workflows` في توكن GitHub، وهي غير متاحة لهذه الجلسة. التفعيل بأمر واحد: `./scripts/install_ci.sh --commit && git push` |
