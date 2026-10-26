@@ -1,0 +1,218 @@
+name: CI
+
+# المرحلة 0 (plans/00-measurement.md · المسار D): 5 وظائف
+#   preflight · unit · eval · apk · guard
+# كل وظيفة ترفع مخرجاتها حتى عند الفشل (if: always()) حتى لا يضيع أي دليل.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dfile.encoding=UTF-8"
+
+jobs:
+  # ---------------------------------------------------------------------------------
+  # 1) بوابة R0 + سلامة مجموعة الأسئلة (سريعة، بلا Gradle)
+  # ---------------------------------------------------------------------------------
+  preflight:
+    name: preflight (R0 + frozen eval set)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: بوابة البحث R0 + تجميد مجموعة الأسئلة
+        run: python3 scripts/validate_eval.py --phase 00
+
+      - name: اختبارات إحصاءات العيّنة الصغيرة (مرجع Python)
+        run: python3 scripts/test_stats.py | tee evidence/phase-00/stats-selftest.log
+
+      - name: المُولّد يُنتج نفس البايتات (حتمية التوليد)
+        run: python3 scripts/gen_eval_cases.py --check
+
+      - name: رفع سجل بوابة R0
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase-00-preflight
+          path: |
+            evidence/phase-00/stats-selftest.log
+          if-no-files-found: warn
+
+  # ---------------------------------------------------------------------------------
+  # 2) كل اختبارات الوحدة الموجودة (AC-0.2) — التقارير تُرفع حتى عند الفشل
+  # ---------------------------------------------------------------------------------
+  unit:
+    name: unit tests (AC-0.2)
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: "platform-tools platforms;android-36 build-tools;36.0.0"
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: صلاحية الـ wrapper
+        run: chmod +x ./gradlew
+
+      - name: تشغيل اختبارات الوحدة
+        run: |
+          set -o pipefail
+          ./gradlew :app:testDebugUnitTest --no-daemon --stacktrace \
+            2>&1 | tee evidence/phase-00/gradle-test.log
+
+      - name: تقرير JUnit (XML + HTML)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-report
+          path: |
+            app/build/test-results/testDebugUnitTest/**
+            app/build/reports/tests/testDebugUnitTest/**
+            evidence/phase-00/gradle-test.log
+          if-no-files-found: warn
+
+  # ---------------------------------------------------------------------------------
+  # 3) هارنس القياس: 223 حالة × 8 تكرارات (AC-0.4)
+  # ---------------------------------------------------------------------------------
+  eval:
+    name: eval harness (AC-0.3 / AC-0.4)
+    needs: unit
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: "platform-tools platforms;android-36 build-tools;36.0.0"
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: صلاحية الـ wrapper
+        run: chmod +x ./gradlew
+
+      - name: تشغيل القياس
+        run: |
+          set -o pipefail
+          ./gradlew :app:testDebugUnitTest \
+            --tests 'com.example.eval.EvalReportTest' \
+            --no-daemon --stacktrace \
+            2>&1 | tee evidence/phase-00/eval-run.log
+
+      - name: لقطة من التقرير في مجلد الأدلة
+        if: always()
+        run: |
+          mkdir -p evidence/phase-00
+          cp build/reports/zahra-eval/SUMMARY.md evidence/phase-00/SUMMARY-after.md 2>/dev/null || true
+          cp build/reports/zahra-eval/results.json evidence/phase-00/results.json 2>/dev/null || true
+
+      - name: رفع نتائج القياس
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-report
+          path: |
+            build/reports/zahra-eval/**
+            evidence/phase-00/eval-run.log
+            evidence/phase-00/SUMMARY-after.md
+            evidence/phase-00/results.json
+          if-no-files-found: warn
+
+  # ---------------------------------------------------------------------------------
+  # 4) APK قابل للتحميل (AC-0.5)
+  # ---------------------------------------------------------------------------------
+  apk:
+    name: debug apk (AC-0.5)
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: "platform-tools platforms;android-36 build-tools;36.0.0"
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: صلاحية الـ wrapper
+        run: chmod +x ./gradlew
+
+      - name: بناء APK
+        run: |
+          set -o pipefail
+          ./gradlew :app:assembleDebug --no-daemon --stacktrace \
+            2>&1 | tee evidence/phase-00/assemble.log
+
+      - name: رفع APK
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zahra-debug-apk
+          path: |
+            app/build/outputs/apk/debug/*.apk
+            evidence/phase-00/assemble.log
+          if-no-files-found: warn
+
+  # ---------------------------------------------------------------------------------
+  # 5) حارس الانحدار مقابل eval/BASELINE.md (AC-0.3)
+  # ---------------------------------------------------------------------------------
+  guard:
+    name: guard (no regression vs baseline)
+    needs: eval
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-report
+          path: build/reports/zahra-eval
+
+      - name: مقارنة بخط الأساس
+        run: |
+          RESULTS=build/reports/zahra-eval/results.json
+          if [ ! -f "$RESULTS" ]; then
+            RESULTS=$(find build/reports/zahra-eval -name results.json | head -1)
+          fi
+          echo "results=$RESULTS"
+          python3 scripts/check_regression.py "$RESULTS" eval/BASELINE.md
