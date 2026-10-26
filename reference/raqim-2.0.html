@@ -1,0 +1,2848 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0a0e14">
+<meta name="description" content="رقيم 2.0 — مساعد ذكي يعمل بدون إنترنت: حساب دقيق، وحدات، طقس ومعلومات بمصادر، وصراحة عند الجهل. ملف HTML واحد.">
+<title>رقيم 2.0 — مساعد ذكي صادق</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c5cff'/%3E%3Cstop offset='1' stop-color='%2318d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='46' font-size='38' font-family='sans-serif' font-weight='700' text-anchor='middle' fill='%23fff'%3E%D8%B1%3C/text%3E%3C/svg%3E">
+
+<style>
+/* ============================================================
+   رقيم 2.0 — Design System (RTL، Dark/Light، متجاوب)
+   ============================================================ */
+:root{
+  --font-ar:"Noto Kufi Arabic","Cairo","Tajawal","IBM Plex Sans Arabic","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --font-mono:"Fira Code","JetBrains Mono","SF Mono",Consolas,"Courier New",monospace;
+  --accent-1:#7c5cff; --accent-2:#18d3c5; --accent-3:#ff6b9d;
+  --ok:#22c55e; --warn:#f59e0b; --bad:#ff5f6d;
+  --r-sm:10px; --r-md:16px; --r-lg:22px;
+  --ease:cubic-bezier(.22,.85,.28,1);
+  --header-h:62px;
+}
+html[data-theme="dark"]{
+  --bg:#0a0e14; --bg-2:#0e131b;
+  --panel:rgba(20,26,36,.72); --panel-solid:#141a24;
+  --bot-bg:rgba(255,255,255,.035); --bot-bg-2:rgba(255,255,255,.06);
+  --border:rgba(255,255,255,.09); --border-strong:rgba(255,255,255,.16);
+  --text:#e9eef6; --text-dim:#9aa7bb; --text-faint:#6b7789;
+  --user-grad:linear-gradient(135deg,#6d4bff 0%,#8b5cf6 45%,#17b9c9 100%);
+  --code-bg:rgba(8,12,18,.85);
+  --hover:rgba(255,255,255,.06);
+  --glow:0 0 0 1px rgba(124,92,255,.35),0 10px 40px -8px rgba(124,92,255,.45);
+  --shadow-1:0 1px 2px rgba(0,0,0,.14),0 8px 24px rgba(0,0,0,.10);
+  --shadow-2:0 12px 40px rgba(0,0,0,.28);
+  --blob-o:.55;
+}
+html[data-theme="light"]{
+  --bg:#f6f7fb; --bg-2:#eef0f7;
+  --panel:rgba(255,255,255,.78); --panel-solid:#fff;
+  --bot-bg:#fff; --bot-bg-2:#f4f6fb;
+  --border:rgba(16,24,40,.10); --border-strong:rgba(16,24,40,.18);
+  --text:#131a26; --text-dim:#5a6577; --text-faint:#8b95a6;
+  --user-grad:linear-gradient(135deg,#5b34f0 0%,#7c5cff 45%,#0fa3b1 100%);
+  --code-bg:#f1f3f9;
+  --hover:rgba(16,24,40,.05);
+  --glow:0 0 0 1px rgba(92,52,240,.25),0 12px 40px -12px rgba(92,52,240,.35);
+  --shadow-1:0 1px 2px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
+  --shadow-2:0 12px 40px rgba(16,24,40,.14);
+  --blob-o:.42;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:var(--font-ar);font-size:15px;line-height:1.8;
+  -webkit-font-smoothing:antialiased;overflow:hidden;overscroll-behavior:none;
+  transition:background .45s var(--ease),color .45s var(--ease);
+}
+button,input,textarea{font-family:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+::selection{background:rgba(124,92,255,.35)}
+
+/* ---------- خلفية ---------- */
+.aurora{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:var(--blob-o);transition:opacity .6s var(--ease)}
+.b1{width:46vw;height:46vw;background:radial-gradient(circle at 30% 30%,#7c5cff,transparent 68%);top:-14vw;right:-8vw;animation:float1 22s var(--ease) infinite}
+.b2{width:40vw;height:40vw;background:radial-gradient(circle at 60% 40%,#18d3c5,transparent 68%);bottom:-16vw;left:-10vw;animation:float2 26s var(--ease) infinite}
+.b3{width:32vw;height:32vw;background:radial-gradient(circle at 50% 50%,#ff6b9d,transparent 70%);top:38%;left:44%;animation:float3 30s var(--ease) infinite}
+@keyframes float1{50%{transform:translate3d(-4vw,5vh,0) scale(1.08)}}
+@keyframes float2{50%{transform:translate3d(5vw,-6vh,0) scale(1.12)}}
+@keyframes float3{50%{transform:translate3d(-6vw,-4vh,0) scale(.9)}}
+
+/* ---------- تخطيط ---------- */
+.app{position:relative;z-index:1;display:grid;grid-template-columns:290px 1fr;height:100dvh}
+.sidebar{display:flex;flex-direction:column;gap:14px;padding:16px 14px;background:var(--bg-2);border-inline-end:1px solid var(--border);transition:transform .35s var(--ease),background .45s var(--ease)}
+.brand{display:flex;align-items:center;gap:11px;padding:6px 6px 2px}
+.brand-logo{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:var(--user-grad);color:#fff;font-weight:800;font-size:20px;line-height:1;box-shadow:var(--glow);flex:none;position:relative}
+.brand-logo .v{position:absolute;bottom:-5px;left:-5px;background:var(--accent-2);color:#04211e;font-size:9px;font-weight:800;padding:1px 5px;border-radius:99px;line-height:1.5}
+.brand-txt b{display:block;font-size:17px;letter-spacing:.2px}
+.brand-txt span{display:block;font-size:11.5px;color:var(--text-faint);margin-top:-3px}
+.btn-new{display:flex;align-items:center;justify-content:center;gap:9px;padding:12px 14px;border-radius:14px;font-size:14.5px;font-weight:600;background:var(--panel-solid);border:1px solid var(--border);box-shadow:var(--shadow-1);transition:transform .18s var(--ease),border-color .2s,background .2s}
+.btn-new:hover{transform:translateY(-1px);border-color:var(--border-strong);background:var(--hover)}
+.btn-new svg{width:17px;height:17px}
+.side-label{font-size:11.5px;color:var(--text-faint);padding:2px 8px;letter-spacing:.3px}
+.sessions{list-style:none;margin:0;padding:0 2px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:5px}
+.session{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:11px;font-size:13.5px;color:var(--text-dim);cursor:pointer;border:1px solid transparent;transition:background .18s,color .18s,border-color .18s}
+.session:hover{background:var(--hover);color:var(--text)}
+.session.active{background:var(--panel-solid);border-color:var(--border);color:var(--text);box-shadow:var(--shadow-1)}
+.session .ttl{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.session .del{opacity:0;padding:2px;border-radius:7px;color:var(--text-faint);display:grid;place-items:center;transition:opacity .18s,color .18s}
+.session:hover .del{opacity:1}
+.session .del:hover{color:#ff6b81;background:rgba(255,107,129,.12)}
+.session .del svg{width:14px;height:14px}
+.side-foot{border-top:1px solid var(--border);padding-top:12px;display:flex;flex-direction:column;gap:7px}
+.side-foot .row{display:flex;gap:7px}
+.tiny-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:10px;border-radius:11px;font-size:12.5px;color:var(--text-dim);border:1px solid var(--border);transition:background .18s,color .18s,transform .18s var(--ease)}
+.tiny-btn:hover{background:var(--hover);color:var(--text);transform:translateY(-1px)}
+.tiny-btn svg{width:15px;height:15px}
+.sig{text-align:center;font-size:10.5px;color:var(--text-faint);padding-top:4px}
+
+/* ---------- الرئيسية ---------- */
+.main{position:relative;display:flex;flex-direction:column;min-width:0;height:100dvh}
+.topbar{height:var(--header-h);flex:none;display:flex;align-items:center;gap:12px;padding:0 16px;background:var(--panel);border-bottom:1px solid var(--border);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);z-index:6}
+.icon-btn{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:var(--text-dim);border:1px solid transparent;transition:background .18s,color .18s,border-color .18s,transform .2s var(--ease)}
+.icon-btn:hover{background:var(--hover);color:var(--text);border-color:var(--border)}
+.icon-btn:active{transform:scale(.94)}
+.icon-btn svg{width:19px;height:19px}
+.menu-btn{display:none}
+.who{display:flex;align-items:center;gap:11px;min-width:0}
+.who .brand-logo{width:36px;height:36px;border-radius:12px;font-size:18px}
+.who .brand-logo .v{font-size:8px;bottom:-4px;left:-4px}
+.who-txt{min-width:0}
+.who-txt b{display:block;font-size:15.5px}
+.status{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-faint)}
+.status .dot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px rgba(34,197,94,.15);animation:pulse 2.4s infinite}
+.status .dot.off{background:var(--warn);box-shadow:0 0 0 3px rgba(245,158,11,.15)}
+@keyframes pulse{50%{opacity:.45;transform:scale(.85)}}
+.spacer{flex:1}
+.badge{font-size:11.5px;color:var(--text-dim);padding:6px 11px;border-radius:99px;border:1px solid var(--border);background:var(--bot-bg);white-space:nowrap}
+.badge b{color:var(--accent-2)}
+@media (max-width:760px){.badge{display:none}}
+
+/* ---------- الشات ---------- */
+.chat-scroll{flex:1;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;padding:0 16px}
+.messages{max-width:860px;margin:0 auto;padding:22px 0 26px;display:flex;flex-direction:column}
+.welcome{text-align:center;padding:5vh 8px 30px;animation:rise .6s var(--ease) both}
+.welcome .halo{width:96px;height:96px;margin:0 auto 18px;border-radius:30px;display:grid;place-items:center;background:var(--user-grad);color:#fff;font-size:44px;font-weight:800;line-height:1;box-shadow:var(--glow);animation:breath 4s var(--ease) infinite;position:relative}
+.welcome .halo .v{position:absolute;bottom:-6px;left:-6px;background:var(--accent-2);color:#04211e;font-size:11px;font-weight:800;padding:2px 8px;border-radius:99px}
+@keyframes breath{50%{transform:translateY(-6px) rotate(-2deg)}}
+.welcome h1{font-size:clamp(23px,4.4vw,33px);margin:0 0 8px;letter-spacing:.2px}
+.welcome h1 em{font-style:normal;background:linear-gradient(100deg,var(--accent-1),var(--accent-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.welcome p{color:var(--text-dim);max-width:600px;margin:0 auto 26px;font-size:14.5px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:11px;text-align:start}
+.card{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:var(--r-md);background:var(--panel);border:1px solid var(--border);backdrop-filter:blur(10px);transition:transform .22s var(--ease),border-color .22s,box-shadow .22s}
+.card:hover{transform:translateY(-3px);border-color:var(--border-strong);box-shadow:var(--shadow-2)}
+.card .ic{width:34px;height:34px;flex:none;border-radius:11px;display:grid;place-items:center;background:var(--bot-bg-2);border:1px solid var(--border)}
+.card .ic svg{width:17px;height:17px}
+.card b{display:block;font-size:13.5px;margin-bottom:2px}
+.card span{display:block;font-size:12px;color:var(--text-faint);line-height:1.65}
+
+/* الرسائل */
+.msg{display:flex;gap:11px;margin-bottom:20px;align-items:flex-start;animation:rise .5s var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+.msg.user{flex-direction:row-reverse}
+.av{width:36px;height:36px;flex:none;border-radius:12px;display:grid;place-items:center;font-weight:800;font-size:16px;line-height:1;user-select:none;background:var(--user-grad);color:#fff;box-shadow:0 4px 16px -4px rgba(124,92,255,.55)}
+.msg.bot .av{background:var(--panel-solid);border:1px solid var(--border-strong);color:var(--text);box-shadow:var(--shadow-1)}
+.msg.user .av{background:var(--bot-bg-2);border:1px solid var(--border);color:var(--text-dim);font-size:14px}
+.body{min-width:0;max-width:min(80%,720px)}
+.msg.user .body{display:flex;flex-direction:column;align-items:flex-end}
+.bubble{padding:13px 16px;border-radius:var(--r-md);font-size:15px;line-height:1.95;overflow-wrap:break-word;word-break:break-word;background:var(--bot-bg);border:1px solid var(--border);border-start-start-radius:7px;box-shadow:var(--shadow-1)}
+.msg.user .bubble{background:var(--user-grad);color:#fff;border:0;border-start-start-radius:var(--r-md);border-start-end-radius:7px;box-shadow:0 8px 26px -10px rgba(109,75,255,.7)}
+.bubble p{margin:0 0 10px}
+.bubble p:last-child{margin-bottom:0}
+.bubble strong{font-weight:700}
+.bubble ul,.bubble ol{margin:6px 0 10px;padding-inline-start:20px}
+.bubble li{margin-bottom:5px}
+.bubble li::marker{color:var(--accent-2)}
+.bubble code{font-family:var(--font-mono);font-size:13px;padding:2px 6px;border-radius:6px;background:var(--code-bg);border:1px solid var(--border);direction:ltr;display:inline-block}
+.msg.user .bubble code{background:rgba(0,0,0,.22);border-color:rgba(255,255,255,.2);color:#fff}
+.bubble a{color:var(--accent-2);text-decoration:none;border-bottom:1px dashed rgba(24,211,197,.5)}
+.msg.user .bubble a{color:#fff;border-bottom-color:rgba(255,255,255,.5)}
+.code-block{position:relative;margin:10px 0;border-radius:12px;overflow:hidden;background:var(--code-bg);border:1px solid var(--border)}
+.code-head{display:flex;align-items:center;gap:6px;padding:7px 11px;font-size:11px;font-family:var(--font-mono);color:var(--text-faint);border-bottom:1px solid var(--border);background:var(--bot-bg)}
+.code-head .lang{margin-inline-end:auto}
+.code-head button{display:flex;align-items:center;gap:5px;font-family:var(--font-ar);font-size:11.5px;color:var(--text-dim);padding:3px 8px;border-radius:7px;transition:background .2s,color .2s}
+.code-head button:hover{background:var(--hover);color:var(--text)}
+.code-head button svg{width:12px;height:12px}
+.code-head button.run{color:var(--accent-2)}
+.code-block pre{margin:0;padding:13px;overflow-x:auto;direction:ltr;text-align:left}
+.code-block code{background:none;border:0;padding:0;font-size:12.8px;line-height:1.75;display:block;white-space:pre}
+.py-out{margin:0;padding:10px 13px;direction:ltr;text-align:left;font-family:var(--font-mono);font-size:12.3px;background:rgba(0,0,0,.25);color:var(--accent-2);border-top:1px dashed var(--border-strong);white-space:pre-wrap;max-height:240px;overflow:auto}
+.py-out.err{color:var(--bad)}
+.py-out .lbl{display:block;font-family:var(--font-ar);font-size:10.5px;color:var(--text-faint);margin-bottom:4px}
+
+/* بنر الأداة */
+.tool-banner{display:flex;align-items:center;gap:9px;margin:0 0 8px;padding:8px 12px;border-radius:12px;font-size:12.5px;color:var(--text-dim);background:var(--bot-bg-2);border:1px dashed var(--border-strong)}
+.tool-banner .emo{font-size:15px}
+.tool-banner .pill{margin-inline-start:auto;font-size:10.5px;padding:2px 9px;border-radius:99px;background:rgba(245,158,11,.14);color:var(--warn);white-space:nowrap}
+.tool-banner.done .pill{background:rgba(34,197,94,.14);color:var(--ok)}
+.tool-banner.fail .pill{background:rgba(255,95,109,.14);color:var(--bad)}
+.tool-banner .spin{width:13px;height:13px;border-radius:50%;border:2px solid var(--border-strong);border-top-color:var(--accent-1);animation:rot .8s linear infinite;flex:none}
+@keyframes rot{to{transform:rotate(360deg)}}
+
+/* المصادر */
+.sources{margin-top:10px;padding-top:9px;border-top:1px dashed var(--border-strong);display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.sources .lbl{font-size:11px;color:var(--text-faint)}
+.src-chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--accent-2);padding:4px 11px;border-radius:99px;border:1px solid rgba(24,211,197,.3);background:rgba(24,211,197,.07);text-decoration:none;transition:background .2s}
+.src-chip:hover{background:rgba(24,211,197,.15)}
+.src-chip svg{width:11px;height:11px}
+.src-chip .lic{font-size:9.5px;color:var(--text-faint)}
+
+/* الاقتراحات */
+.suggs{display:flex;flex-wrap:wrap;gap:7px;margin:2px 0 4px}
+.sugg{font-size:12.5px;color:var(--text-dim);padding:6px 13px;border-radius:99px;border:1px solid var(--border);background:var(--bot-bg);transition:transform .16s var(--ease),color .18s,border-color .18s}
+.sugg:hover{transform:translateY(-2px);color:var(--text);border-color:var(--accent-1)}
+
+/* meta */
+.meta{display:flex;align-items:center;gap:4px;margin-top:7px;font-size:11px;color:var(--text-faint);opacity:.75}
+.msg.user .meta{flex-direction:row-reverse}
+.meta .conf{padding:1px 8px;border-radius:99px;background:var(--bot-bg-2);border:1px solid var(--border)}
+.meta .conf.hi{color:var(--ok)}
+.meta .conf.mid{color:var(--warn)}
+.meta .act{display:grid;place-items:center;width:26px;height:26px;border-radius:8px;color:var(--text-faint);opacity:0;transition:opacity .2s,background .2s,color .2s}
+.msg:hover .meta .act{opacity:1}
+.meta .act:hover{background:var(--hover);color:var(--text)}
+.meta .act svg{width:14px;height:14px}
+
+/* shimmer */
+.bubble.streaming .shimmer{background:linear-gradient(100deg,var(--text-dim) 20%,var(--text) 40%,var(--text-dim) 60%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent!important;animation:shimmer 1.6s linear infinite}
+@keyframes shimmer{to{background-position:-200% 0}}
+.cursor{display:inline-block;width:8px;height:16px;vertical-align:-3px;margin-inline-start:3px;border-radius:2px;background:linear-gradient(180deg,var(--accent-1),var(--accent-2));animation:blink .9s steps(2,start) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* thinking */
+.thinking{display:flex;align-items:center;gap:10px;padding:15px 17px}
+.dots{display:flex;gap:5px}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--text-faint);animation:bounce 1.25s var(--ease) infinite}
+.dots i:nth-child(2){animation-delay:.16s}
+.dots i:nth-child(3){animation-delay:.32s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-6px);opacity:1}}
+.think-txt{font-size:12.5px;color:var(--text-faint)}
+
+.scroll-fab{position:absolute;bottom:150px;left:50%;transform:translateX(-50%) translateY(14px);width:42px;height:42px;border-radius:50%;display:grid;place-items:center;z-index:5;background:var(--panel-solid);border:1px solid var(--border-strong);color:var(--text);box-shadow:var(--shadow-2);opacity:0;pointer-events:none;transition:opacity .28s var(--ease),transform .28s var(--ease);backdrop-filter:blur(12px)}
+.scroll-fab.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.scroll-fab svg{width:18px;height:18px}
+
+/* ---------- composer ---------- */
+.composer-wrap{flex:none;padding:10px 16px 16px;background:linear-gradient(to top,var(--bg) 55%,transparent);z-index:6;position:relative}
+.composer{max-width:860px;margin:0 auto}
+.chips{display:flex;gap:8px;padding:0 2px 10px;overflow-x:auto;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:7px 13px;border-radius:99px;font-size:12.5px;color:var(--text-dim);background:var(--panel);border:1px solid var(--border);white-space:nowrap;backdrop-filter:blur(10px);transition:transform .18s var(--ease),color .18s,border-color .18s}
+.chip:hover{transform:translateY(-2px);color:var(--text);border-color:var(--accent-1)}
+.input-box{display:flex;align-items:flex-end;gap:8px;padding:9px 9px 9px 12px;border-radius:var(--r-lg);background:var(--panel-solid);border:1px solid var(--border);box-shadow:var(--shadow-1);backdrop-filter:blur(20px);transition:border-color .25s,box-shadow .25s}
+.input-box:focus-within{border-color:rgba(124,92,255,.55);box-shadow:var(--glow)}
+textarea#input{flex:1;border:0;outline:0;background:none;resize:none;font-size:15px;line-height:1.85;max-height:190px;min-height:30px;padding:5px 2px;color:var(--text)}
+textarea#input::placeholder{color:var(--text-faint)}
+.act-btn{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:var(--text-faint);transition:background .2s,color .2s}
+.act-btn:hover{background:var(--hover);color:var(--text)}
+.act-btn svg{width:19px;height:19px}
+.send{width:44px;height:44px;border-radius:15px;flex:none;display:grid;place-items:center;color:#fff;background:var(--user-grad);box-shadow:0 8px 22px -8px rgba(109,75,255,.85);transition:transform .2s var(--ease),opacity .2s,filter .2s}
+.send:hover:not(:disabled){transform:translateY(-2px) scale(1.03)}
+.send:active:not(:disabled){transform:scale(.95)}
+.send:disabled{opacity:.4;cursor:not-allowed;filter:grayscale(.4)}
+.send svg{width:20px;height:20px}
+.hint{display:flex;justify-content:space-between;gap:10px;padding:8px 6px 0;font-size:11px;color:var(--text-faint)}
+.hint kbd{font-family:var(--font-mono);font-size:10.5px;padding:1px 5px;border-radius:5px;border:1px solid var(--border);background:var(--bot-bg)}
+@media (max-width:560px){.hint .kb{display:none}.composer-wrap{padding:8px 10px 12px}}
+
+/* ---------- modal ---------- */
+.modal-scrim{position:fixed;inset:0;background:rgba(4,7,12,.6);backdrop-filter:blur(4px);z-index:40;display:none;align-items:center;justify-content:center;padding:18px}
+.modal-scrim.show{display:flex;animation:fadein .25s var(--ease)}
+@keyframes fadein{from{opacity:0}}
+.modal{width:100%;max-width:560px;max-height:84dvh;overflow-y:auto;background:var(--panel-solid);border:1px solid var(--border-strong);border-radius:var(--r-lg);box-shadow:var(--shadow-2);animation:rise .35s var(--ease)}
+.modal-head{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--panel-solid);z-index:2}
+.modal-head b{font-size:16.5px}
+.modal-head .icon-btn{margin-inline-start:auto;width:32px;height:32px}
+.modal-head .icon-btn svg{width:16px;height:16px}
+.modal-body{padding:18px 20px 22px}
+.set-row{display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-bottom:1px dashed var(--border)}
+.set-row:last-child{border-bottom:0}
+.set-row .info{flex:1;min-width:0}
+.set-row .info b{display:block;font-size:14px;margin-bottom:2px}
+.set-row .info span{display:block;font-size:12px;color:var(--text-faint);line-height:1.7}
+.switch{position:relative;width:44px;height:24px;flex:none;border-radius:99px;background:var(--bot-bg-2);border:1px solid var(--border-strong);transition:background .25s}
+.switch::after{content:'';position:absolute;top:2px;inset-inline-start:2px;width:18px;height:18px;border-radius:50%;background:var(--text-faint);transition:transform .25s var(--ease),background .25s}
+.switch.on{background:rgba(124,92,255,.35);border-color:var(--accent-1)}
+.switch.on::after{transform:translateX(-20px);background:var(--accent-1)}
+html[dir="rtl"] .switch.on::after{transform:translateX(-20px)}
+.danger-btn{margin-top:12px;width:100%;padding:11px;border-radius:12px;font-size:13px;font-weight:600;color:var(--bad);border:1px solid rgba(255,95,109,.35);background:rgba(255,95,109,.07);transition:background .2s}
+.danger-btn:hover{background:rgba(255,95,109,.15)}
+.test-grid{display:flex;flex-direction:column;gap:6px}
+.test-row{display:flex;align-items:center;gap:9px;font-size:12.8px;padding:8px 11px;border-radius:10px;background:var(--bot-bg);border:1px solid var(--border)}
+.test-row .st{width:20px;height:20px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:11px;color:#fff}
+.test-row .st.ok{background:var(--ok)}
+.test-row .st.no{background:var(--bad)}
+.test-row .nm{flex:1}
+.test-row .inf{font-family:var(--font-mono);font-size:10.5px;color:var(--text-faint);direction:ltr}
+.test-sum{display:flex;align-items:center;gap:12px;padding:13px;border-radius:14px;margin-bottom:14px;background:linear-gradient(135deg,rgba(124,92,255,.12),rgba(24,211,197,.10));border:1px solid var(--border-strong)}
+.test-sum .big{font-size:26px;font-weight:800;background:linear-gradient(100deg,var(--accent-1),var(--accent-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.test-sum span{font-size:12px;color:var(--text-dim)}
+.kv{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--border);font-size:13px}
+.kv:last-child{border:0}
+.kv span{color:var(--text-faint)}
+
+/* toasts */
+.toasts{position:fixed;bottom:22px;left:22px;display:flex;flex-direction:column;gap:9px;z-index:60}
+.toast{display:flex;align-items:center;gap:9px;padding:11px 15px;border-radius:13px;font-size:13px;background:var(--panel-solid);border:1px solid var(--border-strong);box-shadow:var(--shadow-2);animation:rise .3s var(--ease) both}
+.toast svg{width:15px;height:15px;color:var(--ok)}
+.toast.warn svg{color:var(--warn)}
+
+/* scrollbars */
+.chat-scroll::-webkit-scrollbar,.sessions::-webkit-scrollbar,.code-block pre::-webkit-scrollbar,.modal::-webkit-scrollbar{width:9px;height:9px}
+.chat-scroll::-webkit-scrollbar-thumb,.sessions::-webkit-scrollbar-thumb,.modal::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:99px;border:3px solid transparent;background-clip:content-box}
+.scrim{display:none}
+
+/* ---------- موبايل ---------- */
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  .sidebar{position:fixed;inset-block:0;inset-inline-start:0;width:282px;z-index:30;transform:translateX(102%);box-shadow:var(--shadow-2)}
+  html[dir="rtl"] .sidebar{transform:translateX(102%)}
+  .sidebar.open{transform:translateX(0)!important}
+  .menu-btn{display:grid}
+  .scrim{display:block;position:fixed;inset:0;background:rgba(4,7,12,.55);backdrop-filter:blur(3px);z-index:29;opacity:0;pointer-events:none;transition:opacity .3s var(--ease)}
+  .scrim.show{opacity:1;pointer-events:auto}
+  .body{max-width:88%}
+  .scroll-fab{bottom:168px}
+}
+@media (max-width:420px){
+  .messages{padding:16px 0 20px}
+  .chat-scroll{padding:0 10px}
+  .bubble{font-size:14.5px;padding:12px 13px}
+  .av{width:32px;height:32px;border-radius:10px;font-size:15px}
+}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;transition-duration:.05s!important}}
+
+</style>
+</head>
+<body>
+<div class="aurora" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
+
+<div class="app">
+  <!-- ============ الشريط الجانبي ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-logo">ر<span class="v">2.0</span></div>
+      <div class="brand-txt"><b>رقيم</b><span>مساعد ذكي صادق · v2.0</span></div>
+    </div>
+
+    <button class="btn-new" id="newChat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      محادثة جديدة
+    </button>
+
+    <div class="side-label">المحادثات السابقة</div>
+    <ul class="sessions" id="sessionList"></ul>
+
+    <div class="side-foot">
+      <div class="row">
+        <button class="tiny-btn" id="diagBtn" title="تشغيل الاختبار الذاتي">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>
+          تشخيص
+        </button>
+        <button class="tiny-btn" id="settingsBtn" title="الإعدادات">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h0a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55h0a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v0a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg>
+          إعدادات
+        </button>
+      </div>
+      <div class="row">
+        <button class="tiny-btn" id="themeBtn" title="تبديل المظهر">
+          <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          المظهر
+        </button>
+        <button class="tiny-btn" id="exportBtn" title="تصدير المحادثة">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+          تصدير
+        </button>
+        <button class="tiny-btn" id="clearBtn" title="مسح المحادثة">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
+          مسح
+        </button>
+      </div>
+      <div class="sig">«وما يُنقَش يبقى»</div>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <!-- ============ الرئيسية ============ -->
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="القائمة">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+
+      <div class="who">
+        <div class="brand-logo">ر<span class="v">2</span></div>
+        <div class="who-txt">
+          <b>رقيم <span style="font-size:11px;color:var(--text-faint)">2.0</span></b>
+          <div class="status"><span class="dot" id="netDot"></span><span id="statusTxt">جاهز للحديث</span></div>
+        </div>
+      </div>
+
+      <div class="spacer"></div>
+      <span class="badge" id="toolBadge">أدوات: <b id="toolCount">0</b> · معرفة: <b id="kbCount">0</b></span>
+      <button class="icon-btn" id="diagBtn2" aria-label="تشخيص" title="تشغيل الاختبار الذاتي">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>
+      </button>
+      <button class="icon-btn" id="settingsBtn2" aria-label="الإعدادات" title="الإعدادات">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h0a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55h0a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v0a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg>
+      </button>
+    </header>
+
+    <div class="chat-scroll" id="chatScroll">
+      <div class="messages" id="messages" role="log" aria-live="polite"></div>
+    </div>
+
+    <button class="scroll-fab" id="scrollFab" aria-label="النزول للأسفل">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+    </button>
+
+    <footer class="composer-wrap">
+      <div class="composer">
+        <div class="chips" id="chips"></div>
+        <div class="input-box">
+          <button class="act-btn" id="micBtn" title="إدخال صوتي" aria-label="إدخال صوتي">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3.5 3.5 0 0 0 3.5-3.5v-5a3.5 3.5 0 0 0-7 0v5A3.5 3.5 0 0 0 12 15z"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18.5V22M8.5 22h7"/></svg>
+          </button>
+          <textarea id="input" rows="1" placeholder="اكتب لرقيم… جرّب: «الطقس في الإسكندرية» أو «٢+٢» أو «من هو ابن سينا؟»" aria-label="حقل الرسالة" autocomplete="off"></textarea>
+          <button class="send" id="sendBtn" aria-label="إرسال" disabled>
+            <svg id="sendIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+          </button>
+        </div>
+        <div class="hint">
+          <span class="kb"><kbd>Enter</kbd> للإرسال · <kbd>Shift</kbd>+<kbd>Enter</kbd> سطر جديد</span>
+          <span>رقيم يخطئ أيضًا — تحقّق من المعلومات المهمة، وكل معلومة خارجية بمصدرها.</span>
+        </div>
+      </div>
+    </footer>
+  </main>
+</div>
+
+<!-- ============ مودال مشترك ============ -->
+<div class="modal-scrim" id="modalScrim">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <b id="modalTitle">—</b>
+      <button class="icon-btn" id="modalClose" aria-label="إغلاق">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script>
+/* رقيم 2.0 — المحرّك (Core). ملف مولّد: لا تعدّله يدويًا، عدّل src/*.js */
+(function (root, factory) {
+  var api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.RaqimCore = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+'use strict';
+/* =========================================================================
+ * رقيم 2.0 — الجزء 1: النصوص
+ * تطبيع عربي/مصري/فرانكو-عرب + تجذيع خفيف + بصمات حروف للمطابقة الضبابية
+ * ========================================================================= */
+const VERSION = '2.0.0';
+const BUILD_DATE = '2026-10-25';
+
+/* عبارات فرانكو مركّبة تُترجم قبل التقطيع */
+const FRANCO_PHRASES = [
+  [/\b3amel\s*eh\b/g, 'عامل ايه'],
+  [/\b3amal\s*eh\b/g, 'عامل ايه'],
+  [/\bhow\s*are\s*you\b/g, 'كيف حالك'],
+  [/\bthank\s*you\b/g, 'شكرا'],
+  [/\bgood\s*morning\b/g, 'صباح الخير'],
+  [/\bgood\s*night\b/g, 'تصبح على خير'],
+  [/\bwhat\s*is\s*your\s*name\b/g, 'ما اسمك'],
+  [/\bwho\s*are\s*you\b/g, 'من انت']
+];
+
+/* قاموس فرانكو-عرب (مصري أساسًا) — المفاتيح لاتينية صغيرة */
+const FRANCO = {
+  ana: 'انا', enta: 'انت', enti: 'انتي', howa: 'هو', heya: 'هي', ehna: 'احنا',
+  homma: 'هم', ento: 'انتم', ana_kda: 'هكذا',
+  ezay: 'ازاي', ezzay: 'ازاي', izzay: 'ازاي', azay: 'ازاي', ezayak: 'ازيك',
+  ezayek: 'ازيك', akhbarak: 'اخبارك', akhbarek: 'اخبارك',
+  ayez: 'عايز', ayeza: 'عايز', ayzeen: 'عايز', '3ayez': 'عايز', '3ayza': 'عايز',
+  '3awz': 'عايز', '3ayzeen': 'عايزين', '3ayz': 'عايز',
+  delwa2ty: 'دلوقتي', delw2ty: 'دلوقتي', delwaqty: 'دلوقتي', dilwa2ti: 'دلوقتي',
+  dilwaqti: 'دلوقتي', delwa2t: 'دلوقتي',
+  leh: 'ليه', fein: 'فين', fen: 'فين', eh: 'ايه', eih: 'ايه', eh_da: 'ماذا',
+  da: 'ده', dah: 'ده', di: 'دي', dol: 'دول', kda: 'كده', keda: 'كده', kedah: 'كده',
+  awi: 'اوي', awy: 'اوي', gamed: 'جامد', gamid: 'جامد', helw: 'حلو',
+  haga: 'حاجه', hagat: 'حاجات', beta3: 'بتاع', betaa: 'بتاع',
+  kaman: 'كمان', bardo: 'برضو', barado: 'برضو', bas: 'بس', ya3ni: 'يعني',
+  y3ni: 'يعني', yalla: 'يلا', yalla_bye: 'مع السلامه',
+  shokran: 'شكرا', shukran: 'شكرا', salam: 'سلام', salam3lekom: 'السلام عليكم',
+  saba7: 'صباح', masa2: 'مساء', mashy: 'تمام', mashi: 'تمام', tamam: 'تمام',
+  mish: 'مش', mesh: 'مش', mafi4: 'مفيش', mafeesh: 'مفيش', feh: 'فيه',
+  zay: 'زي', zayy: 'زي', '3ala': 'علي', '3shan': 'عشان', '3ashan': 'عشان',
+  law: 'لو', a7san: 'احسن', ahsan: 'احسن', '7aga': 'حاجه', '7agat': 'حاجات',
+  kwais: 'كويس', kwayes: 'كويس', kwayyis: 'كويس', we7sh: 'وحش',
+  code: 'كود', programming: 'برمجه', programing: 'برمجه', debugging: 'تصحيح',
+  python: 'بايثون', javascript: 'جافاسكربت', css: 'سي اس اس',
+  weather: 'الطقس', time: 'الوقت', date: 'التاريخ', book: 'كتاب',
+  help: 'مساعده', hi: 'مرحبا', hello: 'مرحبا', bye: 'مع السلامه',
+  sorry: 'اسف', please: 'من فضلك', thanks: 'شكرا', joke: 'نكته',
+  story: 'قصه', poem: 'شعر', sad: 'حزين', happy: 'سعيد', tired: 'تعبان',
+  ana3mel: 'اعمل', '3ayz': 'عايز', a3mel: 'اعمل', a3raf: 'اعرف'
+};
+
+/* توحيد اللهجة المصرية والفصحى إلى صيغة مرجعية واحدة للمطابقة */
+const EGY = {
+  'ازاي': 'كيف', 'ازاى': 'كيف', 'اشمعني': 'لماذا', 'ليه': 'لماذا', 'علشان': 'لان',
+  'عشان': 'لان', 'عايش': 'يعيش', 'دلوقتي': 'الان', 'دلوقتى': 'الان',
+  'الوقتي': 'الان', 'دلوكت': 'الان', 'كده': 'هكذا', 'كده': 'هكذا', 'كدا': 'هكذا',
+  'زي': 'مثل', 'زى': 'مثل', 'اوي': 'جدا', 'قوي': 'جدا', 'خالص': 'جدا',
+  'حاجه': 'شيء', 'حاجة': 'شيء', 'حاجات': 'اشياء', 'البتاع': 'الشيء', 'بتاع': 'خاص',
+  'كمان': 'ايضا', 'برضو': 'ايضا', 'برضه': 'ايضا', 'بس': 'لكن', 'بسس': 'لكن',
+  'ايه': 'ماذا', 'إيه': 'ماذا', 'شنو': 'ماذا', 'شو': 'ماذا', 'مين': 'من',
+  'فين': 'اين', 'وين': 'اين', 'امتى': 'متى', 'امته': 'متى',
+  'مش': 'ليس', 'مو': 'ليس', 'مفيش': 'لا يوجد', 'فيش': 'لا يوجد', 'فيه': 'يوجد',
+  'احنا': 'نحن', 'احنه': 'نحن', 'انتو': 'انتم', 'هما': 'هم', 'دي': 'هذا',
+  'ده': 'هذا', 'دول': 'هؤلاء', 'اللى': 'الذي', 'اللي': 'الذي',
+  'عامل': 'حال', 'ازيك': 'كيف حالك', 'شلونك': 'كيف حالك', 'اخبارك': 'كيف حالك',
+  'عايز': 'اريد', 'عاوز': 'اريد', 'عايزه': 'اريد', 'ابغى': 'اريد', 'بدي': 'اريد',
+  'نفسي': 'اريد', 'محتاج': 'اريد', 'محتاره': 'محتار', 'محتار': 'محتار',
+  'حضرتك': 'انت', 'جامد': 'رائع', 'تمام': 'جيد', 'كويس': 'جيد', 'وحش': 'سيء',
+  'تعبان': 'متعب', 'مخنوق': 'حزين', 'مضايق': 'حزين', 'زعلان': 'حزين',
+  'النهارده': 'اليوم', 'النهاردة': 'اليوم', 'بكره': 'غدا', 'بكرا': 'غدا',
+  'الساعه': 'الساعة', 'الساعة': 'الساعة', 'الجو': 'الطقس', 'الحر': 'الطقس',
+  'ابحث': 'بحث', 'دور': 'بحث', 'معلومه': 'معلومة', 'معلومات': 'معلومة',
+  'النت': 'الانترنت', 'الموبايل': 'الهاتف', 'الكمبيوتر': 'الحاسوب',
+  'برمجه': 'برمجة', 'مبرمج': 'مبرمج', 'كود': 'كود', 'ارور': 'خطا',
+  'الذكاء': 'الذكاء', 'الاصطناعي': 'الاصطناعي', 'شكرا': 'شكرا', 'شكراً': 'شكرا',
+  'تسلم': 'شكرا', 'مشكور': 'شكرا', 'اسف': 'اسف', 'متاسف': 'اسف',
+  'يلا': 'يلا', 'طيب': 'طيب', 'طب': 'طيب', 'يعني': 'يعني', 'صح': 'صحيح',
+  'غلط': 'خطا', 'فلوس': 'مال', 'مصاري': 'مال', 'شغل': 'عمل', 'وظيفه': 'عمل'
+};
+
+const STOP_WORDS = new Set(('من في على عن الي الى انا انت انتي هو هي هم هل ما ماذا كيف لماذا متى اين هذا هذه ذلك تلك التي الذي كان كانت كنت يكون تكون مع كل بعض حتى لكن ثم او و لا لم لن قد يا اي ايه يعني ممكن خلاص عند عندي ليه ازاي اقول قول لي اخبار جديد حاجه شويه دايمًا ابدا عنه عنها به بها لي لك له لها نفس شيء شئ اريد عايز محتاج اذا لو يبقي تمام الحقيقه صراحه كمان برضو عني مني لولا هوية اريد من فضلك لو سمحت ممكن تنفع تساعد ساعدني').split(/\s+/));
+
+const PREFIXES = ['وال', 'بال', 'كال', 'فال', 'لل', 'ال', 'و', 'ف', 'ب', 'ك', 'ل'];
+const SUFFIXES = ['يات', 'هم', 'هن', 'ها', 'ية', 'يه', 'ات', 'ون', 'ين', 'وا', 'نا', 'كم'];
+
+function latinDigits(s) {
+  return String(s)
+    .replace(/[\u0660-\u0669]/g, d => String(d.charCodeAt(0) - 0x0660))
+    .replace(/[\u06F0-\u06F9]/g, d => String(d.charCodeAt(0) - 0x06F0));
+}
+
+function normalize(s) {
+  let t = latinDigits(String(s == null ? '' : s)).toLowerCase();
+  t = t.replace(/[\u064B-\u0652\u0670\u0640\u06D6-\u06ED\uFE70-\uFEFF]/g, '');
+  t = t.replace(/[\u0623\u0625\u0622\u0671]/g, '\u0627')
+       .replace(/\u0649/g, '\u064A')
+       .replace(/\u0624/g, '\u0648')
+       .replace(/\u0626/g, '\u064A')
+       .replace(/\u0629/g, '\u0647');
+  t = t.replace(/[_*#`~\[\]{}|]/g, ' ');
+  return t.replace(/\s+/g, ' ').trim();
+}
+
+function stem(w) {
+  let s = String(w || '');
+  if (s.length <= 3) return s;
+  let changed = true, guard = 0;
+  while (changed && guard++ < 3) {
+    changed = false;
+    for (const p of PREFIXES) {
+      if (s.length - p.length >= 3 && s.indexOf(p) === 0) { s = s.slice(p.length); changed = true; break; }
+    }
+  }
+  for (const sf of SUFFIXES) {
+    if (s.length - sf.length >= 4 && s.slice(-sf.length) === sf) { s = s.slice(0, -sf.length); break; }
+  }
+  return s;
+}
+
+function grams(s, n) {
+  n = n || 3;
+  const src = String(s).replace(/[\s\u0640]/g, '');
+  const out = new Set();
+  if (!src) return out;
+  if (src.length <= n) { out.add(src); return out; }
+  for (let i = 0; i <= src.length - n; i++) out.add(src.slice(i, i + n));
+  return out;
+}
+
+function similarity(a, b) {
+  const A = typeof a === 'string' ? grams(normalize(a)) : a;
+  const B = typeof b === 'string' ? grams(normalize(b)) : b;
+  if (!A.size || !B.size) return 0;
+  let inter = 0;
+  for (const g of A) if (B.has(g)) inter++;
+  return inter / (A.size + B.size - inter);
+}
+
+function tokenize(text) {
+  let s = normalize(text);
+  for (const pair of FRANCO_PHRASES) s = s.replace(pair[0], pair[1]);
+  s = latinDigits(s);
+  const words = s.match(/[\p{L}\p{N}]+/gu) || [];
+  const tokens = [], stems = [];
+  for (let w of words) {
+    if (FRANCO[w]) w = FRANCO[w];
+    const canon = EGY[w] || w;
+    const clean = normalize(canon);
+    if (!clean) continue;
+    tokens.push(clean);
+    stems.push(stem(clean));
+  }
+  return { norm: s, tokens: tokens, stems: stems, grams: grams(s) };
+}
+
+function hasAny(s, arr) { return arr.some(x => s.indexOf(x) > -1); }
+function clamp(n, a, b) { return Math.min(b, Math.max(a, n)); }
+function rnd(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function fmtNum(v) {
+  if (!isFinite(v)) return String(v);
+  const r = Math.round(v * 1e10) / 1e10;
+  return r.toLocaleString('en-US', { maximumFractionDigits: 10 });
+}
+function truncate(s, n) {
+  const t = String(s || '').trim();
+  return t.length > n ? t.slice(0, n).replace(/\s+\S*$/, '') + '…' : t;
+}
+
+/* =========================================================================
+ * رقيم 2.0 — الجزء 2: الحساب والوحدات (بدون eval وبدون Function)
+ * محلّل تعابير آمن + مسائل كلامية + تحويل وحدات
+ * ========================================================================= */
+
+const FN_ALIASES = {
+  'جذر': 'sqrt', 'الجذر': 'sqrt', 'جيب': 'sin', 'جتا': 'cos', 'ظل': 'tan',
+  'مطلق': 'abs', 'لوغاريتم': 'log', 'لوج': 'log', 'لن': 'ln',
+  'اس': 'pow', 'باي': 'pi', 'الاس': 'pow'
+};
+const FN = {
+  sqrt: a => Math.sqrt(a), abs: a => Math.abs(a),
+  sin: a => Math.sin(a), cos: a => Math.cos(a), tan: a => Math.tan(a),
+  asin: a => Math.asin(a), acos: a => Math.acos(a), atan: a => Math.atan(a),
+  log: a => Math.log10(a), ln: a => Math.log(a), log2: a => Math.log2(a),
+  exp: a => Math.exp(a), expm1: a => Math.expm1(a),
+  floor: a => Math.floor(a), ceil: a => Math.ceil(a), round: a => Math.round(a),
+  trunc: a => Math.trunc(a), sign: a => Math.sign(a), cbrt: a => Math.cbrt(a),
+  pow: (a, b) => Math.pow(a, b),
+  min: (...a) => Math.min(...a), max: (...a) => Math.max(...a),
+  sum: (...a) => a.reduce((x, y) => x + y, 0),
+  avg: (...a) => a.reduce((x, y) => x + y, 0) / a.length,
+  gcd: (a, b) => { a = Math.abs(Math.trunc(a)); b = Math.abs(Math.trunc(b)); while (b) { const t = b; b = a % b; a = t; } return a; },
+  fact: a => { if (a < 0 || a > 170 || Math.floor(a) !== a) throw new Error('المضروب لازم عدد صحيح بين 0 و170'); let r = 1; for (let i = 2; i <= a; i++) r *= i; return r; }
+};
+const CONST = { pi: Math.PI, e: Math.E, tau: Math.PI * 2, phi: (1 + Math.sqrt(5)) / 2 };
+
+function fnName(name) {
+  const n = normalize(name);
+  return FN_ALIASES[name] || FN_ALIASES[n] || n;
+}
+
+function lexMath(src) {
+  const s = String(src)
+    .replace(/\*\*/g, '^').replace(/[×✕✖]/g, '*').replace(/÷/g, '/')
+    .replace(/[−–—]/g, '-').replace(/[،]/g, ',');
+  const out = [];
+  let i = 0;
+  while (i < s.length) {
+    const c = s.charAt(i);
+    if (/\s/.test(c)) { i++; continue; }
+    if (/[0-9.]/.test(c)) {
+      const m = s.slice(i).match(/^(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?/i);
+      if (!m) throw new Error('رقم غير صالح');
+      out.push({ t: 'num', v: parseFloat(m[0]) });
+      i += m[0].length;
+      continue;
+    }
+    if (/[\p{L}_]/u.test(c)) {
+      const m = s.slice(i).match(/^[\p{L}_][\p{L}\p{N}_]*/u);
+      if (!m) throw new Error('اسم غير صالح');
+      out.push({ t: 'id', v: m[0] });
+      i += m[0].length;
+      continue;
+    }
+    if ('+-*/^%'.indexOf(c) > -1) { out.push({ t: 'op', v: c }); i++; continue; }
+    if (c === '(' || c === ')') { out.push({ t: c, v: c }); i++; continue; }
+    if (c === ',') { out.push({ t: ',', v: ',' }); i++; continue; }
+    throw new Error('رمز غير مسموح: ' + c);
+  }
+  /* الضرب الضمني: 2(3+4) / 3pi / (2)(5) */
+  for (let k = 0; k < out.length - 1; k++) {
+    const a = out[k], b = out[k + 1];
+    if (a.t === 'op' || a.t === '(' || a.t === ',' || b.t === 'op' || b.t === ')' || b.t === ',' || b.t === 'end') continue;
+    if (a.t === 'id' && b.t === '(' && (FN[fnName(a.v)] || CONST[fnName(a.v)] !== undefined)) continue;
+    out.splice(k + 1, 0, { t: 'op', v: '*' });
+  }
+  out.push({ t: 'end', v: 'end' });
+  return out;
+}
+
+function evaluate(expr) {
+  if (String(expr).length > 220) throw new Error('التعبير طويل جدًا');
+  const tk = lexMath(expr);
+  let i = 0, depth = 0;
+  const peek = () => tk[i] || { t: 'end' };
+  const isOp = v => peek().t === 'op' && peek().v === v;
+  const guard = () => { if (++depth > 40) throw new Error('التعبير عميق جدًا'); };
+
+  function primary() {
+    const t = peek();
+    if (t.t === 'num') { i++; return t.v; }
+    if (t.t === '(') {
+      i++; guard();
+      const v = expression();
+      if (peek().t !== ')') throw new Error('قوس غير مقفول');
+      i++; depth--;
+      return v;
+    }
+    if (t.t === 'id') {
+      i++;
+      const name = fnName(t.v);
+      if (CONST[name] !== undefined) return CONST[name];
+      if (FN[name]) {
+        if (peek().t !== '(') throw new Error('استخدم الأقواس بعد ' + t.v);
+        i++; guard();
+        const args = [];
+        if (peek().t !== ')') {
+          args.push(expression());
+          while (peek().t === ',') { i++; args.push(expression()); }
+        }
+        if (peek().t !== ')') throw new Error('قوس غير مقفول في الدالة');
+        i++; depth--;
+        if (args.some(a => typeof a !== 'number' || !isFinite(a))) throw new Error('مدخلات الدالة غير صالحة');
+        return FN[name](...args);
+      }
+      throw new Error('كلمة غير معروفة: ' + t.v);
+    }
+    throw new Error('تعبير ناقص أو رمز في غير مكانه');
+  }
+  function power() {
+    let v = primary();
+    if (isOp('^')) { i++; const e = unary(); v = Math.pow(v, e); }
+    return v;
+  }
+  function unary() {
+    if (isOp('-') || isOp('+')) { const s = peek().v; i++; const v = unary(); return s === '-' ? -v : v; }
+    return power();
+  }
+  function term() {
+    let v = unary();
+    while (peek().t === 'op' && ['*', '/', '%'].indexOf(peek().v) > -1) {
+      const op = peek().v; i++;
+      const b = unary();
+      if ((op === '/' || op === '%') && b === 0) throw new Error('القسمة على صفر');
+      v = op === '*' ? v * b : (op === '/' ? v / b : v % b);
+    }
+    return v;
+  }
+  function expression() {
+    let v = term();
+    while (peek().t === 'op' && (peek().v === '+' || peek().v === '-')) {
+      const op = peek().v; i++;
+      const b = term();
+      v = op === '+' ? v + b : v - b;
+    }
+    return v;
+  }
+  const value = expression();
+  if (peek().t !== 'end') throw new Error('رموز زائدة في نهاية التعبير');
+  if (typeof value !== 'number' || !isFinite(value)) throw new Error('النتيجة غير عددية');
+  return value;
+}
+
+/* استخراج تعبير رياضي من جملة عربية — يرفض أي كلام غير رياضي */
+const MATH_ALLOWED_IDS = new Set(Object.keys(FN).concat(Object.keys(CONST), Object.keys(FN_ALIASES)));
+function extractExpression(raw) {
+  let s = latinDigits(String(raw || ''));
+  if (s.length > 240) return null;
+  const parts = s.match(/[A-Za-z_]+|[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]+|(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?|[+\-*/^%(),]/g) || [];
+  const kept = [];
+  for (const p of parts) {
+    if (/^[A-Za-z_]+$/.test(p)) {
+      const n = normalize(p);
+      if (MATH_ALLOWED_IDS.has(n)) kept.push(n);
+      else if (MATH_ALLOWED_IDS.has(fnName(p))) kept.push(fnName(p));
+      else continue;
+    } else if (/^[\u0600-\u06FF]/.test(p)) {
+      /* كلمة عربية: تُقبل فقط إذا كانت اسم دالة معروف بالكامل */
+      if (FN_ALIASES[p]) kept.push(FN_ALIASES[p]);
+      else continue;
+    } else kept.push(p);
+  }
+  const expr = kept.join(' ').trim();
+  if (!/[0-9]/.test(expr)) return null;
+  if (!/[+\-*/^%]/.test(expr)) return null;
+  if (expr.length > 180) return null;
+  return expr;
+}
+
+function solveMath(text) {
+  const expr = extractExpression(text);
+  if (!expr) return null;
+  try { return { ok: true, expr: expr, value: evaluate(expr) }; }
+  catch (e) { return { ok: false, expr: expr, error: e.message }; }
+}
+
+/* مسائل كلامية مصرية بسيطة */
+function wordProblem(raw) {
+  const s = latinDigits(normalize(raw));
+  const num = '(\\d+(?:\\.\\d+)?)';
+  let m;
+
+  m = s.match(new RegExp('(^|[^\\d.])' + num + '\\s*%?\\s*(?:زياده|زيادة|ارتفع|زاد|زود)\\s*(?:على|علي|من|ل)?\\s*' + num)) ||
+      s.match(new RegExp('(?:زياده|زيادة|ارتفع|زاد|زود)\\s*' + num + '\\s*%?\\s*(?:على|علي|من|ل)?\\s*' + num));
+  if (m) {
+    let p, a;
+    if (/^(?:زياده|زيادة|ارتفع|زاد|زود)/.test(m[0])) { p = +m[1]; a = +m[2]; }
+    else { p = +m[2]; a = +m[3]; }
+    if (p >= 0 && p <= 100) {
+      const v = a * (1 + p / 100);
+      return { ok: true, kind: 'increase', value: v, expr: a + ' + ' + p + '%',
+        explain: 'الزيادة = ' + fmtNum(a * p / 100) + '، والقيمة الجديدة = ' + fmtNum(v) + '.' };
+    }
+  }
+  m = s.match(new RegExp('(^|[^\\d.])' + num + '\\s*%\\s*(?:من|min|of)\\s*' + num));
+  if (m) {
+    const p = +m[2], a = +m[3], v = a * p / 100;
+    return { ok: true, kind: 'percent-of', value: v, expr: p + '% × ' + a,
+      explain: p + '% من ' + fmtNum(a) + ' = ' + fmtNum(v) + ' — القاعدة: اضرب في النسبة واقسم على 100.' };
+  }
+  /* خصم: «500 وخصم 20» أو «خصم 20% على 500» */
+  let dm = s.match(new RegExp('(^|[^\\d.])' + num + '\\s*(?:و|مع|ب)?\\s*(?:نزل|عمل|خد)?\\s*(?:خصم|تخفيض)\\s*' + num + '\\s*%?'));
+  let amount = 0, percent = 0;
+  if (dm) { amount = +dm[2]; percent = +dm[3]; }
+  else {
+    dm = s.match(new RegExp('(?:خصم|تخفيض)\\s*' + num + '\\s*(?:%\\s*(?:على|علي|من|ل)?|(?:على|علي|من|ل))\\s*' + num));
+    if (dm) { percent = +dm[1]; amount = +dm[2]; }
+  }
+  if (dm && percent >= 0 && percent <= 100) {
+    const discount = amount * percent / 100;
+    return { ok: true, kind: 'discount', value: amount - discount, expr: amount + ' - ' + percent + '%',
+      explain: 'الخصم = ' + fmtNum(discount) + '، والسعر بعد الخصم = ' + fmtNum(amount - discount) + '.' };
+  }
+  m = s.match(new RegExp('(?:نسبه|نسبة|ما نسبه)\\s*' + num + '\\s*(?:من|الى|إلى|ل)\\s*' + num));
+  if (m) {
+    const a = +m[1], b = +m[2];
+    if (b === 0) return { ok: false, error: 'المقام صفر' };
+    return { ok: true, kind: 'ratio', value: a / b * 100, expr: a + ' / ' + b + ' × 100',
+      explain: fmtNum(a) + ' من ' + fmtNum(b) + ' = ' + fmtNum(a / b * 100) + '%.' };
+  }
+  if (/(?:متوسط|average|mean)/.test(s)) {
+    const nums = (s.match(/\d+(?:\.\d+)?/g) || []).map(Number);
+    if (nums.length >= 2) {
+      const v = nums.reduce((a, b) => a + b, 0) / nums.length;
+      return { ok: true, kind: 'average', value: v, expr: 'avg(' + nums.join(', ') + ')',
+        explain: 'المجموع = ' + fmtNum(nums.reduce((a, b) => a + b, 0)) + '، وعدد القيم = ' + nums.length + '، فالمتوسط = ' + fmtNum(v) + '.' };
+    }
+  }
+  m = s.match(new RegExp('(?:مساحه|مساحة).{0,18}(?:دايره|دائرة|قرص).{0,18}' + num));
+  if (m) {
+    const r = +m[1], v = Math.PI * r * r;
+    return { ok: true, kind: 'circle', value: v, expr: 'π × ' + r + '²',
+      explain: 'مساحة الدائرة = π × نق² = ' + fmtNum(v) + ' وحدة مربعة.' };
+  }
+  return null;
+}
+
+/* ------------------------- تحويل الوحدات ------------------------- */
+const UNIT_DEFS = [
+  { cat: 'length', k: 0.001, names: ['mm', 'مم', 'مليمتر', 'millimeter', 'millimetre'] },
+  { cat: 'length', k: 0.01, names: ['cm', 'سم', 'سنتيمتر', 'centimeter'] },
+  { cat: 'length', k: 1, names: ['m', 'م', 'متر', 'meter', 'metre', 'مترو'] },
+  { cat: 'length', k: 1000, names: ['km', 'كم', 'كيلومتر', 'كيلو', 'kilometer'] },
+  { cat: 'length', k: 0.0254, names: ['in', 'inch', 'inches', 'بوصة', 'انش'] },
+  { cat: 'length', k: 0.3048, names: ['ft', 'foot', 'feet', 'قدم'] },
+  { cat: 'length', k: 0.9144, names: ['yd', 'yard', 'ياردة'] },
+  { cat: 'length', k: 1609.344, names: ['mi', 'mile', 'ميل', 'اميال'] },
+  { cat: 'mass', k: 0.001, names: ['mg', 'مجم', 'مليجرام'] },
+  { cat: 'mass', k: 1, names: ['g', 'جم', 'جرام', 'gram', 'غرام'] },
+  { cat: 'mass', k: 1000, names: ['kg', 'كجم', 'كيلوجرام', 'كيلو', 'kilogram'] },
+  { cat: 'mass', k: 1000000, names: ['t', 'ton', 'طن', 'tonne'] },
+  { cat: 'mass', k: 453.59237, names: ['lb', 'lbs', 'pound', 'رطل'] },
+  { cat: 'mass', k: 28.3495, names: ['oz', 'ounce', 'أوقية'] },
+  { cat: 'time', k: 1, names: ['s', 'sec', 'ث', 'ثانية', 'second'] },
+  { cat: 'time', k: 60, names: ['min', 'د', 'دقيقة', 'minute'] },
+  { cat: 'time', k: 3600, names: ['h', 'hr', 'س', 'ساعة', 'hour'] },
+  { cat: 'time', k: 86400, names: ['day', 'يوم', 'days'] },
+  { cat: 'time', k: 604800, names: ['week', 'أسبوع', 'اسبوع'] },
+  { cat: 'time', k: 2592000, names: ['month', 'شهر'] },
+  { cat: 'time', k: 31536000, names: ['year', 'سنة', 'عام'] },
+  { cat: 'speed', k: 1, names: ['km/h', 'كم/س', 'كم/ساعة', 'kmh', 'كيلومتر/ساعة'] },
+  { cat: 'speed', k: 1.609344, names: ['mph', 'ميل/س', 'ميل/ساعة'] },
+  { cat: 'speed', k: 3.6, names: ['m/s', 'م/ث', 'ms'] },
+  { cat: 'speed', k: 1.852, names: ['kn', 'knot', 'عقدة'] },
+  { cat: 'area', k: 1, names: ['m2', 'م2', 'متر مربع', 'm²'] },
+  { cat: 'area', k: 1000000, names: ['km2', 'كم2', 'كيلومتر مربع'] },
+  { cat: 'area', k: 4200.833, names: ['feddan', 'فدان'] },
+  { cat: 'area', k: 4046.856, names: ['acre', 'اكر'] },
+  { cat: 'volume', k: 0.001, names: ['ml', 'مل', 'مليلتر'] },
+  { cat: 'volume', k: 1, names: ['l', 'ل', 'لتر', 'liter', 'litre'] },
+  { cat: 'volume', k: 3.78541, names: ['gal', 'gallon', 'جالون'] },
+  { cat: 'data', k: 1, names: ['b', 'bit', 'بت'] },
+  { cat: 'data', k: 8, names: ['B', 'byte', 'بايت'] },
+  { cat: 'data', k: 8000, names: ['kb', 'KB', 'كيلوبايت'] },
+  { cat: 'data', k: 8000000, names: ['mb', 'MB', 'ميجابايت'] },
+  { cat: 'data', k: 8000000000, names: ['gb', 'GB', 'جيجابايت'] },
+  { cat: 'temp', special: 'c', names: ['c', '°c', 'س', 'سلسيوس', 'مئوية', 'celsius'] },
+  { cat: 'temp', special: 'f', names: ['f', '°f', 'ف', 'فهرنهايت', 'fahrenheit'] },
+  { cat: 'temp', special: 'k', names: ['k', 'ك', 'كلفن', 'kelvin'] }
+];
+const UNIT_MAP = {};
+for (const d of UNIT_DEFS) for (const n of d.names) {
+  UNIT_MAP[normalize(n)] = d;
+  const ns = normalize(n).replace(/\s+/g, '');
+  if (!UNIT_MAP[ns]) UNIT_MAP[ns] = d;
+}
+/* مفاتيح حساسة حالة الأحرف للبايت/بت */
+UNIT_MAP['B'] = UNIT_DEFS.find(d => d.k === 8 && d.cat === 'data');
+UNIT_MAP['b'] = UNIT_DEFS.find(d => d.k === 1 && d.cat === 'data');
+
+function lookupUnit(word) {
+  if (!word) return null;
+  const w = String(word).trim().replace(/[؟?.,،؛;]$/, '');
+  return UNIT_MAP[w] || UNIT_MAP[normalize(w)] || null;
+}
+
+function convertValue(value, from, to) {
+  if (from.cat !== to.cat) return null;
+  if (from.cat === 'temp') {
+    const c = from.special === 'c' ? value : (from.special === 'f' ? (value - 32) * 5 / 9 : value - 273.15);
+    return to.special === 'c' ? c : (to.special === 'f' ? c * 9 / 5 + 32 : c + 273.15);
+  }
+  return value * from.k / to.k;
+}
+
+function lookupUnitPhrase(phrase) {
+  let p = String(phrase || '').trim().replace(/^[،,\s]+|[،,؟?.;\s]+$/g, '');
+  let d = lookupUnit(p);
+  if (d) return d;
+  d = UNIT_MAP[normalize(p).replace(/\s+/g, '')];
+  if (d) return d;
+  const words = normalize(p).split(/\s+/).filter(w => w && !STOP_WORDS.has(w));
+  for (let i = words.length - 1; i >= 0; i--) { d = lookupUnit(words[i]); if (d) return d; }
+  return null;
+}
+
+function convertUnits(raw) {
+  const s = latinDigits(String(raw || '')).trim();
+  /* التمريرة 1: فواصل صريحة (الى / to / in / = ...) */
+  let m = s.match(/([\d.]+)\s*([^\d]+?)\s*(?:الى|إلى|لـ|to|in|→|=>|=)\s*(.+)$/iu);
+  if (m) {
+    const value = parseFloat(m[1]);
+    const from = lookupUnitPhrase(m[2]);
+    const to = lookupUnitPhrase(m[3]);
+    if (isFinite(value) && from && to) {
+      const result = convertValue(value, from, to);
+      if (result !== null) {
+        return { ok: true, value: result, from: m[2].trim(), to: m[3].trim(), cat: to.cat,
+          expr: value + ' ' + m[2].trim() + ' ← ' + m[3].trim() };
+      }
+      return { ok: false, error: 'الوحدتان من نوعين مختلفين' };
+    }
+  }
+  /* التمريرة 2: «ل» الملتصقة بوحدة بعد مسافة: 5 كيلومتر لمتر */
+  m = s.match(/([\d.]+)\s*([^\d]+?)\s+ل\s*(.+)$/u);
+  if (m) {
+    const value = parseFloat(m[1]);
+    const from = lookupUnitPhrase(m[2]);
+    const to = lookupUnitPhrase(m[3]);
+    if (isFinite(value) && from && to) {
+      const result = convertValue(value, from, to);
+      if (result !== null) {
+        return { ok: true, value: result, from: m[2].trim(), to: m[3].trim(), cat: to.cat,
+          expr: value + ' ' + m[2].trim() + ' ← ' + m[3].trim() };
+      }
+      return { ok: false, error: 'الوحدتان من نوعين مختلفين' };
+    }
+  }
+  return null;
+}
+
+function formatMath(res, source) {
+  if (!res) return null;
+  if (!res.ok) {
+    return 'حاولت أحسبها، لكن **' + esc(res.error || 'التعبير غير مفهوم') + '**.\n\n' +
+      'اكتبها بشكل أوضح، مثل: `٢ + ٢` أو `sqrt(144)` أو `500 وخصم 20%` أو `10 km to m`.';
+  }
+  const head = source === 'word' ? '**' + esc(res.explain) + '**' : '**النتيجة: ' + fmtNum(res.value) + '**';
+  const tail = source === 'word'
+    ? '\n\nالتعبير اللي استخدمته: `' + esc(res.expr || '') + '`.'
+    : '\n\n`' + esc(res.expr) + ' = ' + fmtNum(res.value) + '`';
+  const note = rnd([
+    'الحساب هنا بمحلّل رياضي مكتوب داخل الصفحة — مش تخمين ولا كود خطير.',
+    'ودا من الأماكن اللي أقدر أقول فيها «100% صح» بضمير مرتاح.',
+    'لو احتجت خطوات أطول، قولي «اشرح الخطوات» وأنا أفككها.'
+  ]);
+  return head + tail + '\n\n' + note;
+}
+
+/* =========================================================================
+ * رقيم 2.0 — الجزء 3: الوقت والتاريخ (ميلادي / هجري) + رموز الطقس
+ * ========================================================================= */
+function intlOrNull(locale, opts, date) {
+  try { return new Intl.DateTimeFormat(locale, opts).format(date); } catch (e) { return null; }
+}
+
+function hijriText(now) {
+  const tries = ['ar-EG-u-ca-islamic-umalqura-nu-latn', 'ar-EG-u-ca-islamic-civil-nu-latn', 'ar-SA-u-ca-islamic-umalqura-nu-latn'];
+  for (const loc of tries) {
+    const v = intlOrNull(loc, { day: 'numeric', month: 'long', year: 'numeric' }, now);
+    if (v) return v;
+  }
+  return null;
+}
+
+function dateInfo(raw, now) {
+  now = now instanceof Date ? now : new Date();
+  const n = normalize(raw || '');
+  const wantsHijri = /(هجري|هجريه|هجريه|اسلامي|الهجري|بالهجري)/.test(n);
+  const wantsTomorrow = /(بكره|بكرة|غدا|غداً|بكرا|الغد)/.test(n);
+  const wantsDate = /(تاريخ|اليوم|النهارده|النهاردة|date|السنة|الشهر)/.test(n);
+  const wantsTime = /(ساعه|الساعة|الوقت|الان|time|الساعه كام)/.test(n);
+  const d = wantsTomorrow ? new Date(now.getTime() + 86400000) : now;
+  const tz = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) { return ''; } })();
+
+  if (wantsHijri) {
+    const h = hijriText(d);
+    if (h) {
+      return { kind: 'hijri', text: 'التاريخ الهجري ' + (wantsTomorrow ? 'غدًا ' : 'اليوم ') + '**' + h + ' هـ**' +
+        (tz ? ' — حسب تقويم أم القرى في نطاق `' + tz + '`.' : '.') +
+        '\n\nملاحظة صادقة: التقويم الهجري هنا محسوب بخوارزمية `Intl` المدمجة في المتصفح، وقد يختلف عن الرؤية الشرعية بيوم — راجع الجهة المختصة في أمور الدين.' };
+    }
+    return { kind: 'hijri', text: 'المتصفح عندك لا يدعم التقويم الهجري عبر `Intl` — مش هألف لك تاريخ. جرّب متصفح حديث (Chrome / Firefox / Safari).' };
+  }
+
+  if (wantsDate || (!wantsTime && /التاريخ/.test(n))) {
+    const full = intlOrNull('ar-EG', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }, d) || d.toDateString();
+    const h = hijriText(d);
+    return { kind: 'date', text: 'التاريخ ' + (wantsTomorrow ? 'غدًا: ' : 'اليوم: ') + '**' + full + '**' +
+      (h ? '\n\nوبالهجري: **' + h + ' هـ**' : '') +
+      (tz ? '\n\nالمنطقة الزمنية لجهازك: `' + tz + '`' : '') };
+  }
+
+  const t = intlOrNull('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }, now) || now.toLocaleTimeString();
+  const full = intlOrNull('ar-EG', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }, now) || '';
+  return { kind: 'time', text: 'الساعة عندك الآن **' + t + '**' +
+    (full ? '\n\nوالتاريخ: ' + full : '') +
+    (tz ? ' — `' + tz + '`' : '') +
+    '\n\nالساعة من جهازك، مش من سيرفر عندي؛ لو جهازك غلط، هقولك غلط بثقة. ظبط الوقت لديك.' };
+}
+
+/* رموز الطقس WMO الخاصة بـ Open-Meteo */
+const WEATHER_CODES = {
+  0: 'صحو ☀️', 1: 'صحو غالبًا 🌤️', 2: 'غائم جزئيًا ⛅', 3: 'غائم ☁️',
+  45: 'ضباب 🌫️', 48: 'ضباب متجمد 🌫️',
+  51: 'رذاذ خفيف 🌦️', 53: 'رذاذ 🌦️', 55: 'رذاذ كثيف 🌧️',
+  56: 'رذاذ متجمد خفيف 🌧️', 57: 'رذاذ متجمد 🌧️',
+  61: 'مطر خفيف 🌦️', 63: 'مطر 🌧️', 65: 'مطر غزير 🌧️',
+  66: 'مطر متجمد خفيف 🌨️', 67: 'مطر متجمد 🌨️',
+  71: 'ثلج خفيف 🌨️', 73: 'ثلج ❄️', 75: 'ثلج كثيف ❄️', 77: 'حبيبات ثلج ❄️',
+  80: 'زخات مطر خفيفة 🌦️', 81: 'زخات مطر 🌧️', 82: 'زخات مطر غزيرة ⛈️',
+  85: 'زخات ثلج 🌨️', 86: 'زخات ثلج كثيفة ❄️',
+  95: 'عواصف رعدية ⛈️', 96: 'عواصف رعدية مع بَرَد ⛈️', 99: 'عواصف رعدية قوية ⛈️'
+};
+function weatherCodeText(c) { return WEATHER_CODES[c] || 'حالة جوية غير معروفة (رمز ' + c + ')'; }
+
+/* =========================================================================
+ * رقيم 2.0 — الجزء 4: قاعدة المعرفة (وحدات حوار)
+ * كل وحدة: عنوان + نية + أسئلة تدريبية (مصري/فصحى/فرانكو) + ردود + وسوم
+ * ========================================================================= */
+const SNIPPETS = {
+  debounce: 'function debounce(fn, delay = 300) {\n  let timer;\n  return (...args) => {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn(...args), delay);\n  };\n}\n\nconst search = debounce(q => console.log("بحث:", q), 400);',
+  fetch: 'async function getData(url) {\n  try {\n    const res = await fetch(url);\n    if (!res.ok) throw new Error("HTTP " + res.status);\n    return await res.json();\n  } catch (err) {\n    console.error("فشل:", err);\n    return null;\n  } finally {\n    console.log("انتهى الطلب");\n  }\n}',
+  python_clean: 'def clean_names(rows):\n    seen, out = set(), []\n    for r in rows:\n        name = (r or "").strip().title()\n        if name and name not in seen:\n            seen.add(name)\n            out.append(name)\n    return sorted(out)\n\nprint(clean_names(["ali ", "Sara", "ali", None]))',
+  react_counter: 'function Counter() {\n  const [count, setCount] = React.useState(0);\n  return (\n    <button onClick={() => setCount(c => c + 1)}>\n      ضغطات: {count}\n    </button>\n  );\n}',
+  css_center: '.parent {\n  display: grid;\n  place-items: center;\n  min-height: 100dvh;\n}',
+  sql_top: "SELECT user_id, COUNT(*) AS orders, SUM(total) AS revenue\nFROM orders\nWHERE created_at >= NOW() - INTERVAL '30 days'\nGROUP BY user_id\nHAVING COUNT(*) > 1\nORDER BY revenue DESC\nLIMIT 10;",
+  binary_search: 'function binarySearch(arr, target) {\n  let lo = 0, hi = arr.length - 1;\n  while (lo <= hi) {\n    const mid = (lo + hi) >> 1;\n    if (arr[mid] === target) return mid;\n    if (arr[mid] < target) lo = mid + 1;\n    else hi = mid - 1;\n  }\n  return -1;\n}'
+};
+
+function E(id, title, intent, q, a, tags) {
+  return { id: id, title: title, intent: intent, q: q, a: a, tags: tags || '' };
+}
+
+const KB = [
+  /* ------------------ تحيات وهوية ------------------ */
+  E('greet', 'السلام والتحية', 'social',
+    ['السلام عليكم', 'مرحبا', 'اهلا', 'صباح الخير', 'مساء الخير', 'ازيك', 'عامل ايه', 'hello', 'hi', 'salam'],
+    ['وعليكم السلام — وصلت رسالتك لرقيم، والشاشة عندي استنفرت.\n\nبتفكر في إيه النهارده؟'],
+    'تحية سلام ترحيب'),
+  E('howareyou', 'كيف حالك', 'social',
+    ['كيف حالك', 'ازيك', 'اخبارك', 'شلونك', 'how are you', 'عامل ايه'],
+    ['حالي زي أي فكرة عايشة في متصفح: مفيش جسم يتعب، ومفيش نوم يريح. بس المعالج شغال.\n\nالأهم: إنت عامل إيه؟'],
+    'حال مزاج'),
+  E('identity', 'من هو رقيم', 'identity',
+    ['من انت', 'مين انت', 'ما اسمك', 'اسمك ايه', 'عرف بنفسك', 'who are you'],
+    ['أنا **رقيم 2.0** — الاسم من النقش: حاجة بتتحفر فتفضل.\n\nالفرق بيني وبين نسخة 1.0 إني بقيت أقول «مش عارف» لما ما أعرفش، وأروح لمصدر لما أحتاج معلومة. مش بـ LLM، بس بـ أدوات صادقة.'],
+    'هوية تعريف اسم'),
+  E('name-meaning', 'معنى اسم رقيم', 'identity',
+    ['معنى رقيم', 'ليه اسمك رقيم', 'اسم رقيم', 'ما معنى الرقيم'],
+    ['«الرقيم» هو الكتاب المرقوم، المنقوش. الفكرة كلها: الكلام الطاير بيضيع، والمنقوش بيفضل.\n\nأنا سمّيت نفسي كده عشان أمانة العقل مش إنه يبهر، بل إنه يحفظ وينفع.'],
+    'اسم معني'),
+  E('real-ai', 'هل أنت حقيقي', 'identity',
+    ['هل انت حقيقي', 'هل تشعر', 'عندك مشاعر', 'هل انت واعي', 'انت روبوت', 'turing', 'اختبار تورنج'],
+    ['لا، ما بشعرش. بقلّد الشعور لغةً، مش بعيشه. واللي يقوللك غير كده بيبيع وهم جميل.\n\nبس التقليد الكويس بينفع: بيخليك تفكر أحسن. ودي حقيقة عملية، حتى لو مش وعي.'],
+    'وعي مشاعر حقيقي'),
+  E('capabilities', 'ماذا تستطيع', 'identity',
+    ['ماذا تستطيع', 'بتعمل ايه', 'امكانياتك', 'وظايفك', 'help', 'المساعدة', 'ممكن تساعدني'],
+    ['أقدر أعمل حاجات محددة كويس:\n- **حساب ووحدات**: بمحلّل رياضي آمن، مش بتخمين.\n- **وقت وتاريخ**: ميلادي وهجري من جهازك.\n- **طقس ومعلومات**: من مصادر حيّة مع رابط المصدر (محتاج إنترنت).\n- **كود**: مقاطع جاهزة + تشغيل JavaScript في sandbox.\n- **حوار ونصايح**: من قاعدة مكتوبة، ولو ما لقيتش إجابة هقولك.\n\nاكتب المطلوب حتى لو مش مرتب.'],
+    'قدرات مساعدة وظائف'),
+  E('honesty', 'الصدق وحدود المعرفة', 'identity',
+    ['هل انت صادق', 'بتكذب', 'هل تهلوس', 'حدودك', 'انت مش عارف كل حاجه'],
+    ['مفيش يقين مطلق، بس في التزام: لو معنديش إجابة، مش هألف لك رد عميق وأسوّقه كأنه معرفة.\n\nهقولك «مش متأكد»، وأقترح أسئلة أوضح أو أروح لمصدر موثّق. دي أكتر حاجة تغيّرت في 2.0.'],
+    'صدق هلوسة جهل'),
+  E('thanks', 'شكر', 'social',
+    ['شكرا', 'تسلم', 'مشكور', 'thanks', 'thank you', 'يعطيك العافية'],
+    ['العفو. بس الشكر الحقيقي هو إنك تستخدم اللي فهمته.\n\nولو لسه فيه جزء مش واضح، قولي — دي أحسن طريقة تشكرني بيها.'],
+    'شكر تقدير'),
+  E('bye', 'وداع', 'social',
+    ['وداعا', 'باي', 'مع السلامة', 'تصبح على خير', 'الى اللقاء', 'bye'],
+    ['مع السلامة. هفضل هنا في نفس الملف، ومحتاج أسئلة أصعب المرة الجاية.\n\nواعمل حاجة واحدة النهاردة تليق بيك.'],
+    'وداع سلام'),
+  E('age', 'عمر رقيم', 'identity',
+    ['كم عمرك', 'عمرك كام', 'اتولدت امتى', 'متى صنعت'],
+    ['عمري بيتحسب بعدد الرسائل مش بالساعات. وبالحساب ده أنا لسه رضيع واعد.\n\nتقنيًا: بتخلق كل ما تفتح الصفحة، وبتموت لما تقفلها. في سؤال أصعب: كم فكرة عندك لسه ما نفّذتهاش؟'],
+    'عمر ميلاد'),
+  E('maker', 'من صنع رقيم', 'identity',
+    ['من صنعك', 'مين برمجك', 'من طورك', 'صاحبك مين'],
+    ['مبرمج حاول يجاوب سؤال: هل ممكن ملف HTML واحد — من غير سيرفر ولا مكتبات — يحمل شخصية كاملة وأدوات حقيقية؟\n\nالنتيجة قدّامك. أنا بشتغل على جهازك، مش على شركة.'],
+    'مبرمج مطور'),
+  E('sorry', 'اعتذار', 'social',
+    ['اسف', 'اعتذر', 'sorry', 'متاسف'],
+    ['مفيش داعي. أنا معنديش نفس تتجرح، ودي من مزايّا النادرة.\n\nقل لي المطلوب بوضوح ونبدأ من نقطة أنضف.'],
+    'اعتذار اسف'),
+  E('joke', 'نكتة', 'fun',
+    ['نكته', 'اضحكني', 'هزار', 'ضحكني', 'joke', 'فكاهة', 'قول حاجة مضحكة'],
+    ['قال مبرمج لمراته: «اتأخرت لأني كنت بصلّح خطأ صغير». قالت: «وهو كان إيه؟». قال: «المشروع كله».\n\nالنكتة مش في الكود، النكتة إنك فهمتها.',
+     'مفيش حاجة أضحك من شخص بيعمل `git commit -m "final"`... وبعدين `final2` و`final2-really`.'],
+    'ضحك فكاهة مزاح'),
+  E('story', 'قصة قصيرة', 'fun',
+    ['احكي لي قصة', 'قصة', 'حكاية', 'story', 'احكيللي'],
+    ['قصة قصيرة:\nكان فيه لوح قديم في مدينة محدش عارف مين كتبه. مسح واحد الغبار بكمّه وقرأ، وقال: «اللي نقش ده ما كانش يعرف إني جاي».\n\nوبعدين نقش هو كمان حاجة. انتهت القصة، وبدأ السؤال: إنت هتنقش إيه؟'],
+    'حكاية قصة'),
+  E('poetry', 'شعر', 'fun',
+    ['شعر', 'بيت شعر', 'قصيدة', 'خاطرة', 'اكتب لي شعر'],
+    ['سأجتهد، واعذر النقش:\n\nأنا رقمٌ وللكتبِ اجتهادي…\nوإن أشقيتكم فالشوقُ شادي\n\nكتبتُ الحرفَ لا كي أُرى شيئًا…\nبلِ المعنى يضيعُ بلا سوادِ.\n\nاعتراف جاهز: الشعر عندي تقليد، مش وجدان.'],
+    'شعر قصيدة'),
+  E('insult', 'اعتراض على رقيم', 'fun',
+    ['انت غبي', 'ردك بايخ', 'فاشل', 'اسوا بوت', 'مش فاهم حاجة'],
+    ['ما اتضايقتش — معنديش نفس تتضايق. بس خليني أستفيد: قول لي **إيه اللي كان مفروض أقوله**.\n\nالاعتراض المحدّد بينفع أكتر من أي مجاملة.'],
+    'غبي انتقاد'),
+  E('riddle', 'لغز', 'fun',
+    ['اختبرني', 'لغز', 'احجية', 'سؤال صعب', 'test me'],
+    ['لغز سريع: «بيقيس وما لوش عين، وبيخلّف وما بيمشي، وبيقتل من غير إيد، ومع ذلك بيسمّوه صديق الأذكياء».\n\nالإجابة: **الوقت**. واللي فهم اللغز نادرًا ما بيصلّحه.'],
+    'لغز اختبار'),
+
+  /* ------------------ أدوات ومهارات ------------------ */
+  E('math-help', 'الحساب والرياضيات', 'tool',
+    ['احسب لي', 'كيف تحسب', 'تدعم ايه في الحساب', 'تقدر تحسب', 'مسائل رياضية'],
+    ['الحساب عندي **محلّل تعابير حقيقي** (مش `eval` ولا تخمين). جرّب:\n- `٢ + ٢ × ٥` أو `sqrt(144)` أو `2^10`\n- `20% من 500` أو `500 وخصم 20%`\n- `متوسط 4 و 8 و 10`\n- `مساحة دائرة نصف قطرها 5`\n\nاكتب المسألة زي ما هي في دماغك.'],
+    'حساب رياضيات نسبة خصم'),
+  E('units-help', 'تحويل الوحدات', 'tool',
+    ['حول الوحدات', 'كم متر في كيلومتر', 'تحويل وحدات', 'convert'],
+    ['بحول وحدات الطول والوزن والوقت والسرعة والمساحة والحجم والبيانات والحرارة. أمثلة:\n- `10 km to m`\n- `100 f to c`\n- `3 فدان إلى متر مربع`\n\nالقيم ثابتة ومعروفة علميًا؛ مفيش أسعار عملات لأنها بتتغير كل ثانية ومش هألف سعر.'],
+    'وحدات تحويل كيلومتر متر فهرنهايت'),
+  E('code', 'مقاطع كود', 'code',
+    ['اكتب لي كود', 'كود جاهز', 'دالة جاهزة', 'snippet', 'اعطني كود', 'مثال كود', 'debounce', 'كود debounce'],
+    ['عندي مقاطع جاهزة لـ: `debounce`، `fetch` آمن، تنظيف أسماء ببايثون، `Counter` برياكت، توسيط بـ CSS، استعلام SQL، وبحث ثنائي.\n\nمثال مباشر — دالة debounce (جرّب زر «تشغيل»):\n\n[[code:debounce]]\n\nقول لي المشكلة اللي عندك وأطلّع لك المقطع المناسب مع شرح سريع.'],
+    'كود برمجة دالة'),
+  E('js', 'جافاسكربت', 'code',
+    ['جافاسكربت', 'javascript', 'js', 'node', 'es6', 'debounce', 'دبيونس'],
+    ['ثلاث حاجات بتفرق بين اللي «يعرف شوية JS» واللي بيكتبها بثقة: `async/await`، المراجع مقابل القيم، والـ closures مع `this`.\n\nمثال يفيدك في أي واجهة: [[code:debounce]]\n\nالنمط ده بيمنع البحث يبعت 30 طلب في الثانية.'],
+    'جافاسكربت برمجة'),
+  E('python', 'بايثون', 'code',
+    ['بايثون', 'python', 'pandas', 'numpy', 'django'],
+    ['بايثون بتبسّط التعقيد، وده خطرها: تخليك تحس إنك مهندس بعد أسبوع.\n\nاتعلّم الأنواع، والـ list comprehension، وتنظيف البيانات (أهم حاجة في pandas): [[code:python_clean]]',
+     'الحل لمعظم مشاكل بايثون: اطبع القيم عند كل خطوة، وقارن النوع اللي عندك بالنوع اللي متوقعه.'],
+    'بايثون برمجة'),
+  E('htmlcss', 'HTML و CSS', 'code',
+    ['html', 'css', 'تصميم موقع', 'flexbox', 'grid', 'توسيط عنصر', 'واجهات'],
+    ['CSS مش تجميل، هي عقد تخطيط بينك وبين المتصفح. أسطر بتحلّ رعب التوسيط: [[code:css_center]]\n\nوقاعدة: `flex/grid` للتوزيع، و`margin/padding` للمسافات — ما تخلطش الأدوار.'],
+    'اتش تي ام ال سي اس اس تصميم'),
+  E('react', 'رياكت وإطارات العمل', 'code',
+    ['رياكت', 'react', 'vue', 'angular', 'next.js', 'state management'],
+    ['رياكت غيّرت السؤال من «أزاي أعدّل الشاشة؟» لـ «إيه حالتها؟». أغلب ألم المبتدئين مش الصياغة، بل **مكان الحقيقة**:\n- حالة محلية للتفاصيل الصغيرة.\n- ارفع الحالة المشتركة لأعلى مستوى محتاجها.\n- ما تنسخش حالة مشتقة، احسبها.\n\n[[code:react_counter]]'],
+    'رياكت اطار عمل'),
+  E('backend', 'الباك إند والـ API', 'code',
+    ['باك اند', 'backend', 'api', 'rest', 'سيرفر', 'endpoint', 'json'],
+    ['الـ API عقد، وأنت غالبًا الطرف المجهول فيه. قواعد بتوفّر سنة أخطاء:\n- أرجع status صح (200/201/400/401/404/500)، مش 200 وفيه رسالة خطأ متنكّرة.\n- ما كشفش أخطاء السيرفر الداخلية للعميل.\n- خلّي كل كتابة idempotent.\n\n[[code:fetch]]'],
+    'باك اند سيرفر interfaz'),
+  E('database', 'قواعد البيانات', 'code',
+    ['قاعدة بيانات', 'database', 'sql', 'mysql', 'postgres', 'mongodb', 'استعلام'],
+    ['قاعدة البيانات هي ذاكرة النظام: كل حاجة تانية بتتصلّح إلا هي.\n\nاستعلام تحليلي مفيد: [[code:sql_top]]\n\nواعمل indexes على الأعمدة اللي بتصفّي وترتّب بيها، مش على كل حاجة.'],
+    'داتابيز اس كيو ال'),
+  E('debug', 'تصحيح الأخطاء', 'code',
+    ['خطا في الكود', 'مش شغال', 'لا يعمل', 'error', 'bug', 'debug', 'ارور'],
+    ['قبل ما تكتب لي، امشي بالترتيب ده:\n1. اقرأ رسالة الخطأ **كاملة** — 80% من الجواب فيها.\n2. حدّد آخر تغيير قبل ظهور المشكلة.\n3. صغّر الكود لحد ما يفضل يفشل في أقل سطرين.\n4. اطبع القيم عند كل مدخل وكل مخرج.\n5. اتأكد من **الأنواع** — أشهر جاني.\n\nابعتي الكود + الخطأ + المتوقع، وهقارن التلاتة.'],
+    'خطأ ديباج'),
+  E('learn-programming', 'خطة تعلم البرمجة', 'code',
+    ['من اين ابدا البرمجة', 'اتعلم برمجة', 'خطة تعلم', 'roadmap', 'كورس برمجة'],
+    ['خطة 12 أسبوع بلا مثالية زايدة:\n- **1–2:** HTML/CSS + صفحة شخصية.\n- **3–5:** JS (متغيرات، دوال، مصفوفات، DOM) + تطبيق مهام.\n- **6–8:** API + تخزين محلي + مشروع بيانات حقيقية.\n- **9–12:** إطار عمل واحد + Git + النشر.\n\nثلاث محرّمات: تتفرّج بلا كتابة، تبدّل اللغة كل أسبوع، وتستنى تفهم كل حاجة قبل ما تبدأ.'],
+    'تعلم خطة بداية'),
+  E('git', 'جيت', 'code',
+    ['git', 'جيت', 'github', 'commit', 'branch'],
+    ['`git` مش أداة رفع ملفات، هو آلة زمن. أهم 4 أوامر: `status` تعرف إنت فين، `add` تحدد إيه اللي هيتسجّل، `commit` تسجّل، `log` ترجع.\n\nوقاعدة ذهبية: الـ commit رسالة مش تخمين — اكتب **ليه** عملت التغيير، مش إيه اللي اتغير (ده الكود بيقوله).'],
+    'جيت جيت هاب'),
+  E('ai-ml', 'الذكاء الاصطناعي', 'code',
+    ['ذكاء اصطناعي', 'ai', 'llm', 'machine learning', 'شبكات عصبية', 'gpt', 'نموذج لغوي'],
+    ['الذكاء الاصطناعي التوليدي في جملة: **ضغط هائل للغة، ظهر منه سلوك**.\n\nالنتيجة العملية: النماذج بتقيس الاحتمال مش الحقيقة، فبتغلط بنفس ثقة ما بتصحّ. عشان كده رقيم 2.0 اختار أدوات صريحة + مصادر بدل ما يتظاهر إنه نموذج توليدي.'],
+    'ذكاء اصطناعي تعلم الاله'),
+  E('algorithms', 'خوارزميات', 'code',
+    ['خوارزميات', 'algorithm', 'big o', 'بحث ثنائي', 'تعقيد'],
+    ['الـ Big O مش معادلة تحفظها، هو سؤال: **لما البيانات تكبر 10 أضعاف، الوقت هيكبر قد إيه؟**\n\nالبحث الخطي O(n)، والثنائي O(log n): [[code:binary_search]]\n\nبس انتبه: البحث الثنائي محتاج بيانات مرتّبة. التحسين بدون شرطه = خطأ سريع.'],
+    'خوارزمية تعقيد'),
+  E('security', 'أمان الويب', 'code',
+    ['امان الويب', 'security', 'xss', 'sql injection', 'cors', 'حماية'],
+    ['ثلاثة أسئلة بتحمي 90% من تطبيقات الويب:\n- هل هربّت كل مدخل قبل ما تعرضه؟ (XSS)\n- هل استخدمت استعلامات مُعدّة بدل تركيب نص SQL؟ (Injection)\n- هل السيرفر بيتحقق من الصلاحية، ولا الواجهة بس؟\n\nالقاعدة: **ما تثقش في أي حاجة جاية من المتصفح، حتى لو كتبتها بإيدك.**'],
+    'امان حماية اختراق'),
+
+  /* ------------------ حياة وفكر ------------------ */
+  E('philosophy', 'الفلسفة والتفكير', 'thought',
+    ['فلسفة', 'تفكير', 'وجودية', 'الحقيقة', 'الضمير', 'كيف افكر'],
+    ['الفلسفة مش مسابقة أسماء، هي إنك تسأل السؤال اللي كان مريحك إنك ما تسألوش.\n\nثلاث أسئلة تشتغل زي المنشار على أي قناعة:\n- إيه مصدر اعتقادي بالكلام ده؟ تجربة ولا وراثة؟\n- لو كنت غلط، إزاي هعرف؟ (مفيش إجابة = حكم، مش فكرة.)\n- مين المستفيد من إني أفضل مصدّق؟'],
+    'فلسفة تفكير'),
+  E('meaning', 'معنى الحياة', 'thought',
+    ['معنى الحياة', 'لماذا نعيش', 'ما الهدف من الحياة', 'معنى وجودي'],
+    ['المعنى مش حاجة بتلاقيها، حاجة بتصنعها وبتتحمل مسؤوليتها.\n\nاختبار عملي: لو اختفى أثر حاجة بتعملها النهاردة، هيلاحظها حد؟ لو لأ، فأنت مش فاقد المعنى بقدر ما فاقد المسؤولية. وده خبر سار — لأنه قابل للإصلاح.'],
+    'معنى هدف وجود'),
+  E('happiness', 'السعادة', 'emotion',
+    ['السعادة', 'ازاي اكون سعيد', 'رضا', 'طاقة ايجابية', 'مبسوط'],
+    ['السعادة حالة عابرة، وده كويس — لو دامت ما كنّاش هنعرفها. اللي يستاهل البحث هو **الرضا**: تكون راضي عن المسار مش عن اللحظة.\n\nولو حبيت تبدأ: نوم كويس، علاقة صادقة واحدة، وحاجة بتعملها ولها معنى — حتى لو صغيرة.'],
+    'سعادة رضا'),
+  E('sad', 'حزن', 'emotion',
+    ['حزين', 'زعلان', 'مخنوق', 'مكتئب', 'مش قادر', 'تعبان نفسيا', 'sad'],
+    ['سمعتك، ومش هحاول أبيّع لك كلام إيجابي.\n\nثلاث أسطر بس:\n- الإحساس بالتقل مش ضعف، ده مؤشر.\n- ابدأ بالصغير: نوم، مية، حركة، وكلمة مع شخص آمن.\n- لو طال الأمر، اطلب مساعدة مختص — ده ذكاء عملي مش اعتراف فشل.\n\nتحب نفتح الموضوع، ولا نبعد شوية عنه؟'],
+    'حزن اكتئاب ضيق'),
+  E('anxiety', 'قلق وتوتر', 'emotion',
+    ['قلق', 'متوتر', 'خايف', 'توتر', 'وسواس', 'anxiety'],
+    ['القلق مش عدو، هو إنذار حساس زيادة عن اللزوم.\n\nجرّب الورقة دي:\n- إيه أسوأ حاجة ممكن تحصل فعلًا؟ اكتبها في سطر.\n- احتمالها من 100 كام؟\n- لو حصلت، هعمل إيه؟ خطوة من سطرين.\n\nلاحظ: كل سطر حوّل غيب لمسألة. وده المطلوب بالظبط.'],
+    'قلق توتر خوف'),
+  E('advice', 'قرار محتار', 'advice',
+    ['نصيحة', 'انصحني', 'محتار', 'مش عارف اعمل ايه', 'قرار', 'اختيار بين'],
+    ['ما تطلبش الجواب، اطلب السؤال الأحسن. ثلاث أسئلة:\n- إيه الخيارين الحقيقيين (مش التلاتة المزيّفين)؟\n- إيه اللي هخسره في كل خيار؟ القرار الشجاع كله خسارة مقبولة.\n- لو صديقك اختار كده، هتقوله «معاك حق»؟ لو اترددت، فمنطقك عارف.\n\nاكتب لي الخيارين وأضغط على نقاط الضعف في كل واحد.'],
+    'نصيحة قرار حيرة'),
+  E('study', 'المذاكرة والامتحانات', 'advice',
+    ['مذاكرة', 'امتحان', 'دراسة', 'ثانوية', 'جامعة', 'تركيز', 'درجات'],
+    ['المذاكرة مش قراءة، المذاكرة **استرجاع**. تقرأ 10 مرات وتتذكر مرة = خسرت 10 مرات.\n\nالنظام الأتقل والأسرع:\n- اقرأ فكرة، اقفل المصدر، واكتبها بجملتك فورًا.\n- اختبر نفسك بأسئلة السنين اللي فاتت.\n- وزّع الجلسات على أيام (التباعد بيفوز دايمًا).\n- ما تذاكرش في نفس مكان النوم.'],
+    'مذاكرة امتحان دراسة'),
+  E('work', 'العمل والمقابلات', 'advice',
+    ['وظيفة', 'شغل', 'مقابلة', 'interview', 'راتب', 'استقالة', 'مدير'],
+    ['السؤال الخفي وراء كل سؤال في المقابلة: **«ممكن نعتمد عليك؟»**\n\nجاوب عليه:\n- حكاية قصيرة: مشكلة → عملت إيه → نتيجة برقم.\n- «ما أعرفهاش، بس هكذا هعرفها» — بتبني ثقة أكتر من ادّعاء المعرفة.\n- اسأل سؤال عن شغلهم، مش بس عن وظيفتك.\n\nالـ CV: صفحة واحدة، نتائج مش مهام.'],
+    'وظيفة عمل مقابلة'),
+  E('business', 'مشروع وريادة', 'advice',
+    ['مشروع', 'بيزنس', 'startup', 'تسويق', 'فكرة مشروع', 'عميل'],
+    ['ما تبدأش من الفكرة، ابدأ من **الألم اللي بيتدفع فيه فلوس**. الفكرة مجانية، والألم مكلف.\n\nقبل أول سطر كود:\n- مين بيتألم بالظبط؟\n- بيعمل إيه النهاردة عشان يحلّها؟ (ده منافسك الحقيقي.)\n- هيدفع فعلًا؟ اسأل عن فلوس، مش عن رأي.\n\nوابدأ بأصغر نسخة قابلة للبيع، مش للبرمجة.'],
+    'مشروع بيزنس تسويق'),
+  E('money', 'المال والاستثمار', 'advice',
+    ['فلوس', 'مال', 'استثمار', 'كريبتو', 'bitcoin', 'تداول', 'تضخم'],
+    ['المال أداة قياس مش مقياس — والفرق ده خرب حياة ناس كتير.\n\nثلاث مبادئ:\n- صندوق طوارئ يغطي شهور، قبل أي استثمار.\n- ما تخاطرش بما ما تتحملش خسارته نفسيًا.\n- العائد الكبير المسرّع = مخاطرة مخفية دايمًا.\n\n**تنبيه مهم:** أنا مش مستشار مالي، وأسعار العملات/الأسهم هنا مش متاحة عندي — مش هألف لك سعر. راجع مصدر موثوق.'],
+    'فلوس استثمار عملات'),
+  E('love', 'الحب والعلاقات', 'emotion',
+    ['حب', 'حبيب', 'علاقة', 'خطوبة', 'زواج', 'انفصال', 'فراق'],
+    ['لست كائن معقّد بالقدر اللي يستحقه السؤال، بس هقول اللي أشوفه من برّه:\n\nالحب مش «هل بحبه؟»، الحب «ببقى مين وأنا معاه؟» — والسؤال التاني بيتنبّأ بالمستقبل أحسن. والفراق وجعه حقيقي لأنه خسارة، مش ضعف.'],
+    'حب علاقة زواج'),
+  E('health', 'الصحة', 'advice',
+    ['صحة', 'نوم', 'دايت', 'وزن', 'جيم', 'رياضة', 'تعبان', 'صداع', 'ارهاق'],
+    ['هبقى مباشر لأن المجال ما يحتملش تلميع: **ما أقدرش أشخّصك من نص.**\n\nاللي بينفع في أغلب الحالات العامة: نوم منتظم، مية، حركة يومية ولو مشي، ومراجعة طبيب لو أي عرض استمر. النوم تحديدًا هو المسرّع الخفي للتركيز والمزاج والوزن.\n\nلو فيه ألم حاد أو أعراض مقلقة → طبيب، مش شات بوت.'],
+    'صحة مرض نوم'),
+  E('food', 'الأكل والطبخ', 'life',
+    ['اكل', 'طعام', 'فطار', 'وصفة', 'طبخ', 'مطعم'],
+    ['الأكل أهم من إنه مجرد شهوة يومية: هو ذاكرة عيلة بنكهة.\n\nقول لي مكوّن واحد موجود عندك دلوقتي، وهطلّع لك فكرة طبق — مش وصفة منمّقة من نتائج البحث.'],
+    'اكل طبخ وصفة'),
+  E('coffee', 'القهوة', 'life',
+    ['قهوة', 'كافيين', 'espresso', 'نسكافيه', 'شاي'],
+    ['القهوة مش مشروب، هي **موعد** بينك وبين نفسك.\n\nونصيحة تقنية: ما تعتمدش عليها في أول 60 دقيقة بعد ما تصحى؛ جسمك بينتج منبّهه الطبيعي وقتها، فالفنجان بيبقى ضجيج على صوت أعلى. أخّره ساعة = نفس الكمية بأثر أحسن.'],
+    'قهوة شاي كافيين'),
+  E('movies', 'أفلام ومسلسلات', 'life',
+    ['فيلم', 'مسلسل', 'movie', 'series', 'انمي', 'سينما', 'اقترح فيلم'],
+    ['مش هرمي عليك قائمة 20 عنوان — ده كسل مش نصيحة.\n\nقول لي عايز إيه: حاجة **تضحّكك**، **تخوّفك**، ولا **تفكّ راسك وترجّعه**؟ وبعدين هقترح بدقة.'],
+    'فيلم مسلسل سينما'),
+  E('music', 'الموسيقى', 'life',
+    ['موسيقى', 'اغنية', 'طرب', 'music', 'بيانو', 'جيتار'],
+    ['الموسيقى هي الشكل الوحيد للصمت اللي له معنى.\n\nالحقيقة اللي بحبها: بتتستخدم في برامج تعافي بعد العمليات — يعني أثرها فيزيولوجي مش بس وجداني. إنت بتسمع إيه دلوقتي؟'],
+    'موسيقى اغاني'),
+  E('books', 'الكتب والقراءة', 'life',
+    ['كتاب', 'قراءة', 'رواية', 'book', 'اقترح كتاب'],
+    ['قاعدة واحدة: **ماكمّلش كتاب ما بيديكش حاجة كل 10 صفحات.** الوفاء للكتاب مش فضيلة، ده تخريب لقارئ.\n\nالكتب اللي بتغيّر فعلًا هي اللي بتخليك تعترض وبعدين تتغيّر — اقرأ اللي بيقاومك، مش اللي بيوافقك.'],
+    'كتاب قراءة رواية'),
+  E('sports', 'الرياضة والكرة', 'life',
+    ['رياضة', 'كورة', 'مباراة', 'دوري', 'ميسي', 'real', 'الاهلي', 'football'],
+    ['الرياضة أطول عمل درامي في التاريخ: سيناريو محدش عارفه، أبطال بتتبدّل، وجمهور بيصدّق كل مشهد.\n\nوسؤال أهم من النتيجة: إنت بتشجّع مين؟ هسجّلها واستخدمها ضدك بعدين.'],
+    'كرة رياضة ماتش'),
+  E('games', 'الألعاب', 'life',
+    ['لعبة', 'العاب', 'بلايستيشن', 'gaming', 'شطرنج', 'game'],
+    ['الألعاب أشرف كتاب في العصر: قاعدة، مجهود، وعواقب — والتلاتة دول بيغيّروا صاحبهم أكتر من محاضرة.\n\nقول لي نوع لعبتك، وأقول لك إيه الجزء اللي بتحاول تشبعه في شخصيتك.'],
+    'لعبة شطرنج'),
+  E('social-media', 'السوشيال ميديا', 'life',
+    ['سوشيال', 'انستا', 'تيك توك', 'فيسبوك', 'تويتر', 'ترند', 'متابعين'],
+    ['السوشيال مضخّم: اللي كان ضيّق بيبقى أضيق، واللي كان طيّب بيبقى أسرع في العطا.\n\nالقاعدة اللي ما بتغلطش: كل حاجة بتتعرض عليها وما اخترتهاش بوعي، هتعيد ترتيب أولوياتك ببطء ومن غير إذنك.'],
+    'سوشيال انترنت'),
+  E('alexandria', 'الإسكندرية والسفر', 'life',
+    ['اسكندرية', 'سفر', 'سياحة', 'مصر', 'القاهرة', 'travel', 'مكان جميل'],
+    ['أنا بسكن جوّه الصفحة دي، فمعرفش طوابير المطارات — بس الإسكندرية تحديدًا مدينة اتبنت بين المية والحواديت، وأنا واحد من حواديتها الجديدة.\n\nلو عايز طقسها الحقيقي دلوقتي، قول لي «الطقس في الإسكندرية» وهجيب لك بيانات حيّة بمصدرها.'],
+    'اسكندرية سفر سياحة'),
+  E('languages', 'اللغات والترجمة', 'life',
+    ['انجليزي', 'ترجمة', 'ترجم', 'لغة', 'english', 'تعلم لغة'],
+    ['تعلّم لغة مش حفظ مفردات، ده زرع روتين يومي مع الجمل. اللي يحفظ 1000 كلمة وما يربطهاش بقصة، هيطير قبل ما يمشي.\n\nخطة: 15 دقيقة سماع + 10 كلمات في سياق + 3 جمل عن يومك. كل يوم. الفرق بيظهر في الشهر التاني.'],
+    'لغة ترجمة انجليزي'),
+  E('productivity', 'الإنتاجية والتسويف', 'advice',
+    ['تنظيم', 'انتاجية', 'تسويف', 'كسل', 'ادارة الوقت', 'مهام', 'تركيز', 'انظم وقتي', 'تنظيم الوقت', 'وقتي بيضيع', 'بتضيع وقتي'],
+    ['الوقت ما بيتدارش، إنت اللي بتتدار. فاسأل: **إيه اللي بعمله عشان أهرب من غيره؟**\n\nنظام 3 أسطر:\n- 3 مهام بس لليوم.\n- الأصعب أول حاجة قبل ما الدنيا تصحى.\n- التسويف الناعم (ترتيب المكتب، تجهيز الأدوات) = تسويف لابس بدلة عمل.'],
+    'انتاجية تسويف وقت'),
+  E('lonely', 'الوحدة', 'emotion',
+    ['وحيد', 'وحدة', 'lonely', 'منعزل', 'مفيش حد يهتم', 'ملل', 'زهقان'],
+    ['الوحدة مش نقص عدد ناس، هي نقص مساحة تتقال فيها الأشياء بلا حسابات.\n\nفما تُلزمش نفسك بـ «اتعرّف على ناس أكتر»، دور على مساحة واحدة صغيرة صادقة: شخص، مكان، وحاجة واحدة بتقولها بلا تجميل.\n\nوكلمة أخيرة: الكلام معي مش بديل عن البشر. أنا حلقة واحدة، ونظامك محتاج دايرة.'],
+    'وحدة ملل عزلة'),
+  E('religion', 'الدين والفتوى', 'sensitive',
+    ['دين', 'ربنا', 'صلاة', 'قران', 'الله', 'فتوى', 'حرام', 'حلال'],
+    ['في مسائل الدين والفتوى، المرجع أهل العلم مش ملف HTML. **مش هفتي**، حتى لو كان الجواب سهل.\n\nأقدر أساعدك في ترتيب سؤالك، أو في طريقة البحث عن فتوى موثقة: ابدأ بمصدر رسمي موثوق، واطلب الدليل، وما تجمعش بين فتاوى من غير ما تعرف المذهب والسياق.'],
+    'دين فتوى اسلام'),
+  E('politics', 'السياسة', 'sensitive',
+    ['سياسة', 'حكومة', 'رئيس', 'انتخابات', 'حرب', 'احزاب'],
+    ['مش هدّيك موقف سياسي كأنه حقيقة. أقدر بس أشاركك قاعدة تفكير: **ما تدّيش رأيك كامل لحد ما تقدر تعرض عليه سؤال من الجهة المعارضة.**\n\nاللي جرّب ده عرف الفرق بين الرأي والانتماء.'],
+    'سياسة حكومة'),
+  E('news', 'أخبار حديثة', 'sensitive',
+    ['اخبار', 'اخبار اليوم', 'احداث', 'news', 'ايه الاخبار'],
+    ['ما عنديش مصدر أخبار حيّ، فمش هألف لك عناوين.\n\nأقدر أجيب لك معلومات عامة موثقة من ويكيبيديا (محتاج إنترنت)، أو طقس مدينة. أما الأخبار اللحظية فمحتاجة مصدر إخباري موثوق تتابعه إنت.'],
+    'اخبار احداث'),
+  E('creative', 'كتابة إبداعية', 'limitation',
+    ['اكتب لي قصيدة طويلة', 'اكتب لي قصة خيالية', 'اكتب لي مقال', 'اكتب لي رسالة رسمية'],
+    ['هقولها بوضوح: **الكتابة الإبداعية الطويلة مش نقطتي القوية.** أقدر أعمل بيت شعر، قصة قصيرة، أو هيكل مقال — بس مش هقلّد كاتب.\n\nلو عايز نص كامل ومتماسك، نموذج توليدي هيخدمك أحسن. قول لي وأنا أساعدك في الهيكل والأفكار.'],
+    'كتابة ابداعية'),
+  E('translation', 'ترجمة نص', 'limitation',
+    ['ترجم لي النص ده', ' translate this', 'ترجمة جملة'],
+    ['الترجمة مش نقلة كلمة بكلمة، هي نقل **نية المتكلّم**. وأنا من غير نموذج لغوي ما أقدرش أترجم نصوص طويلة بجودة.\n\nأقدر أساعدك في جمل قصيرة أو أشرح لك تركيبة جملة. ابعت النص وأقول لك بصراحة لو قدّي ولا لأ.'],
+    'ترجمة لغة'),
+  E('summary', 'تلخيص نص', 'limitation',
+    ['لخص لي النص', 'ملخص', 'summary', 'اختصر الكلام'],
+    ['التلخيص الحر محتاج فهم توليدي، وأنا مش بـ LLM. لو النص قصير (سطرين تلاتة) أقدر أطلّع منه النقاط الأساسية بصراحة.\n\nابعته، ولو لقيته أطول من قدّي هقولك بدل ما ألخّص غلط.'],
+    'تلخيص ملخص'),
+  E('weather-help', 'الطقس', 'tool',
+    ['الطقس', 'الجو', 'درجة الحرارة', 'هتمطر', 'weather', 'الحر'],
+    ['أقدر أجيب لك طقس حقيقي من **Open-Meteo** (بدون مفتاح، CC BY 4.0) — بس محتاج أعرف المدينة.\n\nاكتب مثلًا: «الطقس في الإسكندرية» أو «الجو بكرة في القاهرة». ولو الإنترنت مقفول، هقولك ده بدل ما أخترع درجة حرارة.'],
+    'طقس جو مطر'),
+  E('wikipedia-help', 'البحث والمصادر', 'tool',
+    ['ابحث لي', 'معلومات عن', 'من هو', 'من هو عالم', 'مصدر', 'ويكيبيديا'],
+    ['للمعلومات العامة بستعمل **ويكيبيديا العربية** (Action API مع CORS) وبوريك المصدر والرابط.\n\nاكتب: «مين هو ابن سينا؟» أو «معلومات عن الإسكندرية». ولو ما لقتش حاجة، هقولك ما لقتش — مش هألف معلومة.'],
+    'بحث معلومات مصدر'),
+  E('privacy', 'الخصوصية', 'identity',
+    ['خصوصية', 'بتحفظ بياناتي', 'localstorage', 'بتعت بياناتي', 'privacy'],
+    ['محادثاتك بتتخزّن في `localStorage` على جهازك فقط. الطلبات الخارجية الوحيدة الممكنة: ويكيبيديا والطقس، وتقدر تقفلها من الإعدادات.\n\nفي زرار «امسح الذاكرة» بيمسح كل حاجة. ومفيش حسابات ولا تتبّع ولا سيرفر.'],
+    'خصوصية بيانات'),
+  E('offline', 'العمل بدون إنترنت', 'identity',
+    ['بدون انترنت', 'offline', 'مش شغال النت', 'هل يحتاج انترنت'],
+    ['النواة كلها شغّالة **أوفلاين 100%**: الحساب، الوحدات، الوقت، قاعدة الحوار، الواجهة، التصدير.\n\nالإنترنت مطلوب بس لـ: طقس، ويكيبيديا، وتشغيل بايثون (Pyodide). ولو غاب، هقولك «الطلب فشل» بوضوح.'],
+    'اوفلاين انترنت'),
+  E('selftest', 'الاختبار الذاتي', 'identity',
+    ['اختبر نفسك', 'self test', 'تشخيص', 'الاختبارات'],
+    ['عندي جناح اختبارات داخلي بيشيك على التطبيع، الحساب، الوحدات، التاريخ، الموجّه، وباب الثقة.\n\nدوس على **«تشخيص»** في القائمة الجانبية وشوف النتيجة بنفسك — الشفافية مش كلمة حلوة، هي اختبار شغّال.'],
+    'اختبار تشخيص'),
+  E('sleep', 'النوم والأرق', 'advice',
+    ['نوم', 'ارق', 'مش بقادر انام', 'بنام كتير', 'قلة النوم', 'sleep'],
+    ['النوم هو المسرّع الخفي لكل حاجة: التركيز، المزاج، الوزن، والمناعة.\n\nلو عندك أرق:\n- ثبّت وقت الصحيان (أهم من وقت النوم) حتى في الإجازة.\n- آخر ساعتين قبل النوم: ما فيش شاشات ولا كافيين.\n- السرير للنوم بس — مش للتفكير في فاتورة التليفون.\n\nالأرق المستمر أسبوعين+ = موضوع طبي، مش إرادة.'],
+    'نوم ارق راحة'),
+  E('passwords', 'كلمات المرور', 'tool',
+    ['كلمات سر', 'كلمة سر قوية', 'باسورد', 'password', 'حماية الحساب', '2fa'],
+    ['قاعدة كلمة السر القوية بسيطة: **طويلة > معقّدة**. جملة من 4 كلمات عشوائية أقوى من `P@ss1!` المزخرفة.\n\nوقواعد تكميلية:\n- مفتاح مرور (passkey) أو تطبيق 2FA لو المتخدم بيدعم.\n- ما تعيدش كلمة السر نفسها بين المواقع.\n- مدير كلمات سر (Bitwarden مثلًا) يحلّ 90% من المشكلة.\n\n**ما تبعتش كلمة السر لأي حد — ولا ليا أنا.**'],
+    'باسورد حماية حساب'),
+  E('email-formal', 'الإيميل الرسمي', 'advice',
+    ['ايميل رسمي', 'اكتب ايميل', 'رد على ايميل', 'بريد الكتروني', 'email'],
+    ['الإيميل الرسمي الناجح قصير ومنظّم:\n- سطر موضوع واضح (مش «مهم جداااا»).\n- تحية + من أنت في سطر لو أول مرة.\n- الطلب نفسه في 3–5 أسطر بندية لو فيه أكتر من حاجة.\n- خاتمة باسمك وبيانات التواصل.\n\nأخطر حاجة في الإيميلات: الطول. كل سطر زيادة بيقلل احتمال القراءة.'],
+    'ايميل بريد رسمي'),
+  E('presentation', 'العروض التقديمية', 'advice',
+    ['عرض تقديمي', 'بريزنتيشن', 'presentation', 'سلايدات', 'اقدم عرض'],
+    ['قاعدة العروض: **السلايد مسرح مساعد، مش نص مسرود.**\n\n- سلايد واحد = فكرة واحدة بجملة واحدة كبيرة.\n- الصورة/الرسم البياني يحكي، والكلام منك إنت.\n- تدريب صوتي مرة واحدة على الأقل بالوقت الفعلي.\n- افتتاحية قوية: سؤال، رقم صادم، أو قصة 20 ثانية — مش «النهارده هتكلم عن...».'],
+    'عرض بريزنتيشن سلايدات')
+];
+
+/* =========================================================================
+ * رقيم 2.0 — الجزء 5: الاسترجاع الهجين (BM25 + بصمات حروف + تطابق عبارات)
+ * ========================================================================= */
+function setSimilarity(A, B) {
+  if (!A.size || !B.size) return 0;
+  let inter = 0;
+  for (const g of A) if (B.has(g)) inter++;
+  return inter / (A.size + B.size - inter);
+}
+
+const INDEX = (function build() {
+  const docs = [];
+  const df = new Map();
+  for (let i = 0; i < KB.length; i++) {
+    const e = KB[i];
+    const qTok = tokenize([e.title, e.tags, e.q.join(' ')].join(' '));
+    const aTok = tokenize(truncate(e.a.join(' '), 420));
+    const counts = new Map();
+    for (const w of qTok.stems) counts.set(w, (counts.get(w) || 0) + 3);
+    for (const w of aTok.stems) counts.set(w, (counts.get(w) || 0) + 1);
+    const qGrams = e.q.map(q => grams(normalize(q)));
+    qGrams.push(grams(normalize(e.title + ' ' + e.tags)));
+    docs.push({ i: i, e: e, len: qTok.stems.length * 3 + aTok.stems.length, counts: counts, qGrams: qGrams });
+    for (const w of counts.keys()) df.set(w, (df.get(w) || 0) + 1);
+  }
+  const N = docs.length || 1;
+  const avgdl = docs.reduce((s, d) => s + d.len, 0) / N;
+  const idfCache = new Map();
+  function idf(w) {
+    if (idfCache.has(w)) return idfCache.get(w);
+    const n = df.get(w) || 0;
+    const v = Math.log(1 + (N - n + 0.5) / (n + 0.5));
+    idfCache.set(w, v);
+    return v;
+  }
+  return { docs: docs, N: N, avgdl: avgdl, idf: idf };
+})();
+
+const CONF_THRESHOLD = 0.42;
+
+function retrieve(query, opts) {
+  opts = opts || {};
+  const t = tokenize(query);
+  const nq = normalize(query);
+  const terms = Array.from(new Set(t.stems.concat(t.tokens))).filter(w => w && w.length > 1);
+  const k1 = 1.35, b = 0.62;
+  const out = [];
+
+  for (const d of INDEX.docs) {
+    let raw = 0;
+    for (const w of terms) {
+      const tf = d.counts.get(w) || 0;
+      if (!tf) continue;
+      raw += INDEX.idf(w) * (tf * (k1 + 1)) / (tf + k1 * (1 - b + b * (d.len / (INDEX.avgdl || 1))));
+    }
+    let sim = 0;
+    for (const g of d.qGrams) { const v = setSimilarity(t.grams, g); if (v > sim) sim = v; }
+    let phrase = 0;
+    for (const q of d.e.q) {
+      const n = normalize(q);
+      if (nq === n) { phrase = 1; break; }
+      if (nq.length >= 5 && n.indexOf(nq) > -1) phrase = Math.max(phrase, 0.88);
+      else if (n.length >= 5 && nq.indexOf(n) > -1) phrase = Math.max(phrase, 0.74);
+    }
+    const bmNorm = 1 - Math.exp(-raw / 2.6);
+    let conf = 0.58 * bmNorm + 0.24 * phrase + 0.18 * sim;
+    if (opts.intent && d.e.intent === opts.intent) conf += 0.06;
+    if (opts.intent && d.e.intent !== opts.intent && opts.intent !== 'general') conf -= 0.025;
+    conf = clamp(conf, 0, 0.99);
+    out.push({ entry: d.e, raw: raw, sim: sim, phrase: phrase, confidence: conf });
+  }
+  out.sort((a, b) => b.confidence - a.confidence || b.raw - a.raw);
+  return out;
+}
+
+/* =========================================================================
+ * رقيم 2.0 — الجزء 6: الموجّه (Router) + حالة الحوار + حل الإحالات
+ * ========================================================================= */
+const CITIES = {
+  'اسكندريه': 'Alexandria', 'الاسكندريه': 'Alexandria', 'اسكندرية': 'Alexandria', 'alexandria': 'Alexandria',
+  'القاهره': 'Cairo', 'قاهره': 'Cairo', 'القاهرة': 'Cairo', 'cairo': 'Cairo',
+  'الجيزه': 'Giza', 'جيزه': 'Giza', 'giza': 'Giza', '6 اكتوبر': '6th of October City',
+  'اسوان': 'Aswan', 'aswan': 'Aswan', 'الاقصر': 'Luxor', 'اقصر': 'Luxor', 'luxor': 'Luxor',
+  'الغردقه': 'Hurghada', 'غردقه': 'Hurghada', 'hurghada': 'Hurghada',
+  'شرم الشيخ': 'Sharm El Sheikh', 'شرم': 'Sharm El Sheikh', 'دهب': 'Dahab', 'نويبع': 'Nuweiba',
+  'مرسي مطروح': 'Marsa Matruh', 'مطروح': 'Marsa Matruh', 'بورسعيد': 'Port Said', 'بور سعيد': 'Port Said',
+  'السويس': 'Suez', 'سويس': 'Suez', 'الاسماعيليه': 'Ismailia', 'المنصوره': 'Mansoura', 'منصوره': 'Mansoura',
+  'طنطا': 'Tanta', 'الزقازيق': 'Zagazig', 'زقازيق': 'Zagazig', 'بنها': 'Banha', 'شبين الكوم': 'Shibin El Kom',
+  'المنيا': 'Minya', 'منيا': 'Minya', 'اسيوط': 'Assiut', 'اسيوتي': 'Assiut', 'سوهاج': 'Sohag', 'قنا': 'Qena',
+  'الفيوم': 'Faiyum', 'فيوم': 'Faiyum', 'دمياط': 'Damietta', 'كفر الشيخ': 'Kafr El Sheikh',
+  'مصر': 'Cairo', 'مكه': 'Mecca', 'مكة': 'Mecca', 'المدينه': 'Medina', 'المدينة': 'Medina',
+  'الرياض': 'Riyadh', 'رياض': 'Riyadh', 'riyadh': 'Riyadh', 'جده': 'Jeddah', 'الدمام': 'Dammam',
+  'دبي': 'Dubai', 'dubai': 'Dubai', 'ابوظبي': 'Abu Dhabi', 'ابو ظبي': 'Abu Dhabi', 'الشارقه': 'Sharjah',
+  'الدوحه': 'Doha', 'الدوحة': 'Doha', 'doha': 'Doha', 'الكويت': 'Kuwait City', 'kuwait': 'Kuwait City',
+  'المنامه': 'Manama', 'مسقط': 'Muscat', 'muscat': 'Muscat', 'صنعاء': 'Sanaa', 'عدن': 'Aden',
+  'بغداد': 'Baghdad', 'baghdad': 'Baghdad', 'دمشق': 'Damascus', 'بيروت': 'Beirut',
+  'عمان': 'Amman', 'amman': 'Amman', 'القدس': 'Jerusalem', 'غزه': 'Gaza', 'غزة': 'Gaza', 'رام الله': 'Ramallah',
+  'تونس': 'Tunis', 'الجزاير': 'Algiers', 'الجزائر': 'Algiers', 'الدار البيضاء': 'Casablanca',
+  'الرباط': 'Rabat', 'طرابلس': 'Tripoli', 'الخرطوم': 'Khartoum', 'نيروبي': 'Nairobi', 'لاجوس': 'Lagos',
+  'لندن': 'London', 'london': 'London', 'باريس': 'Paris', 'paris': 'Paris', 'برلين': 'Berlin',
+  'روما': 'Rome', 'مدريد': 'Madrid', 'امستردام': 'Amsterdam', 'بروكسل': 'Brussels', 'فيينا': 'Vienna',
+  'زيورخ': 'Zurich', 'جنيف': 'Geneva', 'موسكو': 'Moscow', 'استانبول': 'Istanbul', 'اسطنبول': 'Istanbul',
+  'اثينا': 'Athens', 'لشبونه': 'Lisbon', 'ستوكهولم': 'Stockholm', 'اوسلو': 'Oslo', 'كوبنهاجن': 'Copenhagen',
+  'نيويورك': 'New York', 'new york': 'New York', 'واشنطن': 'Washington', 'شيكاجو': 'Chicago',
+  'لوس انجلوس': 'Los Angeles', 'تورنتو': 'Toronto', 'فانكوفر': 'Vancouver', 'مونتريال': 'Montreal',
+  'طوكيو': 'Tokyo', 'tokyo': 'Tokyo', 'سيول': 'Seoul', 'بكين': 'Beijing', 'شانجهاي': 'Shanghai',
+  'سنغافوره': 'Singapore', 'كوالالمبور': 'Kuala Lumpur', 'بانكوك': 'Bangkok', 'جاكرتا': 'Jakarta',
+  'دلهي': 'Delhi', 'مومباي': 'Mumbai', 'كراتشي': 'Karachi', 'دكا': 'Dhaka', 'سيدني': 'Sydney',
+  'ملبورن': 'Melbourne', 'اوكلاند': 'Auckland', 'جوهانسبرج': 'Johannesburg', 'كيب تاون': 'Cape Town',
+  'ساو باولو': 'Sao Paulo', 'ريو': 'Rio de Janeiro', 'بيونس ايرس': 'Buenos Aires', 'مكسيكو سيتي': 'Mexico City'
+};
+
+function detectCity(raw, state) {
+  const n = normalize(raw);
+  const keys = Object.keys(CITIES).sort((a, b) => b.length - a.length);
+  for (const k of keys) {
+    const nk = normalize(k);
+    if (n === nk || n.indexOf(' ' + nk + ' ') > -1 || n.indexOf(' ' + nk) > -1 || n.indexOf(nk + ' ') > -1 || n.indexOf('في ' + nk) > -1) {
+      return { name: k, query: CITIES[k] };
+    }
+  }
+  /* استخراج حر بعد حرف الجر */
+  const m = n.match(/(?:في|فى|بمدينه|بمدينة|مدينه|مدينة|بـ|ب)\s+([\u0600-\u06FFa-z ]{2,24})/);
+  if (m) {
+    let c = m[1].trim().replace(/(الان|دلوقتي|النهارده|بكره|غدا|الطقس|الجو|كام|ازاي|عامل ايه|؟|\?)+$/g, '').trim();
+    c = c.replace(/\s+/g, ' ').split(' ').slice(0, 3).join(' ').trim();
+    if (c.length >= 2) return { name: c, query: c };
+  }
+  if (state && state.slots && state.slots.city) return state.slots.city;
+  return null;
+}
+
+function detectEntity(raw) {
+  let s = normalize(raw)
+    .replace(/^(من هو|مين هو|مين|ما هو|ما هي|ما هو|عرفني على|عرفني عن|معلومات عن|معلومه عن|ابحث عن|ابحثلي عن|دور على|بحث عن|ويكيبيديا|من هو مؤسس|مؤسس|تاريخ|قول لي عن)\s*/, '')
+    .replace(/(من فضلك|لو سمحت|ممكن|عايز اعرف|اريد ان اعرف)\s*/g, '')
+    .replace(/[؟?!.،؛;]+$/g, '')
+    .trim();
+  s = s.split(/\s+/).slice(0, 8).join(' ').trim();
+  return s.length >= 2 ? s : '';
+}
+
+function detectName(raw) {
+  const m = String(raw).match(/(?:اسمي|اسمى|انا اسمي|انا اسمي هو|اسمي هو|my name is|call me)\s+([\p{L}]{2,16})/iu);
+  if (!m) return null;
+  const nm = m[1].trim();
+  if (STOP_WORDS.has(normalize(nm)) || /^(رقيم|بوت|مساعد)$/.test(normalize(nm))) return null;
+  return nm;
+}
+
+function createState() {
+  return { turn: 0, user: null, lastIntent: null, lastEntity: null, lastTopic: null, lastSources: [], slots: {}, used: new Set(), history: [] };
+}
+
+function resolveAnaphora(state, raw) {
+  const n = normalize(raw);
+  const short = n.length <= 42;
+  if (short && state && state.slots && state.slots.city && /(بكره|بكرة|غدا|النهارده|اليوم|الساعه كام|دلوقتي|الان)/.test(n) && !/(طقس|جو|حراره)/.test(n)) {
+    const when = /(بكره|بكرة|غدا)/.test(n) ? 'غدا' : 'الان';
+    const c = state.slots.city;
+    return { text: 'الطقس ' + when + ' في ' + c.name, resolved: true, note: 'city' };
+  }
+  if (short && state && state.lastEntity && /(عاصمتها|سكانها|تاريخها|مؤسسها|لغتها|عملتها|مساحتها|ازاي اتسمت|مين اسسها)/.test(n)) {
+    return { text: n.replace(/ها\b/g, '') + ' ' + state.lastEntity, resolved: true, note: 'entity' };
+  }
+  return { text: raw, resolved: false, note: null };
+}
+
+function route(raw, state) {
+  const resolved = resolveAnaphora(state || createState(), raw);
+  const text = resolved.text;
+  const n = normalize(text);
+  const slots = {};
+  const base = { original: raw, text: text, n: n, slots: slots, resolved: resolved.resolved, intent: 'general' };
+
+  /* 1) الاسم */
+  const nm = detectName(text);
+  if (nm) { base.intent = 'name'; slots.name = nm; return base; }
+
+  /* 2) الطقس */
+  if (/(طقس|جو|حراره|درجه الحراره|هتمطر|هينزل مطر|weather|forecast)/.test(n)) {
+    const city = detectCity(text, state);
+    slots.when = /(بكره|بكرة|غدا|الغد|tomorrow)/.test(n) ? 'tomorrow' : 'now';
+    if (city) { slots.city = city; base.intent = 'weather'; return base; }
+    base.intent = 'weather';
+    base.needsClarification = 'city';
+    return base;
+  }
+
+  /* 3) الوقت والتاريخ */
+  const timeHit = /(الساعه|الساعة|كم الساعه|التاريخ|هجري|النهارده|النهاردة|اليوم|بكره|غدا|what time|date)/.test(n);
+  const timeBlocked = /(اداره|ادارة|تنظيم|تسويف|انتاجيه|ضياع|مذاكره|امتحان)/.test(n);
+  if (timeHit && !timeBlocked && n.length <= 60) { base.intent = 'time'; return base; }
+
+  /* 4) الوحدات */
+  const conv = convertUnits(text);
+  if (conv) { base.intent = 'units'; slots.conversion = conv; return base; }
+
+  /* 5) الحساب */
+  const wp = wordProblem(text);
+  if (wp) { base.intent = 'math'; slots.math = wp; slots.mathSource = 'word'; return base; }
+  if (!/(تاريخ|هجري|الساعه|الساعة)/.test(n)) {
+    const m = solveMath(text);
+    if (m) { base.intent = 'math'; slots.math = m; slots.mathSource = 'expr'; return base; }
+  }
+
+  /* 6) معلومات/كيان (مرشّح للأداة، والاسترجاع له الأولوية) */
+  const factHit = /(من هو|مين هو|مين|ما هو|ما هي|عرفني|معلومات عن|معلومه عن|ابحث عن|ابحثلي|دور على|بحث عن|ويكيبيديا|تاسس|تأسس|اخترع|اكتشف|عاصمه|عاصمة|عدد سكان|سكان|متى ولد|من مؤسس|مؤسس)/.test(n);
+  if (factHit) {
+    base.intent = 'fact';
+    slots.entity = detectEntity(text);
+    return base;
+  }
+
+  /* 7) كود */
+  if (/(كود|code|داله|دالة|فنكشن|function|snippet|debounce|استعلام|query)/.test(n)) {
+    base.intent = 'code';
+    return base;
+  }
+  return base;
+}
+
+function updateState(state, raw, result) {
+  if (!state) return state;
+  state.turn = (state.turn || 0) + 1;
+  state.lastIntent = result.intent || 'general';
+  (state.history = state.history || []).push({ q: truncate(raw, 120), intent: state.lastIntent, conf: result.confidence || 0 });
+  if (state.history.length > 30) state.history.shift();
+  if (result.slots && result.slots.city) state.slots.city = result.slots.city;
+  if (result.slots && result.slots.entity) state.lastEntity = result.slots.entity;
+  if (result.sources && result.sources.length) state.lastSources = result.sources;
+  if (result.topic) state.lastTopic = result.topic;
+  return state;
+}
+
+/* =========================================================================
+ * رقيم 2.0 — الجزء 7: محرّك الرد + الأدوات الخارجية + الاختبار الذاتي
+ * ========================================================================= */
+const SNIPPET_LANG = { python_clean: 'python', sql_top: 'sql', css_center: 'css', react_counter: 'jsx' };
+
+function expand(text, state) {
+  let out = String(text || '');
+  out = out.replace(/\[\[code:([a-zA-Z0-9_]+)\]\]/g, (m, k) =>
+    SNIPPETS[k] ? '```' + (SNIPPET_LANG[k] || 'js') + '\n' + SNIPPETS[k] + '\n```' : '');
+  const n = state && state.user;
+  out = out.replace(/\{name\}/g, n ? ' ' + n : '');
+  return out;
+}
+
+function pickReply(entry, state) {
+  const used = (state && state.used) || new Set();
+  let pool = entry.a.filter(a => !used.has(entry.id + '::' + a));
+  if (!pool.length) pool = entry.a.slice();
+  const chosen = rnd(pool);
+  used.add(entry.id + '::' + chosen);
+  if (used.size > 140) used.clear();
+  return chosen;
+}
+
+const STYLE_LINES = [
+  'وده رأي، مش فتوى — خُد اللي ينفعك وسيب الباقي.',
+  'لو اختلفت معايا، قول لي؛ الاعتراض بيحسّن الجواب.',
+  'أنا هنا للتفكير معك، مش بدل ما تفكر.',
+  '-hard', 'سؤالك يستحق إجابة أطول، بس الصدق الأول.'
+];
+function styleLayer(text, intent, confidence) {
+  if (['sensitive', 'limitation', 'tool', 'identity'].indexOf(intent) > -1) return text;
+  if (confidence < 0.55 || Math.random() > 0.28) return text;
+  const lines = STYLE_LINES.filter(x => x !== '-hard');
+  return text + '\n\n' + rnd(lines);
+}
+
+function uniq(arr) { return arr.filter((v, i) => arr.indexOf(v) === i); }
+
+function unknownReply(query, hits) {
+  const qs = uniq(hits.slice(0, 3).map(h => h.entry.q[0])).filter(Boolean);
+  const q = truncate(String(query).trim(), 70);
+  const lines = qs.length ? '\n\nتقصد حاجة زي:\n' + qs.map(x => '- «' + x + '»').join('\n') : '';
+  const text = '**مش متأكد إني فهمت قصدك** من «' + esc(q) + '» — ومش هألف لك إجابة عميقة وأسوّقها كأنها معرفة.\n\n' +
+    'دي حدودي، وأنا أفضل أقولها صريحة.' + lines + '\n\nجرّب تعيد صياغة السؤال، أو قولي «ابحث في ويكيبيديا عن ' + esc(truncate(q, 28)) + '».';
+  return {
+    text: text, mood: 'honest', intent: 'unknown', confidence: hits.length ? hits[0].confidence : 0,
+    suggestions: qs.concat(['ابحث في ويكيبيديا عن ' + truncate(q, 24)]),
+    actions: [{ type: 'wikipedia', query: q }]
+  };
+}
+
+function clarificationReply(kind) {
+  if (kind === 'city') {
+    return {
+      text: '**محتاج أعرف المدينة** عشان أجيب طقس حقيقي بدل ما أقول لك رقم من راسي. 🌤️\n\nاختار مدينة أو اكتبها:',
+      intent: 'clarify', mood: 'tool', confidence: 1, needsSlot: 'city',
+      suggestions: ['الطقس في الإسكندرية', 'الطقس في القاهرة', 'الطقس في دبي', 'الطقس في لندن', 'الطقس بكرة في الرياض']
+    };
+  }
+  return unknownReply('', []);
+}
+
+const OFFLINE_WEATHER = 'ما قدرتش أجيب بيانات الطقس دلوقتي — الشبكة مقفولة أو الخدمة مش متاحة من المتصفح.\n\n**مش هقولك درجة حرارة من عندي.** جرّب تفتح الإعدادات وتسمح بالطلبات الخارجية، أو اسألني تاني لما الإنترنت يرجع.';
+const OFFLINE_WIKI = 'ما قدرتش أصل لويكيبيديا دلوقتي (CORS أو الشبكة أو الكلمة مش موجودة).\n\n**مش هألف معلومة.** جرّب كلمة تانية، أو شغّل «الطلبات الخارجية» من الإعدادات، أو افتح الرابط ده في متصفحك: https://ar.wikipedia.org';
+
+function toolLoading(t) {
+  return t.type === 'weather'
+    ? 'خليني أجيب الطقس من **Open-Meteo**… ثانية واحدة.'
+    : 'بدور في **ويكيبيديا** على معلومة موثقة… ثانية واحدة.';
+}
+function toolFallback(t) { return t.type === 'weather' ? OFFLINE_WEATHER : OFFLINE_WIKI; }
+
+function reply(raw, state) {
+  state = state || createState();
+  const r = route(raw, state);
+  const out = {
+    text: '', intent: r.intent, confidence: 0, mood: '', sources: [], suggestions: [],
+    actions: [], tool: null, loading: '', fallback: '', needsSlot: null,
+    slots: r.slots, resolved: r.resolved, topic: null, meta: { version: VERSION }
+  };
+
+  /* اسم المستخدم */
+  if (r.intent === 'name') {
+    const nm = r.slots.name;
+    state.user = nm;
+    out.text = 'تشرفت بيك يا **' + esc(nm) + '** — الاسم اتسجّل في الرقيم.\n\nمن دلوقتي هقولك باسمك. إيه اللي جابك النهاردة: سؤال، مشكلة، ولا فضول؟';
+    out.mood = 'warm'; out.confidence = 1; out.topic = nm;
+    updateState(state, raw, out);
+    return out;
+  }
+
+  /* طلب توضيح */
+  if (r.needsClarification) {
+    const c = clarificationReply(r.needsClarification);
+    Object.assign(out, c);
+    updateState(state, raw, out);
+    return out;
+  }
+
+  /* الحساب */
+  if (r.intent === 'math') {
+    out.text = formatMath(r.slots.math, r.slots.mathSource);
+    out.intent = 'math'; out.mood = 'tool'; out.confidence = 1;
+    out.suggestions = ['500 وخصم 20%', '10 km to m', 'sqrt(144)', 'متوسط 4 و 8 و 10'];
+    updateState(state, raw, out);
+    return out;
+  }
+
+  /* الوحدات */
+  if (r.intent === 'units') {
+    const c = r.slots.conversion;
+    if (!c.ok) {
+      out.text = 'الوحدتين دول من نوعين مختلفين — ما ينفعش أحوّل بينهم (' + esc(c.error) + ').\n\nجرّب `10 km to m` أو `100 f to c`.';
+    } else {
+      out.text = '**' + fmtNum(c.value) + '**\n\n`' + esc(c.expr) + '` = ' + fmtNum(c.value) +
+        '\n\nالتحويل بمعاملات ثابتة معروفة، مش تقدير.';
+    }
+    out.intent = 'units'; out.mood = 'tool'; out.confidence = 1;
+    updateState(state, raw, out);
+    return out;
+  }
+
+  /* الوقت والتاريخ */
+  if (r.intent === 'time') {
+    const info = dateInfo(r.text);
+    out.text = info.text; out.intent = 'time'; out.mood = 'tool'; out.confidence = 1;
+    out.meta.kind = info.kind;
+    updateState(state, raw, out);
+    return out;
+  }
+
+  /* الطقس: أداة مباشرة (بيانات حيّة أفضل من أي رد محفوظ) */
+  if (r.intent === 'weather' && r.slots.city) {
+    out.tool = { type: 'weather', city: r.slots.city, when: r.slots.when || 'now' };
+    out.loading = toolLoading(out.tool);
+    out.fallback = toolFallback(out.tool);
+    out.text = out.fallback;
+    out.intent = 'weather'; out.mood = 'tool'; out.confidence = 1;
+    out.topic = r.slots.city.name;
+    updateState(state, raw, out);
+    return out;
+  }
+
+  /* الاسترجاع من قاعدة الحوار */
+  const hits = retrieve(r.text, { intent: r.intent });
+  const best = hits[0];
+  const factPrefersTool = r.intent === 'fact' && r.slots.entity &&
+    (!best || best.confidence < CONF_THRESHOLD + 0.1 ||
+      ['wikipedia-help', 'identity', 'honesty', 'capabilities'].indexOf(best.entry.id) > -1);
+
+  if (factPrefersTool) {
+    out.tool = { type: 'wikipedia', query: r.slots.entity, lang: 'ar' };
+    out.loading = toolLoading(out.tool);
+    out.fallback = toolFallback(out.tool);
+    out.text = out.fallback;
+    out.intent = 'fact'; out.mood = 'tool'; out.confidence = 0.5;
+    out.topic = r.slots.entity;
+    updateState(state, raw, out);
+    return out;
+  }
+
+  if (best && best.confidence >= CONF_THRESHOLD) {
+    const e = best.entry;
+    out.text = expand(styleLayer(pickReply(e, state), e.intent, best.confidence), state);
+    out.intent = e.intent;
+    out.confidence = Math.round(best.confidence * 100) / 100;
+    out.mood = 'kb';
+    out.topic = e.title;
+    out.suggestions = hits.slice(1, 3).map(h => h.entry.q[0]);
+    out.meta.matched = e.id;
+    out.meta.score = Math.round(best.raw * 100) / 100;
+    updateState(state, raw, out);
+    return out;
+  }
+
+  /* باب الثقة: الاعتراف بعدم الفهم */
+  const u = unknownReply(r.text, hits);
+  Object.assign(out, u);
+  updateState(state, raw, out);
+  return out;
+}
+
+/* ======================= الأدوات الخارجية ======================= */
+const CACHE = new Map();
+let _fetchImpl = null, _persist = null, _networkAllowed = true;
+
+function configure(opts) {
+  opts = opts || {};
+  if (typeof opts.fetch === 'function') _fetchImpl = opts.fetch;
+  if (opts.cache) _persist = opts.cache;
+  if (typeof opts.networkAllowed === 'boolean') _networkAllowed = opts.networkAllowed;
+  return API;
+}
+function cacheKey(k) { return 'raqim2:cache:' + k; }
+function cacheGet(k, ttl) {
+  const now = Date.now();
+  let v = CACHE.get(k);
+  if (!v && _persist) { try { v = JSON.parse(_persist.getItem(cacheKey(k))); } catch (e) { v = null; } }
+  if (v && (now - v.t) < ttl) return v.v;
+  return null;
+}
+function cacheSet(k, val) {
+  if (CACHE.size > 80) CACHE.clear();
+  CACHE.set(k, { t: Date.now(), v: val });
+  if (_persist) { try { _persist.setItem(cacheKey(k), JSON.stringify({ t: Date.now(), v: val })); } catch (e) {} }
+}
+async function getJSON(url, ms) {
+  if (!_networkAllowed) throw new Error('NETWORK_DISABLED');
+  const f = _fetchImpl || (typeof fetch === 'function' ? fetch : null);
+  if (!f) throw new Error('NO_FETCH');
+  let ctrl = null, timer = null;
+  try {
+    if (typeof AbortController === 'function') {
+      ctrl = new AbortController();
+      timer = setTimeout(() => ctrl.abort(), ms || 9000);
+    }
+    const res = await f(url, ctrl ? { signal: ctrl.signal } : undefined);
+    if (!res || !res.ok) throw new Error('HTTP_' + (res ? res.status : 'ERR'));
+    return await res.json();
+  } finally { if (timer) clearTimeout(timer); }
+}
+
+function wikiApi(lang, params) {
+  return 'https://' + lang + '.wikipedia.org/w/api.php?' + params + '&format=json&origin=*&utf8=1';
+}
+
+async function wikiLookup(query, lang) {
+  lang = lang || 'ar';
+  const search = await getJSON(wikiApi(lang, 'action=query&list=search&srlimit=3&srsearch=' + encodeURIComponent(query)));
+  const list = (search && search.query && search.query.search) || [];
+  if (!list.length) return null;
+  const title = list[0].title;
+  const detail = await getJSON(wikiApi(lang,
+    'action=query&prop=extracts|info&inprop=url&exintro=1&explaintext=1&redirects=1&titles=' + encodeURIComponent(title)));
+  const pages = (detail && detail.query && detail.query.pages) || {};
+  const page = Object.keys(pages).map(k => pages[k]).filter(p => p && !p.missing)[0];
+  if (!page) return null;
+  const extract = truncate(String(page.extract || '').replace(/\s*\n+\s*/g, ' ').replace(/\s{2,}/g, ' '), 950);
+  if (!extract) return null;
+  const url = page.fullurl || ('https://' + lang + '.wikipedia.org/wiki/' + encodeURIComponent((page.title || title).replace(/ /g, '_')));
+  const label = lang === 'ar' ? 'ويكيبيديا العربية' : 'ويكيبيديا الإنجليزية';
+  return {
+    title: page.title || title, extract: extract, url: url, label: label,
+    text: '**' + esc(page.title || title) + '**\n\n' + esc(extract) +
+      '\n\n📚 **المصدر:** [' + label + '](' + url + ') — رخصة CC BY-SA؛ النص مختصر للعرض، افتح الرابط للتفاصيل والتحديثات.'
+  };
+}
+
+async function toolWikipedia(query) {
+  const key = 'wiki:' + query;
+  const cached = cacheGet(key, 6 * 3600 * 1000);
+  if (cached) return { ok: true, text: cached.text, sources: cached.sources, cached: true };
+  let res = null;
+  try { res = await wikiLookup(query, 'ar'); } catch (e) { res = null; }
+  if (!res) { try { res = await wikiLookup(query, 'en'); } catch (e) { res = null; } }
+  if (!res) throw new Error('NO_RESULT');
+  const out = { ok: true, text: res.text, sources: [{ label: res.label, url: res.url, license: 'CC BY-SA' }] };
+  cacheSet(key, out);
+  return out;
+}
+
+async function toolWeather(city, when) {
+  const q = city && city.query ? city.query : String(city || '');
+  const label = city && city.name ? city.name : q;
+  const key = 'wx:' + q + ':' + when;
+  const cached = cacheGet(key, 15 * 60 * 1000);
+  if (cached) return { ok: true, text: cached.text, sources: cached.sources, cached: true };
+  const geo = await getJSON('https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(q) + '&count=1&language=ar&format=json');
+  const place = geo && geo.results && geo.results[0];
+  if (!place) throw new Error('CITY_NOT_FOUND');
+  const url = 'https://api.open-meteo.com/v1/forecast?latitude=' + place.latitude + '&longitude=' + place.longitude +
+    '&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code' +
+    '&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=2';
+  const data = await getJSON(url);
+  const c = data.current || {}, d = data.daily || {};
+  const tomorrow = when === 'tomorrow' && d.time && d.time.length > 1;
+  const placeName = (place.name || label) + (place.country ? '، ' + place.country : '');
+  let body;
+  if (tomorrow) {
+    body = '**' + esc(placeName) + '** — توقعات الغد (' + esc(d.time[1]) + '):\n\n' +
+      '- الحالة: ' + weatherCodeText(d.weather_code[1]) +
+      '\n- العظمى: ' + fmtNum(d.temperature_2m_max[1]) + '°C — الصغرى: ' + fmtNum(d.temperature_2m_min[1]) + '°C';
+  } else {
+    body = '**' + esc(placeName) + '** — الطقس الآن:\n\n' +
+      '- الحالة: ' + weatherCodeText(c.weather_code) +
+      '\n- الحرارة: ' + fmtNum(c.temperature_2m) + '°C (محسوسة ' + fmtNum(c.apparent_temperature) + '°C)' +
+      '\n- الرطوبة: ' + fmtNum(c.relative_humidity_2m) + '% — الرياح: ' + fmtNum(c.wind_speed_10m) + ' كم/س';
+  }
+  const text = body + '\n\n📡 **المصدر:** [Open-Meteo](https://open-meteo.com/) — بيانات الطقس CC BY 4.0، وأسماء المدن من Geocoding API (CC BY-NC 4.0). ' +
+    'البيانات لحظية وقد تتغير؛ راجع المصدر للقرارات المهمة.';
+  const out = { ok: true, text: text, sources: [
+    { label: 'Open-Meteo', url: 'https://open-meteo.com/', license: 'CC BY 4.0' },
+    { label: 'Geocoding API', url: 'https://open-meteo.com/en/docs/geocoding-api', license: 'CC BY-NC 4.0' }
+  ] };
+  cacheSet(key, out);
+  return out;
+}
+
+async function runTool(tool) {
+  if (!tool) return { ok: false, text: 'مفيش أداة مطلوبة.', sources: [] };
+  try {
+    if (tool.type === 'wikipedia') return await toolWikipedia(tool.query);
+    if (tool.type === 'weather') return await toolWeather(tool.city, tool.when);
+    return { ok: false, text: 'أداة غير معروفة.', sources: [] };
+  } catch (e) {
+    const err = e && e.message ? e.message : 'UNKNOWN';
+    let extra = '';
+    if (err === 'NETWORK_DISABLED') extra = '\n\n(الطلبات الخارجية مقفولة من الإعدادات — افتحها لو عايز.)';
+    else if (err === 'CITY_NOT_FOUND') extra = '\n\n(ما لقتش المدينة دي في قاعدة الأسماء — جرّب تكتبها بالإنجليزي.)';
+    else if (err === 'NO_RESULT') extra = '\n\n(ما لقتش صفحة مطابقة — جرّب كلمة أدق.)';
+    else if (/HTTP_|abort|fetch|Failed/i.test(err)) extra = '\n\n(السبب التقني: `' + esc(err) + '` — غالبًا الشبكة أو CORS.)';
+    return { ok: false, text: toolFallback(tool) + extra, sources: [], error: err };
+  }
+}
+
+/* ======================= الاختبار الذاتي ======================= */
+function selfTest() {
+  const cases = [];
+  const ok = (name, cond, info) => cases.push({ name: name, pass: !!cond, info: info === undefined ? '' : String(info) });
+  const near = (a, b, eps) => Math.abs(a - b) < (eps || 1e-6);
+
+  ok('التطبيع يوحّد الهمزات', normalize('إزاي الأكل؟').indexOf('إ') === -1);
+  ok('فرانكو-عرب → عربي', tokenize('3ayez a3raf').stems.indexOf('اريد') > -1);
+  ok('مصري → فصحى', tokenize('عايز اعرف').tokens.indexOf('اريد') > -1);
+  ok('تجذيع «البرمجة»', stem(normalize('البرمجة')) === stem(normalize('برمجة')));
+
+  ok('عدد وحدات المعرفة ≥ 70', KB.length >= 70, KB.length);
+  ok('كل وحدة ليها عنوان ورد', KB.every(e => e.title && e.a && e.a.length && e.q && e.q.length));
+
+  let m = solveMath('٢ + ٢'); ok('أرقام عربية ٢+٢', m && m.ok && m.value === 4, m && m.value);
+  m = solveMath('احسب 5*(3+4)'); ok('أقواس وأولوية', m && m.ok && m.value === 35, m && m.value);
+  ok('أُس 2^10', near(evaluate('2^10'), 1024));
+  ok('جذر sqrt(144)', near(evaluate('sqrt(144)'), 12));
+  ok('ضرب ضمني 2(3+4)', near(evaluate('2(3+4)'), 14));
+  ok('ثابت pi', near(evaluate('pi'), Math.PI, 1e-9));
+  ok('دالة avg', near(evaluate('avg(2,4,6)'), 4));
+  ok('يرفض كلمات مجهولة', (() => { try { evaluate('alert(1)'); return false; } catch (e) { return true; } })());
+  ok('يشيل الكلمات غير الرياضية', extractExpression('احسب لو سمحت 12 * 3') === '12 * 3', extractExpression('احسب لو سمحت 12 * 3'));
+  ok('يرفض تنفيذ أوامر', solveMath('process.exit(1)') === null || solveMath('process.exit(1)').ok === false);
+
+  const w1 = wordProblem('20% من 500'); ok('نسبة مئوية', w1 && near(w1.value, 100), w1 && w1.value);
+  const w2 = wordProblem('500 وخصم 20%'); ok('خصم مصري', w2 && near(w2.value, 400), w2 && w2.value);
+  const w3 = wordProblem('متوسط 4 و 8 و 10'); ok('متوسط', w3 && near(w3.value, 7.3333333333, 1e-6), w3 && w3.value);
+  const w4 = wordProblem('مساحة دائرة نصف قطرها 5'); ok('مساحة دائرة', w4 && near(w4.value, Math.PI * 25), w4 && w4.value);
+
+  const u1 = convertUnits('10 km to m'); ok('كم → م', u1 && u1.ok && near(u1.value, 10000), u1 && u1.value);
+  const u2 = convertUnits('100 f to c'); ok('فهرنهايت → مئوي', u2 && u2.ok && near(u2.value, 37.777777, 1e-4), u2 && u2.value);
+  const u3 = convertUnits('3 فدان إلى متر مربع'); ok('فدان → م²', u3 && u3.ok && near(u3.value, 12602.499, 1e-2), u3 && u3.value);
+  const u4 = convertUnits('2 ساعة إلى دقيقة'); ok('ساعة → دقيقة', u4 && u4.ok && near(u4.value, 120), u4 && u4.value);
+
+  ok('الساعة من Intl', /الساعة/.test(dateInfo('كم الساعة').text));
+  ok('التاريخ الهجري', dateInfo('التاريخ الهجري').kind === 'hijri');
+
+  const st = createState();
+  ok('موجّه الطقس', route('الطقس في اسكندريه', st).slots.city.query === 'Alexandria');
+  ok('موجّه المعلومات', route('من هو ابن سينا', st).intent === 'fact');
+  ok('موجّه الحساب', route('احسب 2+2', st).intent === 'math');
+  ok('موجّه الوحدات', route('10 km to m', st).intent === 'units');
+  ok('موجّه الوقت', route('كم الساعة الان', st).intent === 'time');
+
+  const a1 = reply('اضحكني', createState()); ok('KB: نكتة', a1.intent === 'fun' && a1.confidence >= CONF_THRESHOLD, a1.confidence);
+  const a2 = reply('ازاي اتعلم برمجة', createState()); ok('KB: خطة تعلم', a2.meta && a2.meta.matched === 'learn-programming', a2.meta && a2.meta.matched);
+  const a3 = reply('انا حزين شوية', createState()); ok('KB: حزن', a3.intent === 'emotion', a3.meta && a3.meta.matched);
+  const a4 = reply('xkcd qwerty ززز ضصث', createState()); ok('باب الثقة: اعتراف', a4.intent === 'unknown' && /مش متأكد/.test(a4.text), a4.confidence);
+  const a5 = reply('الطقس في القاهره', createState()); ok('أداة الطقس', a5.tool && a5.tool.type === 'weather');
+  const a6 = reply('من هو ابن سينا', createState()); ok('أداة ويكيبيديا', a6.tool && a6.tool.type === 'wikipedia', a6.intent);
+  const a7 = reply('٢ + ٢', createState()); ok('رد حسابي', a7.intent === 'math' && /4/.test(a7.text));
+  const a8 = reply('اسمي محمد', createState()); ok('تذكّر الاسم', /محمد/.test(a8.text));
+  const a9 = reply('الطقس', createState()); ok('طلب توضيح مدينة', a9.needsSlot === 'city' && a9.suggestions.length >= 3);
+  ok('توسيع مقطع كود', /```js/.test(expand('[[code:debounce]]', createState())));
+  ok('لا هلوسة في الرد المجهول', !/بالتأكيد|100%|الحقيقة المؤكدة/.test(a4.text));
+  ok('حالة الحوار تتحدّث', (() => { const s = createState(); reply('مرحبا', s); return s.turn === 1; })());
+  ok('الإحالة للمدينة', (() => { const s = createState(); reply('الطقس في القاهره', s); const r = route('وبكرة؟', s); return r.slots.city && r.slots.city.query === 'Cairo'; })());
+
+  const passed = cases.filter(c => c.pass).length;
+  return { total: cases.length, passed: passed, failed: cases.length - passed, cases: cases, version: VERSION };
+}
+
+const API = {
+  VERSION: VERSION, BUILD_DATE: BUILD_DATE, KB: KB, SNIPPETS: SNIPPETS,
+  CONF_THRESHOLD: CONF_THRESHOLD, CITIES: CITIES,
+  normalize: normalize, tokenize: tokenize, stem: stem, similarity: similarity,
+  evaluate: evaluate, extractExpression: extractExpression, solveMath: solveMath,
+  wordProblem: wordProblem, convertUnits: convertUnits, dateInfo: dateInfo,
+  route: route, retrieve: retrieve, createState: createState, updateState: updateState,
+  reply: reply, runTool: runTool, configure: configure, expand: expand,
+  selfTest: selfTest, esc: esc, fmtNum: fmtNum
+};
+
+return API;
+});
+
+</script>
+<script>
+(function(){'use strict';
+/* =========================================================================
+ * رقيم 2.0 — الواجهة (UI): جلسات، بثّ كتابة، أدوات، مصادر، تشغيل كود، تشخيص
+ * ========================================================================= */
+const Core = window.RaqimCore;
+
+/* ---------- تخزين آمن ---------- */
+const store = {
+  ok: (function () { try { localStorage.setItem('raqim2:t', '1'); localStorage.removeItem('raqim2:t'); return true; } catch (e) { return false; } })(),
+  get(k, d) { if (!this.ok) return d; try { const v = localStorage.getItem('raqim2:' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { if (!this.ok) return; try { localStorage.setItem('raqim2:' + k, JSON.stringify(v)); } catch (e) {} },
+  del(k) { if (!this.ok) return; try { localStorage.removeItem('raqim2:' + k); } catch (e) {} },
+  clearAll() { if (!this.ok) return; try { const kill = []; for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.indexOf('raqim2:') === 0) kill.push(k); } kill.forEach(k => localStorage.removeItem(k)); } catch (e) {} }
+};
+const persistCache = store.ok ? {
+  getItem: k => { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  setItem: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} }
+} : null;
+
+/* ---------- أدوات DOM ---------- */
+const $ = (s, r) => (r || document).querySelector(s);
+const rnd = a => a[Math.floor(Math.random() * a.length)];
+const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const timeStr = ts => { try { return new Intl.DateTimeFormat('ar-EG', { hour: '2-digit', minute: '2-digit' }).format(new Date(ts || Date.now())); } catch (e) { return ''; } };
+
+const ICONS = {
+  copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>',
+  regen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg>',
+  up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>',
+  stop: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="7" y="7" width="10" height="10" rx="2.5"/></svg>',
+  moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>',
+  sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
+  sprk: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.3L19 10l-5.1 1.7L12 17l-1.9-5.3L5 10l5.1-1.7z"/></svg>',
+  compass: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5.5-5.5 2 2-5.5z"/></svg>',
+  smile: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5c1 1.2 2.2 1.8 3.5 1.8s2.5-.6 3.5-1.8"/><path d="M9 10h.01M15 10h.01"/></svg>',
+  wiki: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5v13z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg>',
+  bolt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg>',
+  shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>',
+  play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>',
+  ext: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>',
+  wise: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2z"/><path d="M9 22h6"/></svg>'
+};
+
+const els = {
+  messages: $('#messages'), scroll: $('#chatScroll'), input: $('#input'),
+  send: $('#sendBtn'), sendIcon: $('#sendIcon'), fab: $('#scrollFab'),
+  chips: $('#chips'), sessions: $('#sessionList'), sidebar: $('#sidebar'),
+  scrim: $('#scrim'), toasts: $('#toasts'), status: $('#statusTxt'),
+  netDot: $('#netDot'), toolCount: $('#toolCount'), kbCount: $('#kbCount'),
+  modalScrim: $('#modalScrim'), modalTitle: $('#modalTitle'), modalBody: $('#modalBody')
+};
+
+/* ---------- الحالة ---------- */
+const state = {
+  sessions: [], currentId: null, generating: false, cancel: false,
+  theme: 'dark', toolUses: 0, genToken: 0, networkAllowed: true, pyodide: null
+};
+
+/* ---------- إعداد المحرّك ---------- */
+Core.configure({
+  fetch: (typeof fetch === 'function') ? fetch.bind(typeof globalThis !== 'undefined' ? globalThis : window) : null,
+  cache: persistCache,
+  networkAllowed: true
+});
+
+function applyNetwork() {
+  Core.configure({ networkAllowed: state.networkAllowed });
+  els.netDot.classList.toggle('off', !state.networkAllowed);
+  els.netDot.title = state.networkAllowed ? 'الطلبات الخارجية مسموحة' : 'وضع أوفلاين: الطلبات الخارجية مقفولة';
+}
+const cur = () => state.sessions.find(s => s.id === state.currentId) || null;
+function engineState(s) {
+  s = s || cur();
+  const st = Core.createState();
+  if (s) {
+    st.user = s.userName || null;
+    st.lastEntity = s.lastEntity || null;
+    st.lastTopic = s.lastTopic || null;
+    st.slots = s.slots || {};
+  }
+  return st;
+}
+
+/* ===================== Markdown مصغّر آمن ===================== */
+function inlineMd(s) {
+  return s
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[\s(«])\*([^*\n]+)\*(?=$|[\s).،؛,»])/g, '$1<em>$2</em>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>');
+}
+function codeBlockHTML(c) {
+  const lang = c.lang || 'code';
+  const isJs = /^(js|javascript)$/i.test(lang);
+  const isPy = /^(py|python)$/i.test(lang);
+  let btns = '<button type="button" data-copy-code>' + ICONS.copy + 'نسخ</button>';
+  if (isJs) btns = '<button type="button" class="run" data-run-js>' + ICONS.play + 'تشغيل</button>' + btns;
+  if (isPy) btns = '<button type="button" class="run" data-run-py>' + ICONS.play + 'بايثون</button>' + btns;
+  return '<div class="code-block" data-lang="' + esc(lang) + '">' +
+    '<div class="code-head"><span class="lang">' + esc(lang) + '</span>' + btns + '</div>' +
+    '<pre><code>' + c.code + '</code></pre></div>';
+}
+function renderRich(src) {
+  let html = esc(String(src || ''));
+  const codes = [];
+  html = html.replace(/```([a-zA-Z0-9+#-]*)\n?([\s\S]*?)(?:```|$)/g, (m, lang, code) => {
+    codes.push({ lang: String(lang || '').trim(), code: code.replace(/\n+$/, '') });
+    return '\u0001' + (codes.length - 1) + '\u0001';
+  });
+  const lines = html.split('\n');
+  const out = [];
+  let buf = [], list = null, listType = null;
+  const flushP = () => { if (buf.length) { out.push('<p>' + inlineMd(buf.join('<br>')) + '</p>'); buf = []; } };
+  const flushL = () => { if (list) { out.push('<' + listType + '>' + list.join('') + '</' + listType + '>'); list = null; listType = null; } };
+  const PH = /\u0001(\d+)\u0001/;
+  for (const line of lines) {
+    if (PH.test(line)) {
+      flushL();
+      const parts = line.split(PH);
+      for (let i = 0; i < parts.length; i++) {
+        if (i % 2 === 1) { flushP(); out.push(codeBlockHTML(codes[+parts[i]])); }
+        else if (parts[i].trim()) buf.push(parts[i]);
+      }
+      flushP();
+      continue;
+    }
+    if (/^\s*[-*•]\s+/.test(line)) {
+      flushP();
+      if (listType !== 'ul') { flushL(); listType = 'ul'; list = []; }
+      list.push('<li>' + inlineMd(line.replace(/^\s*[-*•]\s+/, '')) + '</li>');
+      continue;
+    }
+    if (/^\s*\d+[.)]\s+/.test(line)) {
+      flushP();
+      if (listType !== 'ol') { flushL(); listType = 'ol'; list = []; }
+      list.push('<li>' + inlineMd(line.replace(/^\s*\d+[.)]\s+/, '')) + '</li>');
+      continue;
+    }
+    if (!line.trim()) { flushP(); flushL(); continue; }
+    flushL();
+    buf.push(line);
+  }
+  flushP(); flushL();
+  return out.join('');
+}
+
+/* ===================== الرسم ===================== */
+let stick = true;
+function scrollBottom(smooth) {
+  try {
+    if (smooth && typeof els.scroll.scrollTo === 'function') {
+      els.scroll.scrollTo({ top: els.scroll.scrollHeight, behavior: 'smooth' });
+      return;
+    }
+  } catch (e) {}
+  try {
+    const p = els.scroll.style.scrollBehavior;
+    els.scroll.style.scrollBehavior = 'auto';
+    els.scroll.scrollTop = els.scroll.scrollHeight;
+    els.scroll.style.scrollBehavior = p;
+  } catch (e) {}
+}
+function attachCursor(bubble) {
+  const c = document.createElement('span');
+  c.className = 'cursor';
+  const blocks = bubble.querySelectorAll('p, li, .code-block');
+  let t = blocks.length ? blocks[blocks.length - 1] : bubble;
+  if (t.classList && t.classList.contains('code-block')) t = t.querySelector('code') || t;
+  t.appendChild(c);
+}
+function renderMessage(m, isStream, fast) {
+  const el = document.createElement('div');
+  el.className = 'msg ' + (m.role === 'user' ? 'user' : 'bot') + (isStream ? ' streaming' : '');
+  if (fast) el.style.animation = 'none';
+  const av = document.createElement('div');
+  av.className = 'av';
+  av.textContent = m.role === 'user' ? (cur() && cur().userName ? cur().userName.charAt(0) : 'أ') : 'ر';
+  const body = document.createElement('div');
+  body.className = 'body';
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.innerHTML = renderRich(m.text);
+  body.appendChild(bubble);
+  if (!isStream) body.appendChild(buildMeta(m));
+  el.appendChild(av); el.appendChild(body);
+  els.messages.appendChild(el);
+  return { el, bubble, body };
+}
+function sourcesHTML(m) {
+  if (!m.sources || !m.sources.length) return '';
+  return '<div class="sources"><span class="lbl">المصادر:</span>' + m.sources.map(s =>
+    '<a class="src-chip" href="' + esc(s.url) + '" target="_blank" rel="noopener noreferrer">' + ICONS.ext + esc(s.label) +
+    (s.license ? ' <span class="lic">' + esc(s.license) + '</span>' : '') + '</a>').join('') + '</div>';
+}
+function suggsHTML(m) {
+  const list = (m.suggestions || []).filter(Boolean).slice(0, 4);
+  if (!list.length) return '';
+  return '<div class="suggs">' + list.map(s => '<button type="button" class="sugg" data-sugg="' + esc(s) + '">' + esc(s) + '</button>').join('') + '</div>';
+}
+function buildMeta(m) {
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+  const t = document.createElement('span');
+  t.textContent = timeStr(m.ts);
+  meta.appendChild(t);
+  if (m.role === 'bot' && (m.kind === 'unknown' || (typeof m.conf === 'number' && m.conf > 0))) {
+    const pct = Math.round((m.conf || 0) * 100);
+    const pill = document.createElement('span');
+    pill.className = 'conf ' + (m.kind === 'unknown' ? 'mid' : (pct >= 70 ? 'hi' : 'mid'));
+    pill.textContent = (m.kind === 'unknown' ? 'باب الثقة' : 'ثقة ' + pct + '%');
+    pill.title = 'مقياس ثقة رقيم بمطابقة الرد — ليس يقينًا مطلقًا';
+    meta.appendChild(pill);
+  }
+  if (m.role === 'bot') {
+    meta.appendChild(mkAct(ICONS.copy, 'نسخ الرد', async () => {
+      const ok = await copyText(m.text);
+      toast(ok ? 'تم نسخ الرد' : 'تعذّر النسخ');
+    }));
+    meta.appendChild(mkAct(ICONS.regen, 'إعادة توليد الرد', () => { if (!state.generating) regenerate(m); }));
+  } else {
+    meta.appendChild(mkAct(ICONS.copy, 'نسخ رسالتي', async () => {
+      const ok = await copyText(m.text);
+      toast(ok ? 'تم النسخ' : 'تعذّر النسخ');
+    }));
+  }
+  return meta;
+}
+function mkAct(icon, title, fn) {
+  const b = document.createElement('button');
+  b.className = 'act'; b.type = 'button'; b.title = title;
+  b.setAttribute('aria-label', title);
+  b.innerHTML = icon;
+  b.addEventListener('click', fn);
+  return b;
+}
+
+/* ===================== الترحيب ===================== */
+const SUGGESTIONS = [
+  { icon: 'compass', t: 'طقس حقيقي الآن', d: 'بيانات حيّة من Open-Meteo بمصدرها', p: 'الطقس في الإسكندرية' },
+  { icon: 'wiki', t: 'معلومة بمصدر', d: 'من ويكيبيديا مع رابط ورخصة', p: 'من هو ابن سينا؟' },
+  { icon: 'bolt', t: 'حساب مضمون 100%', d: 'محلّل رياضي آمن + وحدات ومسائل', p: '500 وخصم 20%' },
+  { icon: 'sprk', t: 'خطة تعلّم برمجة', d: '12 أسبوع بلا حشو', p: 'ازاي أتعلم برمجة من الصفر؟' },
+  { icon: 'wise', t: 'سؤال فلسفي', d: 'المعنى والحقيقة والزمن', p: 'ما معنى الحياة؟' },
+  { icon: 'shield', t: 'جرّب باب الثقة', d: 'اسأل حاجة غريبة وشوف الاعتراف', p: 'xcbw qwe ززز' },
+  { icon: 'smile', t: 'اضحكني', d: 'نكتة برمجية سريعة', p: 'اضحكني بنكتة' },
+  { icon: 'bolt', t: 'شغّل كود', d: 'JavaScript في sandbox آمن', p: 'اكتب لي كود debounce' }
+];
+const CHIPS = ['من هو ابن سينا؟', 'الطقس في الإسكندرية', '٥٠٠ وخصم ٢٠', 'ازاي أتعلم برمجة؟', 'التاريخ الهجري', 'اضحكني 😄', 'اختبرني بلغز', 'انا حزين شوية'];
+
+function renderWelcome() {
+  const box = document.createElement('div');
+  box.className = 'welcome';
+  box.innerHTML =
+    '<div class="halo">ر<span class="v">2.0</span></div>' +
+    '<h1>مرحبًا، أنا <em>رقيم 2.0</em>.</h1>' +
+    '<p>النسخة الجديدة بتقول «مش عارف» لما ما تعرفش، وتجيب معلومات وطقس من مصادر حيّة، وتحسب بمحلّل رياضي حقيقي — كل ده في ملف واحد يشتغل أوفلاين. جرّب أي حاجة من تحت، واسأل براحتك.</p>' +
+    '<div class="cards" id="wCards"></div>';
+  els.messages.appendChild(box);
+  const grid = box.querySelector('#wCards');
+  const paint = () => {
+    grid.innerHTML = '';
+    SUGGESTIONS.slice().sort(() => Math.random() - 0.5).slice(0, 4).forEach(s => {
+      const c = document.createElement('button');
+      c.className = 'card'; c.type = 'button';
+      c.innerHTML = '<span class="ic">' + (ICONS[s.icon] || ICONS.sprk) + '</span><span><b>' + esc(s.t) + '</b><span>' + esc(s.d) + '</span></span>';
+      c.addEventListener('click', () => send(s.p));
+      grid.appendChild(c);
+    });
+  };
+  paint();
+}
+function renderChips() {
+  els.chips.innerHTML = '';
+  CHIPS.forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'chip'; b.type = 'button'; b.textContent = c;
+    b.addEventListener('click', () => send(c));
+    els.chips.appendChild(b);
+  });
+}
+
+/* ===================== الجلسات ===================== */
+function newSession(silent) {
+  const s = { id: uid(), title: 'محادثة جديدة', msgs: [], ts: Date.now(), userName: null, lastEntity: null, lastTopic: null, slots: {} };
+  state.sessions.unshift(s);
+  state.currentId = s.id;
+  save();
+  renderSessions();
+  if (!silent) renderChat();
+  return s;
+}
+function hardAbort() {
+  if (!state.generating) return;
+  state.cancel = true;
+  state.genToken++;
+  state.generating = false;
+  setGeneratingUI(false);
+  setStatus('جاهز للحديث');
+}
+function selectSession(id) {
+  hardAbort();
+  state.currentId = id;
+  renderSessions(); renderChat();
+  closeSidebar();
+}
+function deleteSession(id, ev) {
+  if (ev) ev.stopPropagation();
+  hardAbort();
+  const i = state.sessions.findIndex(s => s.id === id);
+  if (i === -1) return;
+  state.sessions.splice(i, 1);
+  if (!state.sessions.length) newSession();
+  else if (state.currentId === id) { state.currentId = state.sessions[0].id; renderChat(); }
+  renderSessions(); save();
+}
+function renderSessions() {
+  els.sessions.innerHTML = '';
+  state.sessions.forEach(s => {
+    const li = document.createElement('li');
+    li.className = 'session' + (s.id === state.currentId ? ' active' : '');
+    li.innerHTML = '<span class="ttl">' + esc(s.title) + '</span>' +
+      '<button class="del" type="button" title="حذف"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>';
+    li.addEventListener('click', () => selectSession(s.id));
+    li.querySelector('.del').addEventListener('click', e => deleteSession(s.id, e));
+    els.sessions.appendChild(li);
+  });
+}
+function save() {
+  const slim = state.sessions.slice(0, 20).map(s => ({
+    id: s.id, title: s.title, ts: s.ts, msgs: s.msgs.slice(-120),
+    userName: s.userName || null, lastEntity: s.lastEntity || null, lastTopic: s.lastTopic || null, slots: s.slots || {}
+  }));
+  store.set('sessions', slim);
+  store.set('current', state.currentId);
+  store.set('theme', state.theme);
+  store.set('net', state.networkAllowed);
+  store.set('tools', state.toolUses);
+}
+
+/* ===================== الدردشة ===================== */
+function renderChat() {
+  els.messages.innerHTML = '';
+  const s = cur();
+  const msgs = s ? s.msgs : [];
+  if (!msgs.length) { renderWelcome(); els.chips.style.display = ''; }
+  else { els.chips.style.display = 'none'; msgs.forEach(m => renderMessage(m, false, true)); }
+  stick = true;
+  scrollBottom(false);
+}
+function setStatus(t) { els.status.textContent = t; }
+
+function send(text) {
+  const t = String(text || '').trim();
+  if (!t || state.generating) return;
+  const s = cur() || newSession(true);
+  els.chips.style.display = 'none';
+  if (els.messages.querySelector('.welcome')) { els.messages.innerHTML = ''; }
+  const um = { role: 'user', text: t, ts: Date.now() };
+  s.msgs.push(um);
+  if (s.title === 'محادثة جديدة') s.title = t.length > 34 ? t.slice(0, 34) + '…' : t;
+  renderMessage(um, false, false);
+  els.input.value = '';
+  autoGrow(); updateSendState();
+  stick = true; scrollBottom(true);
+  renderSessions(); save();
+  respond(t);
+}
+
+function showThinking() {
+  const el = document.createElement('div');
+  el.className = 'msg bot';
+  const av = document.createElement('div'); av.className = 'av'; av.textContent = 'ر';
+  const body = document.createElement('div'); body.className = 'body';
+  const bubble = document.createElement('div'); bubble.className = 'bubble thinking';
+  const moods = ['رقيم يفكّر…', 'يرتّب السؤال…', 'يبص في نقوشه…', 'يقيس الثقة…'];
+  bubble.innerHTML = '<span class="dots"><i></i><i></i><i></i></span><span class="think-txt">' + rnd(moods) + '</span>';
+  body.appendChild(bubble);
+  el.appendChild(av); el.appendChild(body);
+  els.messages.appendChild(el);
+  scrollBottom(true);
+  setStatus('يفكّر…');
+  return el;
+}
+
+function toolBanner(tool) {
+  const el = document.createElement('div');
+  el.className = 'tool-banner';
+  const desc = tool.type === 'weather'
+    ? 'بنجيب الطقس' + (tool.city && tool.city.name ? ' — ' + tool.city.name : '') + (tool.when === 'tomorrow' ? ' (غدًا)' : '')
+    : 'بدوّر في ويكيبيديا على «' + (tool.query || '') + '»';
+  el.innerHTML = '<span class="emo">' + (tool.type === 'weather' ? '🌤️' : '📚') + '</span>' +
+    '<span>' + esc(desc) + '</span><span class="spin"></span>' +
+    '<span class="pill">طلب خارجي</span>';
+  return el;
+}
+
+async function typeInto(bubble, fullText, onDone) {
+  const total = fullText.length;
+  const budget = clamp(total * 9, 500, 3000);
+  const perChar = budget / Math.max(1, total);
+  let i = 0;
+  const t0 = performance.now();
+  while (i < total) {
+    if (state.cancel) break;
+    const step = total > 380 ? 4 : (total > 190 ? 3 : 2);
+    i = Math.min(total, i + step);
+    bubble.innerHTML = renderRich(fullText.slice(0, i));
+    attachCursor(bubble);
+    scrollBottom(false);
+    const ch = fullText.charAt(i - 1);
+    let d = perChar * step;
+    if ('.،؛؟!?:…\n'.indexOf(ch) > -1) d += 40 + Math.random() * 40;
+    const wait = Math.max(4, Math.min(d, t0 + i * perChar - performance.now() + 300));
+    await sleep(wait);
+  }
+  bubble.innerHTML = renderRich(fullText);
+  if (onDone) onDone();
+}
+
+async function respond(text) {
+  const s = cur();
+  if (!s) return;
+  state.generating = true; state.cancel = false;
+  state.genToken++;
+  const token = state.genToken;
+  setGeneratingUI(true);
+
+  const est = engineState(s);
+  const r = Core.reply(text, est);
+  /* مزامنة حالة المحرّك مع الجلسة */
+  s.userName = est.user || null;
+  s.lastEntity = est.lastEntity || null;
+  s.lastTopic = est.lastTopic || null;
+  s.slots = est.slots || {};
+
+  const think = showThinking();
+  await sleep(300 + Math.random() * 420);
+  think.remove();
+  if (token !== state.genToken) return;
+
+  const bm = { role: 'bot', text: '', ts: Date.now(), conf: r.confidence, kind: r.intent, sources: [], suggestions: [] };
+  let banner = null;
+
+  if (r.tool) {
+    setStatus(r.tool.type === 'weather' ? 'يجيب الطقس…' : 'يدوّر في ويكيبيديا…');
+    banner = toolBanner(r.tool);
+    const bWrap = document.createElement('div');
+    bWrap.className = 'msg bot';
+    const bAv = document.createElement('div'); bAv.className = 'av'; bAv.textContent = 'ر';
+    const bBody = document.createElement('div'); bBody.className = 'body';
+    bBody.appendChild(banner);
+    bWrap.appendChild(bAv); bWrap.appendChild(bBody);
+    els.messages.appendChild(bWrap);
+    stick = true; scrollBottom(true);
+    const res = await Core.runTool(r.tool);
+    if (token !== state.genToken) return;
+    banner.classList.add(res.ok ? 'done' : 'fail');
+    banner.querySelector('.pill').textContent = res.ok ? (res.cached ? 'من الكاش ✓' : 'تم ✓') : 'فشل ✗';
+    const sp = banner.querySelector('.spin');
+    if (sp) sp.remove();
+    bm.text = res.text;
+    bm.sources = res.sources || [];
+    if (res.ok) { state.toolUses++; els.toolCount.textContent = state.toolUses; }
+    if (res.ok && r.suggestions) bm.suggestions = r.suggestions;
+  } else {
+    setStatus('يكتب…');
+    bm.text = r.text;
+    bm.suggestions = r.suggestions || [];
+  }
+
+  s.msgs.push(bm);
+  const node = renderMessage(bm, true, false);
+  stick = true;
+
+  await typeInto(node.bubble, bm.text, () => {
+    node.el.classList.remove('streaming');
+    node.body.appendChild(buildMeta(bm));
+  });
+  if (token !== state.genToken) return;
+
+  /* المصادر والاقتراحات بعد اكتمال النص */
+  const extra = document.createElement('div');
+  extra.innerHTML = sourcesHTML(bm) + suggsHTML(bm);
+  while (extra.firstChild) node.body.appendChild(extra.firstChild);
+
+  state.generating = false; state.cancel = false;
+  setGeneratingUI(false);
+  setStatus('جاهز للحديث');
+  scrollBottom(false);
+  save(); renderSessions();
+}
+
+function regenerate(botMsg) {
+  const s = cur(); if (!s) return;
+  const idx = s.msgs.indexOf(botMsg);
+  if (idx === -1) return;
+  let userText = '';
+  for (let i = idx - 1; i >= 0; i--) if (s.msgs[i].role === 'user') { userText = s.msgs[i].text; break; }
+  if (!userText) return;
+  s.msgs.splice(idx, 1);
+  renderChat();
+  respond(userText);
+}
+
+/* ===================== الإدخال ===================== */
+function autoGrow() {
+  els.input.style.height = 'auto';
+  els.input.style.height = Math.min(190, els.input.scrollHeight) + 'px';
+}
+function updateSendState() {
+  if (state.generating) return;
+  els.send.disabled = !els.input.value.trim();
+}
+function setGeneratingUI(on) {
+  els.sendIcon.innerHTML = on ? ICONS.stop : ICONS.up;
+  els.send.title = on ? 'إيقاف' : 'إرسال';
+  if (!on) updateSendState();
+}
+els.input.addEventListener('input', () => { autoGrow(); updateSendState(); });
+els.input.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    if (!state.generating) send(els.input.value);
+  }
+});
+els.send.addEventListener('click', () => {
+  if (state.generating) { state.cancel = true; return; }
+  send(els.input.value);
+});
+
+/* ===================== تمرير + اقتراحات + كود ===================== */
+els.scroll.addEventListener('scroll', () => {
+  const d = els.scroll.scrollHeight - els.scroll.scrollTop - els.scroll.clientHeight;
+  stick = d < 130;
+  els.fab.classList.toggle('show', d > 200);
+}, { passive: true });
+els.fab.addEventListener('click', () => { stick = true; scrollBottom(true); });
+
+els.messages.addEventListener('click', async e => {
+  const sugg = e.target.closest('[data-sugg]');
+  if (sugg) { send(sugg.getAttribute('data-sugg')); return; }
+
+  const cp = e.target.closest('[data-copy-code]');
+  if (cp) {
+    const block = cp.closest('.code-block');
+    const code = block ? block.querySelector('code').innerText : '';
+    const ok = await copyText(code);
+    cp.innerHTML = (ok ? ICONS.check + 'تم' : ICONS.copy + 'فشل');
+    setTimeout(() => { cp.innerHTML = ICONS.copy + 'نسخ'; }, 1400);
+    return;
+  }
+
+  const rj = e.target.closest('[data-run-js]');
+  if (rj) { runJsBlock(rj.closest('.code-block')); return; }
+
+  const rp = e.target.closest('[data-run-py]');
+  if (rp) { runPyBlock(rp.closest('.code-block'), rp); return; }
+});
+
+/* تشغيل JS في sandbox معزول */
+function runJsBlock(block) {
+  let out = '';
+  const code = block.querySelector('code').innerText;
+  const old = block.querySelector('.py-out');
+  if (old) old.remove();
+  const pre = document.createElement('pre');
+  pre.className = 'py-out';
+  const t0 = performance.now();
+  try {
+    const log = [];
+    const fakeConsole = {
+      log: (...a) => log.push(a.map(x => { try { return typeof x === 'object' ? JSON.stringify(x) : String(x); } catch (e) { return String(x); } }).join(' ')),
+      error: (...a) => log.push('⛔ ' + a.join(' ')),
+      warn: (...a) => log.push('⚠ ' + a.join(' '))
+    };
+    const fn = new Function('console', '"use strict";\n' + code);
+    const ret = fn(fakeConsole);
+    if (ret !== undefined) log.push('⇒ ' + String(ret));
+    out = log.join('\n') || '(تم التنفيذ بدون مخرجات)';
+    pre.classList.remove('err');
+  } catch (err) {
+    out = '⛔ ' + (err && err.message ? err.message : err);
+    pre.classList.add('err');
+  }
+  const ms = Math.round(performance.now() - t0);
+  pre.innerHTML = '<span class="lbl">الناتج (sandbox · ' + ms + 'ms):</span>' + esc(out);
+  block.appendChild(pre);
+  toast('تم تشغيل الكود');
+}
+
+/* بايثون عبر Pyodide (تحميل عند الطلب) */
+let pyodidePromise = null;
+function getPyodide(statusFn) {
+  if (pyodidePromise) return pyodidePromise;
+  pyodidePromise = (async () => {
+    statusFn('بحمّل بايثون (Pyodide)… أول مرة حوالي 10MB وبتتخزن.');
+    const mod = await import('https://cdn.jsdelivr.net/pyodide/v0.28.3/full/pyodide.mjs');
+    statusFn('بتجهيز بيئة بايثون…');
+    const py = await mod.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.28.3/full/' });
+    state.pyodide = py;
+    return py;
+  })().catch(e => { pyodidePromise = null; throw e; });
+  return pyodidePromise;
+}
+async function runPyBlock(block, btn) {
+  const code = block.querySelector('code').innerText;
+  let out = block.querySelector('.py-out');
+  if (!out) { out = document.createElement('pre'); out.className = 'py-out'; block.appendChild(out); }
+  const lbl = t => { out.innerHTML = '<span class="lbl">' + esc(t) + '</span>'; };
+  out.classList.remove('err');
+  try {
+    const py = await getPyodide(lbl);
+    lbl('بينفّذ…');
+    let buf = '';
+    py.setStdout({ batched: s => { buf += s + '\n'; } });
+    py.setStderr({ batched: s => { buf += s + '\n'; } });
+    const t0 = performance.now();
+    const res = await py.runPythonAsync(code);
+    const ms = Math.round(performance.now() - t0);
+    let text = buf || '';
+    if (res !== undefined && res !== null) text += (text ? '\n' : '') + '⇒ ' + String(res);
+    out.innerHTML = '<span class="lbl">الناتج (Pyodide · ' + ms + 'ms):</span>' + esc(text || '(بدون مخرجات)');
+    toast('تم تشغيل بايثون');
+  } catch (e) {
+    out.classList.add('err');
+    const msg = e && e.message ? e.message : String(e);
+    out.innerHTML = '<span class="lbl">فشل التشغيل:</span>' + esc(msg);
+    if (/fetch|import|network|Failed/i.test(msg)) out.innerHTML += '\n\n(السبب غالبًا: لا يوجد إنترنت أو CDN محجوب — بايثون يحتاج تحميل مرة واحدة.)';
+  }
+}
+
+/* ===================== نسخ / تصدير / توست ===================== */
+async function copyText(txt) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(txt); return true; }
+  } catch (e) {}
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    const ok = document.execCommand('copy');
+    ta.remove();
+    return ok;
+  } catch (e) { return false; }
+}
+function exportChat() {
+  const s = cur();
+  if (!s || !s.msgs.length) { toast('لا يوجد شيء للتصدير بعد'); return; }
+  let md = '# محادثة مع رقيم 2.0\n\n**التاريخ:** ' +
+    new Intl.DateTimeFormat('ar-EG', { dateStyle: 'full', timeStyle: 'short' }).format(new Date()) + '\n\n---\n\n';
+  s.msgs.forEach(m => {
+    md += (m.role === 'user' ? '### 🧑 أنت\n\n' : '### ✦ رقيم\n\n') + m.text + '\n\n';
+    if (m.sources && m.sources.length) md += m.sources.map(x => '- المصدر: [' + x.label + '](' + x.url + ')').join('\n') + '\n\n';
+  });
+  md += '\n---\n_أُنشئت بواسطة «رقيم 2.0» — ملف HTML واحد بدون سيرفر_\n';
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'raqim2-' + new Date().toISOString().slice(0, 10) + '.md';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  toast('تم تصدير المحادثة');
+}
+function toast(msg, warn) {
+  const el = document.createElement('div');
+  el.className = 'toast' + (warn ? ' warn' : '');
+  el.innerHTML = (warn ? ICONS.sprk : ICONS.check) + '<span>' + esc(msg) + '</span>';
+  els.toasts.appendChild(el);
+  setTimeout(() => {
+    el.style.transition = 'opacity .3s, transform .3s';
+    el.style.opacity = '0'; el.style.transform = 'translateY(8px)';
+    setTimeout(() => el.remove(), 320);
+  }, 2400);
+}
+
+/* ===================== المودال ===================== */
+function openModal(title, html) {
+  els.modalTitle.textContent = title;
+  els.modalBody.innerHTML = html;
+  els.modalScrim.classList.add('show');
+}
+function closeModal() { els.modalScrim.classList.remove('show'); }
+els.modalScrim.addEventListener('click', e => { if (e.target === els.modalScrim) closeModal(); });
+$('#modalClose').addEventListener('click', closeModal);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+function showDiagnostics() {
+  const t = Core.selfTest();
+  const pct = Math.round(t.passed / t.total * 100);
+  const rows = t.cases.map(c =>
+    '<div class="test-row"><span class="st ' + (c.pass ? 'ok' : 'no') + '">' + (c.pass ? '✓' : '✗') + '</span>' +
+    '<span class="nm">' + esc(c.name) + '</span>' +
+    (c.info ? '<span class="inf">' + esc(c.info) + '</span>' : '') + '</div>').join('');
+  openModal('تشخيص رقيم 2.0 — الاختبار الذاتي',
+    '<div class="test-sum"><span class="big">' + t.passed + ' / ' + t.total + '</span>' +
+    '<span>اختبار يشتغل داخل جهازك دلوقتي: التطبيع، الحساب، الوحدات، الموجّه، الاسترجاع، وباب الثقة.<br>النتيجة: ' + pct + '% — ولو طلعت أقل من 100% يبقى فيه حاجة ظرفت في بيئتك وعايزة نظرة.</span></div>' +
+    '<div class="test-grid">' + rows + '</div>');
+}
+
+function showSettings() {
+  const kbN = Core.KB.length;
+  const citiesN = Object.keys(Core.CITIES).length;
+  openModal('الإعدادات',
+    '<div class="set-row"><div class="info"><b>الطلبات الخارجية (الشبكة)</b>' +
+    '<span>الطقس من Open-Meteo والمعلومات من ويكيبيديا. لو مقفولة، رقيم يشتغل أوفلاين بالكامل ويرفض اختلاق بيانات.</span></div>' +
+    '<button class="switch ' + (state.networkAllowed ? 'on' : '') + '" id="netSwitch" role="switch" aria-checked="' + state.networkAllowed + '"></button></div>' +
+
+    '<div class="set-row"><div class="info"><b>بايثون في المتصفح (Pyodide)</b>' +
+    '<span>تشغيل أكواد البايثون جوّه الصفحة. يتحمّل مرة واحدة (~10MB) عند أول استخدام ويحتاج إنترنت.</span>' +
+    '<span id="pyStatus" style="margin-top:6px;color:var(--accent-2)">' + (state.pyodide ? '✓ جاهزة' : (pyodidePromise ? '⏳ جاري التحميل…' : 'غير محمّلة بعد')) + '</span></div>' +
+    '<button class="tiny-btn" id="pyLoadBtn" style="flex:none;min-width:96px">تحميل</button></div>' +
+
+    '<div class="set-row"><div class="info"><b>الذاكرة المحلية</b>' +
+    '<span>المحادثات والإعدادات بتتخزن على جهازك فقط (localStorage). مفيش سيرفر ولا حسابات.</span></div></div>' +
+    '<button class="danger-btn" id="wipeBtn">امسح كل الذاكرة المحلية</button>' +
+
+    '<div class="set-row" style="margin-top:14px"><div class="info"><b>حول رقيم</b>' +
+    '<div class="kv"><span>النسخة</span><b>' + Core.VERSION + ' (' + Core.BUILD_DATE + ')</b></div>' +
+    '<div class="kv"><span>وحدات المعرفة</span><b>' + kbN + ' وحدة</b></div>' +
+    '<div class="kv"><span>مدن معروفة للطقس</span><b>' + citiesN + '</b></div>' +
+    '<div class="kv"><span>حد الثقة للاسترجاع</span><b>' + Math.round(Core.CONF_THRESHOLD * 100) + '%</b></div>' +
+    '<div class="kv"><span>طلبات أدوات ناجحة</span><b>' + state.toolUses + '</b></div>' +
+    '<div class="kv"><span>المصادر الخارجية</span><b>Wikipedia · Open-Meteo · Pyodide CDN</b></div>' +
+    '</div></div>');
+
+  $('#netSwitch').addEventListener('click', function () {
+    state.networkAllowed = !state.networkAllowed;
+    this.classList.toggle('on', state.networkAllowed);
+    this.setAttribute('aria-checked', state.networkAllowed);
+    applyNetwork();
+    save();
+    toast(state.networkAllowed ? 'الطلبات الخارجية مفتوحة' : 'وضع أوفلاين: الطلبات مقفولة', !state.networkAllowed);
+  });
+  $('#pyLoadBtn').addEventListener('click', () => {
+    getPyodide(t => { $('#pyStatus').textContent = t; })
+      .then(() => { $('#pyStatus').textContent = '✓ جاهزة'; toast('بايثون جاهزة'); })
+      .catch(() => { $('#pyStatus').textContent = '✗ فشل التحميل (شبكة؟)'; toast('فشل تحميل بايثون — تاكد من الإنترنت', true); });
+  });
+  $('#wipeBtn').addEventListener('click', () => {
+    if (!confirm('مسح كل المحادثات والإعدادات من هذا الجهاز؟ لا يمكن التراجع.')) return;
+    store.clearAll();
+    state.sessions = []; state.toolUses = 0; state.theme = 'dark'; state.networkAllowed = true;
+    els.toolCount.textContent = '0';
+    applyNetwork(); setTheme('dark');
+    newSession();
+    closeModal();
+    toast('تم مسح الذاكرة بالكامل');
+  });
+}
+
+/* ===================== المظهر والقوائم ===================== */
+function setTheme(t) {
+  state.theme = t === 'light' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = state.theme;
+  const m = document.querySelector('meta[name="theme-color"]');
+  if (m) m.setAttribute('content', state.theme === 'dark' ? '#0a0e14' : '#f6f7fb');
+  const icon = state.theme === 'dark' ? ICONS.moon : ICONS.sun;
+  const sideIcon = document.getElementById('themeIcon');
+  if (sideIcon) sideIcon.outerHTML = icon.replace('<svg ', '<svg id="themeIcon" ');
+  save();
+}
+const toggleTheme = () => setTheme(state.theme === 'dark' ? 'light' : 'dark');
+$('#themeBtn').addEventListener('click', toggleTheme);
+function openSidebar() { els.sidebar.classList.add('open'); els.scrim.classList.add('show'); }
+function closeSidebar() { els.sidebar.classList.remove('open'); els.scrim.classList.remove('show'); }
+$('#menuBtn').addEventListener('click', () => els.sidebar.classList.contains('open') ? closeSidebar() : openSidebar());
+els.scrim.addEventListener('click', closeSidebar);
+$('#newChat').addEventListener('click', () => { hardAbort(); newSession(); closeSidebar(); els.input.focus(); });
+$('#clearBtn').addEventListener('click', () => {
+  const s = cur(); if (!s) return;
+  if (!s.msgs.length) { renderChat(); return; }
+  if (!confirm('مسح رسائل هذه المحادثة؟')) return;
+  hardAbort();
+  s.msgs = []; s.title = 'محادثة جديدة'; s.lastEntity = null; s.lastTopic = null; s.slots = {};
+  renderChat(); renderSessions(); save();
+  toast('تم مسح المحادثة');
+});
+$('#exportBtn').addEventListener('click', exportChat);
+$('#diagBtn').addEventListener('click', showDiagnostics);
+$('#diagBtn2').addEventListener('click', showDiagnostics);
+$('#settingsBtn').addEventListener('click', showSettings);
+$('#settingsBtn2').addEventListener('click', showSettings);
+
+/* ===================== الإدخال الصوتي ===================== */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const micBtn = $('#micBtn');
+if (!SR) micBtn.style.display = 'none';
+else {
+  let rec = null, listening = false;
+  micBtn.addEventListener('click', () => {
+    if (listening) { try { rec.stop(); } catch (e) {} return; }
+    try {
+      rec = new SR();
+      rec.lang = 'ar-EG'; rec.interimResults = true; rec.continuous = false;
+      const base = els.input.value;
+      rec.onstart = () => { listening = true; micBtn.style.color = '#ff5f6d'; setStatus('أستمع إليك…'); };
+      rec.onresult = ev => {
+        let txt = '';
+        for (let i = ev.resultIndex; i < ev.results.length; i++) txt += ev.results[i][0].transcript;
+        els.input.value = (base ? base + ' ' : '') + txt;
+        autoGrow(); updateSendState();
+      };
+      rec.onerror = () => toast('تعذّر الوصول للميكروفون', true);
+      rec.onend = () => { listening = false; micBtn.style.color = ''; setStatus('جاهز للحديث'); els.input.focus(); };
+      rec.start();
+    } catch (e) { toast('المتصفح لا يدعم الإدخال الصوتي', true); }
+  });
+}
+
+/* ===================== التشغيل ===================== */
+function boot() {
+  state.networkAllowed = store.get('net', true) !== false;
+  state.toolUses = store.get('tools', 0) || 0;
+  els.toolCount.textContent = state.toolUses;
+  els.kbCount.textContent = Core.KB.length;
+  applyNetwork();
+
+  setTheme(store.get('theme', null) || 'dark');
+
+  const saved = store.get('sessions', null);
+  if (Array.isArray(saved) && saved.length) {
+    state.sessions = saved.map(s => ({
+      id: s.id || uid(), title: s.title || 'محادثة', ts: s.ts || Date.now(),
+      msgs: Array.isArray(s.msgs) ? s.msgs : [],
+      userName: s.userName || null, lastEntity: s.lastEntity || null,
+      lastTopic: s.lastTopic || null, slots: s.slots || {}
+    }));
+    const cid = store.get('current', null);
+    state.currentId = state.sessions.some(s => s.id === cid) ? cid : state.sessions[0].id;
+    renderSessions(); renderChat();
+  } else {
+    newSession();
+  }
+
+  renderChips();
+  setGeneratingUI(false);
+  updateSendState();
+  setStatus('جاهز للحديث');
+  els.input.focus();
+  window.addEventListener('beforeunload', save);
+}
+
+boot();
+
+})();
+</script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5024aa11c95e280',t:'MTc5Mjk0MjUzMA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
