@@ -57,6 +57,7 @@ object EvalHarness {
     val question: String,
     val attempts: List<Attempt>,
     val status: String, // passed | failed | skipped | crashed
+    val expectedIntent: String? = null,
     val distinctOutputs: Int,
     val note: String? = null,
   ) {
@@ -108,6 +109,7 @@ object EvalHarness {
             question = case.question,
             attempts = emptyList(),
             status = "skipped",
+            expectedIntent = case.expected_intent,
             distinctOutputs = 0,
             note = "fixture_not_injectable_yet",
           )
@@ -209,6 +211,7 @@ object EvalHarness {
       question = case.question,
       attempts = attempts,
       status = status,
+      expectedIntent = case.expected_intent,
       distinctOutputs = attempts.map { it.text }.distinct().size,
       note = if (fatal != null) fatal else null,
     )

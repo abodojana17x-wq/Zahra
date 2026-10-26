@@ -80,6 +80,9 @@ object EvalReport {
       obj.addProperty("status", run.status)
       obj.addProperty("passed", run.passed)
       obj.addProperty("distinct_outputs", run.distinctOutputs)
+      obj.addProperty("expected_intent", run.expectedIntent)
+      val actualIntents = run.attempts.map { it.intent }.distinct()
+      obj.addProperty("actual_intents", actualIntents.joinToString("|"))
       obj.addProperty("latency_ms_median", run.medianLatencyMs)
       if (run.note != null) obj.addProperty("note", run.note)
       val reasons = JsonArray()
@@ -149,7 +152,20 @@ object EvalReport {
     val latencies = report.counted.map { it.medianLatencyMs }.filter { it > 0 }
     if (latencies.isNotEmpty()) {
       val (lo, hi) = EvalStats.bootstrapMeanCi(latencies)
-      sb.appendLine("## الزمن")
+      // دقة توجيه النية (Phase 1 ستضبطها؛ هنا نُثبّت خط الأساس)
+    val intentCases = report.counted.filter { !it.expectedIntent.isNullOrBlank() }
+    if (intentCases.isNotEmpty()) {
+      val matched = intentCases.count { run ->
+        run.attempts.isNotEmpty() && run.attempts.all { it.intent == run.expectedIntent }
+      }
+      sb.appendLine("## دقة توجيه النية (intent accuracy)")
+      sb.appendLine()
+      sb.appendLine("- مطابقة كاملة: **$matched/${intentCases.size}** (${EvalStats.pct(matched.toDouble() / intentCases.size)}) · فاصل 95%: ${EvalStats.intervalText(matched, intentCases.size)}")
+      sb.appendLine("- المنهج: كل تكرار يجب أن يطابق `expected_intent`؛ الحالة تُحسب مطابقة فقط لو طابقت كل التكرارات.")
+      sb.appendLine()
+    }
+
+    sb.appendLine("## الزمن")
       sb.appendLine()
       sb.appendLine("- متوسط زمن الرد الوسيط: ${String.format(Locale.US, "%.1f", latencies.average())}ms")
       sb.appendLine("- bootstrap 95% للمتوسط: ${String.format(Locale.US, "%.1f", lo)}–${String.format(Locale.US, "%.1f", hi)}ms")

@@ -72,9 +72,9 @@ object DiagnosticsEngine {
       val value = MathEngine.evaluate("جذر 144").numericResult
       (value != null && abs(value - 12.0) < 1e-6) to "الناتج=$value"
     }
-    check("calc_percent", "١٥٪ من ٢٠٠ = 30") {
-      val value = MathEngine.evaluate("15% من 200").numericResult
-      (value != null && abs(value - 30.0) < 1e-6) to "الناتج=$value"
+    check("calc_power", "أس: ٢^١٠ = 1024") {
+      val value = MathEngine.evaluate("٢^١٠").numericResult
+      (value != null && abs(value - 1024.0) < 1e-6) to "الناتج=$value"
     }
     check("unit_km_mi", "وحدات: ١٠ كم ≈ 6.2137 ميل") {
       val value = MathEngine.convertUnit(10.0, "km", "mi").numericResult

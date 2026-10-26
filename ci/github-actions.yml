@@ -48,6 +48,11 @@ jobs:
       - name: المُولّد يُنتج نفس البايتات (حتمية التوليد)
         run: python3 scripts/gen_eval_cases.py --check
 
+      - name: تحقق من صلاحية YAML لملف CI نفسه
+        run: |
+          pip install --quiet pyyaml
+          python3 -c "import yaml,sys; d=yaml.safe_load(open('ci/github-actions.yml',encoding='utf-8')); print('jobs:', list(d['jobs'])); assert len(d['jobs'])==5"
+
       - name: رفع سجل بوابة R0
         if: always()
         uses: actions/upload-artifact@v4
