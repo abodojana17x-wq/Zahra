@@ -16,3 +16,9 @@
 local.properties
 .env
 debug.keystore
+
+# Build outputs / release artifacts
+*.apk
+*.aab
+/build
+/app/build
