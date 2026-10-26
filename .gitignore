@@ -25,3 +25,7 @@ debug.keystore
 
 # مولّد وقت البناء (scripts/export_eval_summary.py) — لا يُرفع
 app/src/main/assets/eval_summary.json
+
+# Python caches
+__pycache__/
+*.pyc
