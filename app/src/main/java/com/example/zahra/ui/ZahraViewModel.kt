@@ -184,6 +184,7 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
       return
     }
 
+    router.clearConversation()
     val newSession = ZahraSession(
       title = "محادثة جديدة",
       messages = emptyList()
@@ -199,6 +200,7 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
 
   fun switchSession(sessionId: String) {
     if (_uiState.value.sessions.any { it.id == sessionId }) {
+      if (_uiState.value.activeSessionId != sessionId) router.clearConversation()
       _uiState.value = _uiState.value.copy(
         activeSessionId = sessionId,
         currentScreen = ZahraScreen.CHAT
@@ -207,6 +209,7 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun deleteSession(sessionId: String) {
+    if (_uiState.value.activeSessionId == sessionId) router.clearConversation()
     val filtered = _uiState.value.sessions.filter { it.id != sessionId }
     val updatedPinned = _uiState.value.pinnedSessionIds - sessionId
     if (filtered.isEmpty()) {
@@ -278,7 +281,7 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
 
     viewModelScope.launch {
       val response = try {
-        withContext(Dispatchers.IO) { router.process(query.trim(), isDeep) }
+        withContext(Dispatchers.IO) { router.processForSession(currentSession.id, query.trim(), isDeep) }
       } catch (cancelled: CancellationException) {
         throw cancelled
       } catch (_: Exception) {
@@ -318,7 +321,9 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
         deepThinking = response.deepThinking,
         evidenceTrace = response.evidenceTrace,
         clarification = response.clarification,
-        executionPlan = response.executionPlan
+        executionPlan = response.executionPlan,
+        dialogueTraceId = response.dialogueTraceId,
+        dialogueBlocks = response.dialogueBlocks
       )
 
       val finalSessions = _uiState.value.sessions.map { session ->
@@ -475,12 +480,16 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
     )
   }
 
-  fun clearMemory() {
-    router.memoryEngine.clearMemory()
+  fun clearMemory(): String {
+    val result = router.clearDialogueMemory()
+    val facts = router.memoryEngine.getFacts()
     _uiState.value = _uiState.value.copy(
-      userFacts = emptyList(),
-      userProfileName = "المستخدم"
+      userFacts = facts,
+      userProfileName = facts.find { it.key.contains("الاسم") }?.value ?: "المستخدم"
     )
+    return if (result.success)
+      "تم مسح ${result.facts} حقائق و${result.topics} مواضيع و${result.turns} دورات من سياق الجلسة والملف الشخصي. أرشيف الدردشة والملاحظات والمهام لم تُحذف."
+    else "تعذر مسح بعض البيانات المحفوظة؛ ربما تم مسح بعضها فقط. حاول مرة أخرى."
   }
 
   override fun onCleared() {

@@ -128,12 +128,12 @@ class PersonalityManager(private val context: Context) {
             )
         }
         
-        // Save the preferences
+        // Capture the old preferences before updating the cache.
+        val old = currentPersonality ?: PersonalityPreferences.getDefault()
         savePersonality(preferences)
         currentPersonality = preferences
         
         // Determine what changed
-        val old = currentPersonality ?: PersonalityPreferences.getDefault()
         val changedFields = mutableListOf<String>()
         
         if (preferences.tone != old.tone) changedFields.add("tone")

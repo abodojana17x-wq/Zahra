@@ -171,9 +171,11 @@ class MemoryEngine(
    */
   fun scanAndExtractFact(input: String): ZahraUserFact? {
     val trimmed = input.trim()
+    // A negated assertion is not permission to persist the negated fact.
+    if (Regex("(?:مش|لا|ليس|لست)\\s+(?:اسمي|انا\\s+اسمي|أنا\\s+اسمي|أحب|احب|بحب)").containsMatchIn(trimmed)) return null
 
     // 1. Explicit introduction of name: "اسمي أحمد", "أنا اسمي دجانة", "نادني بـ محمد"
-    val nameRegex = Regex("(?:اسمي|أنا اسمي|ادعني|نادني بـ?|اسمي هو)\\s+([\\p{L}\\s]{2,25})", RegexOption.IGNORE_CASE)
+    val nameRegex = Regex("(?:اسمي هو|أنا اسمي|اسمي|ادعني|نادني بـ?)\\s+([\\p{L}\\s]{2,25})", RegexOption.IGNORE_CASE)
     nameRegex.find(trimmed)?.let { match ->
       val name = match.groupValues[1].trim()
       if (name.isNotEmpty() && !name.contains("زهرة") && !name.contains("مساعد")) {

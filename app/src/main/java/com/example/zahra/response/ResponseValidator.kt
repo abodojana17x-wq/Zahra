@@ -135,13 +135,16 @@ class ResponseValidator {
         val text = response.text.lowercase()
         
         // Check emoji usage
-        val emojiCount = text.count { it in "\uD83C\uDF00".."\uD83D\uDFFF" }
+        val emojiCount = text.indices.count { i ->
+            Character.isHighSurrogate(text[i]) && i + 1 < text.length &&
+                Character.isLowSurrogate(text[i + 1]) &&
+                Character.toCodePoint(text[i], text[i + 1]) in 0x1F300..0x1FAFF
+        }
         val maxEmojis = when (personality.emojiFrequency) {
             com.example.zahra.personality.EmojiFrequency.NONE -> 0
             com.example.zahra.personality.EmojiFrequency.RARE -> 1
-            com.example.zahra.personality.EmojiFrequency.OCCASIONAL -> 3
+            com.example.zahra.personality.EmojiFrequency.MODERATE -> 3
             com.example.zahra.personality.EmojiFrequency.FREQUENT -> 5
-            com.example.zahra.personality.EmojiFrequency.ALWAYS -> Int.MAX_VALUE
         }
         
         if (emojiCount > maxEmojis) {
@@ -149,7 +152,7 @@ class ResponseValidator {
         }
         
         // Check formality
-        if (personality.formalityLevel == com.example.zahra.personality.FormalityLevel.VERY_FORMAL) {
+        if (personality.formality == com.example.zahra.personality.FormalityLevel.VERY_FORMAL) {
             // Very formal should not use contractions or slang
             val informalPatterns = listOf(
                 "don't", "can't", "won't", "it's", "that's", "what's",

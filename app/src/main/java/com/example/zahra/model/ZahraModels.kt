@@ -244,6 +244,8 @@ data class ZahraSchedule(
   val updatedAt: Long = System.currentTimeMillis()
 )
 
+data class DialogueBlockTrace(val text: String, val source: String)
+
 data class ZahraMessage(
   val id: String = java.util.UUID.randomUUID().toString(),
   val sender: Sender,
@@ -259,7 +261,9 @@ data class ZahraMessage(
   val evidenceTrace: EvidenceGroundingTrace? = null,
   val clarification: ClarificationPayload? = null,
   val executionPlan: com.example.zahra.intelligence.planner.ExecutionPlan? = null,
-  val timestamp: Long = System.currentTimeMillis()
+  val timestamp: Long = System.currentTimeMillis(),
+  val dialogueTraceId: String? = null,
+  val dialogueBlocks: List<DialogueBlockTrace>? = null
 )
 
 data class ZahraTask(
@@ -295,7 +299,10 @@ data class ZahraResponse(
   val createdTask: ZahraTask? = null,
   val createdNote: ZahraNote? = null,
   val createdSchedule: ZahraSchedule? = null,
-  val executionPlan: com.example.zahra.intelligence.planner.ExecutionPlan? = null
+  val executionPlan: com.example.zahra.intelligence.planner.ExecutionPlan? = null,
+  val dialogueTraceId: String? = null,
+  val dialogueBlockSources: List<String> = emptyList(),
+  val dialogueBlocks: List<DialogueBlockTrace> = emptyList()
 )
 
 data class ZahraSession(

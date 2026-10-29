@@ -30,6 +30,7 @@ class MoodAnalyzer {
         URGENT("مستعجل", "⚡"),
         NEUTRAL("محايد", "😐"),
         TIRED("متعب", "😴"),
+        BORED("ملول", "😐"),
         GRATEFUL("ممتن", "🤍"),
         LONELY("وحيد", "💔"),
         MOTIVATED("متحمس", "💪"),
@@ -345,9 +346,13 @@ class MoodAnalyzer {
         }
         
         // 9. Determine primary mood
-        val (primaryMood, secondaryMood, moodConfidence) = determineMood(
-            positiveScore, negativeScore, isQuestion, urgency, words, normalized
-        )
+        val negatedLoneliness = Regex("(?:مش|لا|لست)\\s+(?:حاسس\\s+(?:اني\\s+)?)?(?:وحيد|وحيده|لوحدي)").containsMatchIn(normalized)
+        val explicitSarcasm = normalized.contains("سخرية") || normalized.contains("سخريه") || normalized.contains("/s")
+        val (primaryMood, secondaryMood, moodConfidence) = if (negatedLoneliness || explicitSarcasm) {
+            Triple(Mood.NEUTRAL, null, 0.3)
+        } else if (Regex("(?:هل )?(?:بتحبني|تحبني)").containsMatchIn(normalized)) {
+            Triple(Mood.CURIOUS, null, 0.5)
+        } else determineMood(positiveScore, negativeScore, isQuestion, urgency, words, normalized)
         
         // 10. Determine response strategy
         val strategy = determineStrategy(primaryMood, urgency, sentimentScore, engagement)
@@ -453,13 +458,13 @@ class MoodAnalyzer {
         
         // Detect specific moods from keyword patterns
         val sadKeywords = setOf("حزين", "حزينة", "زعلان", "زعلانة", "بكيت", "بكي", "مكتئب", "ضايق", "ضايقه", "مقهور")
-        val angryKeywords = setOf("غضبان", "غضبانة", "معصب", "أكره", "اكره", "كراهية", "مش طايق", "مش طايقة", "مجنني", "جنني")
+        val angryKeywords = setOf("غضبان", "غضبانة", "معصب", "أكره", "اكره", "كراهية", "مش طايق", "مش طايقة", "مجنني", "جنني", "اتخانقت", "تخانقت")
         val anxiousKeywords = setOf("خايف", "خايفة", "قلقان", "قلقانة", "متوتر", "متوترة", "مرعوب", "محتار", "محتارة")
         val lonelyKeywords = setOf("لوحدي", "وحيد", "وحيدة", "محدش", "عزلة", "محدش فاهمني", "محدش حاسس بيا")
         val tiredKeywords = setOf("تعبان", "تعبانة", "مرهق", "مرهقة", "نعسان", "ارهاق")
         val gratefulKeywords = setOf("شكرًا", "شكرا", "ممتن", "ممتنة", "ممنون", "جزاك الله", "الحمدلله", "الحمد لله")
-        val motivatedKeywords = setOf("متحمس", "متحمسة", "حماس", "هيا", "يلا", "سأنجح", "هنجح", "قادر")
-        val confusedKeywords = setOf("مش فاهم", "مش فاهمة", "محتار", "محتارة", "تايه", "تايهة", "مش عارف")
+        val motivatedKeywords = setOf("متحمس", "متحمسة", "حماس", "هيا", "يلا", "سأنجح", "هنجح")
+        val confusedKeywords = setOf("مش فاهم", "مش فاهمة", "محتار", "محتارة", "تايه", "تايهة", "مش عارف", "مش قادر اذاكر", "مش قادره اذاكر")
         
         val wordSet = words.toSet()
         val normalizedContains = { terms: Set<String> -> terms.any { normalized.contains(it) } }
@@ -472,6 +477,9 @@ class MoodAnalyzer {
         if (normalizedContains(anxiousKeywords)) moodScores[Mood.ANXIOUS] = negScore * 1.1 + 0.25
         if (normalizedContains(lonelyKeywords)) moodScores[Mood.LONELY] = negScore * 1.15 + 0.3
         if (normalizedContains(tiredKeywords)) moodScores[Mood.TIRED] = negScore * 0.9 + 0.25
+        if (normalizedContains(setOf("زهقان", "زهقانه", "ملل", "ممل")) &&
+            !Regex("(?:مش|لا|لست)\\s+(?:زهقان|زهقانه)").containsMatchIn(normalized))
+            moodScores[Mood.BORED] = negScore * 1.1 + 0.3
         if (normalizedContains(gratefulKeywords)) moodScores[Mood.GRATEFUL] = posScore * 1.1 + 0.3
         if (normalizedContains(motivatedKeywords)) moodScores[Mood.MOTIVATED] = posScore * 1.1 + 0.25
         if (normalizedContains(confusedKeywords)) moodScores[Mood.CONFUSED] = 0.5
@@ -513,6 +521,7 @@ class MoodAnalyzer {
             Mood.SAD -> ResponseStrategy.WARM_SUPPORT
             Mood.LONELY -> ResponseStrategy.WARM_SUPPORT
             Mood.TIRED -> ResponseStrategy.WARM_SUPPORT
+            Mood.BORED -> ResponseStrategy.NORMAL
             Mood.ANXIOUS -> ResponseStrategy.CALM_REASSURANCE
             Mood.CONFUSED -> ResponseStrategy.CALM_REASSURANCE
             Mood.ANGRY -> ResponseStrategy.DEESCALATE

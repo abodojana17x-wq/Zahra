@@ -3,6 +3,7 @@ package com.example.zahra.memory
 import android.content.Context
 import android.content.SharedPreferences
 import org.json.JSONObject
+import com.example.zahra.security.ZahraCrypto
 
 /**
  * Unified Memory Manager — مدير الذاكرة الموحّد لزهرة
@@ -46,10 +47,29 @@ class UnifiedMemoryManager(private val context: Context? = null) {
             conversationTurns.removeAt(0)
         }
         
-        // Auto-extract profile data
-        val extraction = profileExtractor.extract(userMsg)
-        if (extraction.hasExtraction) {
-            mergeExtractionIntoProfile(extraction)
+        // Only explicit names/gender are durable: "أنا فرحان" is not a name.
+        val extracted = profileExtractor.extract(userMsg)
+        val nameIsExplicit = Regex("(?:اسمي|ناديني|my name is|call me)\\s+", RegexOption.IGNORE_CASE).containsMatchIn(userMsg)
+        val genderIsExplicit = Regex("(?:انا|أنا)\\s+(?:ولد|بنت|رجل|راجل|امرأة|ست)\\b|i am (?:male|female)", RegexOption.IGNORE_CASE).containsMatchIn(userMsg)
+        val negatedLike = Regex("(?:مش|لا|ما)\\s*(?:بحب|احب|أحب)").containsMatchIn(userMsg)
+        val extraction = extracted.copy(
+            name = extracted.name.takeIf { nameIsExplicit },
+            gender = extracted.gender.takeIf { genderIsExplicit },
+            likes = if (negatedLike) emptyList() else extracted.likes
+        )
+        val hasSafeExtraction = extraction.name != null || extraction.age != null || extraction.gender != null ||
+            extraction.likes.isNotEmpty() || extraction.dislikes.isNotEmpty() || extraction.hobbies.isNotEmpty() ||
+            extraction.location != null || extraction.work != null || extraction.education != null
+        if (hasSafeExtraction) {
+            val before = userProfile
+            try {
+                mergeExtractionIntoProfile(extraction)
+                lastPersistenceError = null
+            } catch (e: SecurityException) {
+                // Fail closed without turning an already-executed tool into a reported failure.
+                userProfile = before
+                lastPersistenceError = e.message ?: "تعذر حفظ الملف الشخصي مشفرًا"
+            }
         }
         
         // Detect topics
@@ -92,6 +112,8 @@ class UnifiedMemoryManager(private val context: Context? = null) {
 
     // ========== Tier 3: User Profile Memory ==========
     private val profileExtractor = UserProfileExtractor()
+    var lastPersistenceError: String? = null
+        private set
     var userProfile = UserProfile()
         private set
 
@@ -202,12 +224,12 @@ class UnifiedMemoryManager(private val context: Context? = null) {
             put("totalMessages", userProfile.totalMessages)
             put("relationshipLevel", userProfile.relationshipLevel.name)
         }
-        prefs.edit().putString("user_profile_v3", json.toString()).apply()
+        writeEncrypted("user_profile_v3", json.toString())
     }
 
     private fun loadProfile() {
         val prefs = prefs ?: return
-        val jsonStr = prefs.getString("user_profile_v3", null) ?: return
+        val jsonStr = readEncrypted("user_profile_v3") ?: return
         try {
             val json = JSONObject(jsonStr)
             userProfile = UserProfile(
@@ -242,13 +264,42 @@ class UnifiedMemoryManager(private val context: Context? = null) {
 
     private fun saveTopics() {
         val prefs = prefs ?: return
-        prefs.edit().putString("topics_v3", topicMemory.toJsonString()).apply()
+        writeEncrypted("topics_v3", topicMemory.toJsonString())
     }
 
     private fun loadTopics() {
         val prefs = prefs ?: return
-        val topicsJson = prefs.getString("topics_v3", null) ?: return
+        val topicsJson = readEncrypted("topics_v3") ?: return
         topicMemory.loadFromJson(topicsJson)
+    }
+
+    private fun writeEncrypted(key: String, plain: String) {
+        val storage = prefs ?: return
+        // Two stages: commit and verify ciphertext before removing a legacy plaintext key.
+        val encrypted = ZahraCrypto.encrypt(plain)
+        if (!storage.edit().putString(key + "_encrypted", encrypted).commit() ||
+            storage.getString(key + "_encrypted", null) != encrypted)
+            throw SecurityException("تعذر حفظ الذاكرة المشفرة أو التحقق منها")
+        removeLegacy(storage, key)
+    }
+
+    private fun removeLegacy(storage: SharedPreferences, key: String) {
+        if (storage.contains(key) && (!storage.edit().remove(key).commit() || storage.contains(key)))
+            throw SecurityException("تعذر إزالة نسخة الذاكرة القديمة")
+    }
+
+    private fun readEncrypted(key: String): String? {
+        val storage = prefs ?: return null
+        val encrypted = storage.getString(key + "_encrypted", null)
+        if (encrypted != null) {
+            val plain = ZahraCrypto.decrypt(encrypted)
+            // Complete an interrupted migration only after authenticated decryption.
+            removeLegacy(storage, key)
+            return plain
+        }
+        val legacy = storage.getString(key, null) ?: return null
+        writeEncrypted(key, legacy)
+        return legacy
     }
 
     private fun jsonArrayToList(array: org.json.JSONArray?): List<String> {
@@ -263,11 +314,13 @@ class UnifiedMemoryManager(private val context: Context? = null) {
     /**
      * Clear all memory (user requested)
      */
-    fun clearAll() {
+    fun clearAll(): Boolean {
+        if (prefs != null && !prefs.edit().clear().commit()) return false
         conversationTurns.clear()
-        topicMemory.loadFromJson("{}") // Reset topics
+        topicMemory.clear()
         userProfile = UserProfile()
-        prefs?.edit()?.clear()?.apply()
+        lastPersistenceError = null
+        return true
     }
 
     /**

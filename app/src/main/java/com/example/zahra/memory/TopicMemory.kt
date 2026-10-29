@@ -190,6 +190,12 @@ class TopicMemory {
     /**
      * Start a new session
      */
+    fun clear() {
+        topics.clear()
+        sessionTopics.clear()
+        currentSessionId = UUID.randomUUID().toString()
+    }
+
     fun startNewSession() {
         currentSessionId = UUID.randomUUID().toString()
         sessionTopics.clear()

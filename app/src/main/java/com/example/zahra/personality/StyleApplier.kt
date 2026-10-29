@@ -16,9 +16,7 @@ import com.example.zahra.model.ZahraResponse
  * - Only wording, structure, and style may vary
  * - Evidence and citations must remain intact
  */
-class StyleApplier {
-    
-    companion object {
+object StyleApplier {
         // Emoji sets for different contexts
         private val FRIENDLY_EMOJIS = listOf("😊", "😀", "✨", "🌟", "💡", "🎉", "🙏")
         private val PLAYFUL_EMOJIS = listOf("😄", "🤔", "🎭", "🎮", "🎨", "🤣", "😜")
@@ -306,8 +304,7 @@ class StyleApplier {
                 "Done! 😊"
             )
         )
-    }
-    
+
     /**
      * Apply personality style to a response
      * 
@@ -463,6 +460,11 @@ class StyleApplier {
         return text
     }
     
+    fun getRandomEmoji(personality: PersonalityPreferences): String {
+        if (personality.emojiFrequency == EmojiFrequency.NONE) return ""
+        return ARABIC_DECORATIONS[personality.tone]?.randomOrNull() ?: ""
+    }
+
     /**
      * Get a greeting appropriate for the personality
      */
