@@ -1,0 +1,792 @@
+{
+  "pack": "religion",
+  "version": "1.0.0",
+  "license": "CC-BY-SA-4.0",
+  "generatedBy": "Zahra AI / Arena",
+  "reviewStatus": "owner-waived-no-human-review",
+  "authors": [
+    "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية"
+  ],
+  "sources": [],
+  "generatedAt": "2026-10-29",
+  "note": "21 بطاقة تعريفية أصلية مرتبطة بموضوعات الدروس القائمة ومراجع موضعية. لا نصوص قرآنية/حديثية منقولة ولا أحكام فتوى. المحتوى مولّد آليًا؛ لا توجد مراجعة بشرية. نصوص المصادر الخارجية غير منقولة؛ ترخيصها لا يُستنتج من الاستشهاد.",
+  "units": [
+    {
+      "id": "religion-fiqh-wudu",
+      "pack": "religion",
+      "title": "الوضوء",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح الوضوء",
+        "ما المقصود بـالوضوء؟",
+        "What is الوضوء in Islamic studies?",
+        "eشرح الوضوء ya3ni eh",
+        "درس عن الوضوء"
+      ],
+      "a": [
+        "طهارة الوضوء مرتبطة بآية الوضوء في سورة المائدة. هذه بطاقة تعريفية لا تفصل أركان الوضوء أو نواقضه؛ ففي تفاصيلها مسائل فقهية، فاسأل عالمًا موثوقًا عن حالتك.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "fiqh",
+        "الوضوء"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "القرآن الكريم، المائدة 5:6",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "القرآن الكريم، المائدة 5:6"
+      }
+    },
+    {
+      "id": "religion-fiqh-prayer",
+      "pack": "religion",
+      "title": "الصلاة",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح الصلاة",
+        "ما المقصود بـالصلاة؟",
+        "What is الصلاة in Islamic studies?",
+        "eشرح الصلاة ya3ni eh",
+        "درس عن الصلاة"
+      ],
+      "a": [
+        "الصلاة عبادة مركزية في الإسلام، ويذكر القرآن ارتباطها بأوقات معلومة. هذه نبذة تعليمية؛ تفاصيل الأداء والأعذار والمسائل تختلف، وليست فتوى.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "fiqh",
+        "الصلاة"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "القرآن الكريم، النساء 4:103",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "القرآن الكريم، النساء 4:103"
+      }
+    },
+    {
+      "id": "religion-fiqh-zakat",
+      "pack": "religion",
+      "title": "الزكاة",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح الزكاة",
+        "ما المقصود بـالزكاة؟",
+        "What is الزكاة in Islamic studies?",
+        "eشرح الزكاة ya3ni eh",
+        "درس عن الزكاة"
+      ],
+      "a": [
+        "الزكاة عبادة مالية، ويذكر القرآن مصارفها. حساب النصاب والمال الواجب وتفاصيل الأصول قد يختلف باختلاف الحال والاجتهاد؛ لا تعتمد هذه البطاقة لحساب التزامك، واسأل أهل العلم.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "fiqh",
+        "الزكاة"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "القرآن الكريم، التوبة 9:60",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "القرآن الكريم، التوبة 9:60"
+      }
+    },
+    {
+      "id": "religion-fiqh-fasting",
+      "pack": "religion",
+      "title": "الصيام",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح الصيام",
+        "ما المقصود بـالصيام؟",
+        "What is الصيام in Islamic studies?",
+        "eشرح الصيام ya3ni eh",
+        "درس عن الصيام"
+      ],
+      "a": [
+        "الصيام عبادة لها أحكام عامة في القرآن. الأعذار والمرض والسفر والقضاء مسائل تعتمد على الحالة والمذهب؛ هذه نبذة وليست فتوى أو بديلًا عن سؤال عالم.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "fiqh",
+        "الصيام"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "القرآن الكريم، البقرة 2:183–185",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "القرآن الكريم، البقرة 2:183–185"
+      }
+    },
+    {
+      "id": "religion-fiqh-hajj",
+      "pack": "religion",
+      "title": "الحج",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح الحج",
+        "ما المقصود بـالحج؟",
+        "What is الحج in Islamic studies?",
+        "eشرح الحج ya3ni eh",
+        "درس عن الحج"
+      ],
+      "a": [
+        "الحج من شعائر الإسلام، ويرتبط في القرآن بالاستطاعة. متطلبات السفر والصحة والنسك وتفاصيل المناسك تحتاج مصادر رسمية موثوقة وسؤال مختص؛ لا تُعد هذه البطاقة إرشادًا للنسك.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "fiqh",
+        "الحج"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "القرآن الكريم، آل عمران 3:97",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "القرآن الكريم، آل عمران 3:97"
+      }
+    },
+    {
+      "id": "religion-seerah-birth",
+      "pack": "religion",
+      "title": "مولد النبي ﷺ",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح مولد النبي ﷺ",
+        "ما المقصود بـمولد النبي ﷺ؟",
+        "What is مولد النبي ﷺ in Islamic studies?",
+        "eشرح مولد النبي ﷺ ya3ni eh",
+        "درس عن مولد النبي ﷺ"
+      ],
+      "a": [
+        "تتناول كتب السيرة نشأة النبي محمد ﷺ في مكة وبدايات حياته. تختلف بعض الروايات التاريخية في تفاصيل التواريخ؛ لذلك نعرض الموضوع كسياق للسيرة ولا نجزم بتاريخ مختلف فيه.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "seerah",
+        "مولد النبي ﷺ"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "ابن هشام، السيرة النبوية، أخبار المولد والنشأة",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "ابن هشام، السيرة النبوية، أخبار المولد والنشأة"
+      }
+    },
+    {
+      "id": "religion-seerah-revelation",
+      "pack": "religion",
+      "title": "بداية الوحي",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح بداية الوحي",
+        "ما المقصود بـبداية الوحي؟",
+        "What is بداية الوحي in Islamic studies?",
+        "eشرح بداية الوحي ya3ni eh",
+        "درس عن بداية الوحي"
+      ],
+      "a": [
+        "تذكر المصادر الإسلامية بدء الوحي في غار حراء، وتفتتح سورة العلق بآيات القراءة. هذه خلاصة تعليمية موجزة، وللتفاصيل يُرجع إلى مصادر الحديث والسيرة.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "seerah",
+        "بداية الوحي"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "القرآن الكريم، العلق 96:1–5؛ صحيح البخاري، كتاب بدء الوحي",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "القرآن الكريم، العلق 96:1–5؛ صحيح البخاري، كتاب بدء الوحي"
+      }
+    },
+    {
+      "id": "religion-seerah-hijrah",
+      "pack": "religion",
+      "title": "الهجرة إلى المدينة",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح الهجرة إلى المدينة",
+        "ما المقصود بـالهجرة إلى المدينة؟",
+        "What is الهجرة إلى المدينة in Islamic studies?",
+        "eشرح الهجرة إلى المدينة ya3ni eh",
+        "درس عن الهجرة إلى المدينة"
+      ],
+      "a": [
+        "الهجرة حدث محوري في السيرة النبوية وانتقال لبناء مجتمع المدينة. يذكر القرآن قصة الغار في سياق التوكل؛ لا تُستنتج من هذه البطاقة تفاصيل تاريخية إضافية غير موثقة.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "seerah",
+        "الهجرة إلى المدينة"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "القرآن الكريم، التوبة 9:40؛ ابن هشام، خبر الهجرة",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "القرآن الكريم، التوبة 9:40؛ ابن هشام، خبر الهجرة"
+      }
+    },
+    {
+      "id": "religion-seerah-badr",
+      "pack": "religion",
+      "title": "غزوة بدر",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح غزوة بدر",
+        "ما المقصود بـغزوة بدر؟",
+        "What is غزوة بدر in Islamic studies?",
+        "eشرح غزوة بدر ya3ni eh",
+        "درس عن غزوة بدر"
+      ],
+      "a": [
+        "بدر حدث من أحداث السيرة في السنة الثانية للهجرة، ويذكر القرآن بدرًا في سياق تاريخي. اقرأ الحدث من مصدر سيرة موثق مع مراعاة سياقه وعدم اختزال الدروس في ادعاءات حديثة.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "seerah",
+        "غزوة بدر"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "القرآن الكريم، آل عمران 3:123–125؛ ابن هشام، غزوة بدر",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "القرآن الكريم، آل عمران 3:123–125؛ ابن هشام، غزوة بدر"
+      }
+    },
+    {
+      "id": "religion-seerah-fath",
+      "pack": "religion",
+      "title": "فتح مكة",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح فتح مكة",
+        "ما المقصود بـفتح مكة؟",
+        "What is فتح مكة in Islamic studies?",
+        "eشرح فتح مكة ya3ni eh",
+        "درس عن فتح مكة"
+      ],
+      "a": [
+        "فتح مكة محطة تاريخية في السيرة النبوية. هذه بطاقة تعريف بالموضوع فقط، ولا تسرد رواية تفصيلية أو حكمًا معاصرًا؛ تُراجع الوقائع في مصادر السيرة المعتمدة.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "seerah",
+        "فتح مكة"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "ابن هشام، السيرة النبوية، خبر فتح مكة",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "ابن هشام، السيرة النبوية، خبر فتح مكة"
+      }
+    },
+    {
+      "id": "religion-aqeedah-tawhid",
+      "pack": "religion",
+      "title": "التوحيد",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح التوحيد",
+        "ما المقصود بـالتوحيد؟",
+        "What is التوحيد in Islamic studies?",
+        "eشرح التوحيد ya3ni eh",
+        "درس عن التوحيد"
+      ],
+      "a": [
+        "التوحيد هو إفراد الله بالعبادة في العقيدة الإسلامية، وسورة الإخلاص تعرض معاني التوحيد بإيجاز. هذه مقدمة وصفية وليست مناظرة أو حكمًا على أشخاص.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "aqeedah",
+        "التوحيد"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "القرآن الكريم، سورة الإخلاص 112:1–4",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "القرآن الكريم، سورة الإخلاص 112:1–4"
+      }
+    },
+    {
+      "id": "religion-aqeedah-pillars",
+      "pack": "religion",
+      "title": "أركان الإيمان",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح أركان الإيمان",
+        "ما المقصود بـأركان الإيمان؟",
+        "What is أركان الإيمان in Islamic studies?",
+        "eشرح أركان الإيمان ya3ni eh",
+        "درس عن أركان الإيمان"
+      ],
+      "a": [
+        "تُعرض أركان الإيمان في حديث جبريل: الإيمان بالله وملائكته وكتبه ورسله واليوم الآخر والقدر. هذه صياغة تعليمية موجزة، وللنص والتخريج ارجع إلى المصدر المذكور.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "aqeedah",
+        "أركان الإيمان"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "صحيح مسلم، كتاب الإيمان، حديث جبريل",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "صحيح مسلم، كتاب الإيمان، حديث جبريل"
+      }
+    },
+    {
+      "id": "religion-aqeedah-qadr",
+      "pack": "religion",
+      "title": "الإيمان بالقدر",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح الإيمان بالقدر",
+        "ما المقصود بـالإيمان بالقدر؟",
+        "What is الإيمان بالقدر in Islamic studies?",
+        "eشرح الإيمان بالقدر ya3ni eh",
+        "درس عن الإيمان بالقدر"
+      ],
+      "a": [
+        "الإيمان بالقدر أصل من أصول العقيدة الإسلامية. فهم علاقته باختيار الإنسان ومسؤوليته له مباحث علمية دقيقة؛ نكتفي بالتعريف ولا نصدر حكمًا عقديًا على السائل.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "aqeedah",
+        "الإيمان بالقدر"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "القرآن الكريم، القمر 54:49؛ صحيح مسلم، كتاب الإيمان، حديث جبريل",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "القرآن الكريم، القمر 54:49؛ صحيح مسلم، كتاب الإيمان، حديث جبريل"
+      }
+    },
+    {
+      "id": "religion-aqeedah-day-of-judgment",
+      "pack": "religion",
+      "title": "اليوم الآخر",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح اليوم الآخر",
+        "ما المقصود بـاليوم الآخر؟",
+        "What is اليوم الآخر in Islamic studies?",
+        "eشرح اليوم الآخر ya3ni eh",
+        "درس عن اليوم الآخر"
+      ],
+      "a": [
+        "الإيمان باليوم الآخر يشمل الإيمان بالبعث والحساب والجزاء في التصور الإسلامي. القرآن يذكر وزن الأعمال؛ هذه بطاقة تعريفية لا تفسر الغيب من دون مرجع.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "aqeedah",
+        "اليوم الآخر"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "القرآن الكريم، الزلزلة 99:6–8",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "القرآن الكريم، الزلزلة 99:6–8"
+      }
+    },
+    {
+      "id": "religion-tazkiyah-change",
+      "pack": "religion",
+      "title": "مراجعة النفس والتغيير",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح مراجعة النفس والتغيير",
+        "ما المقصود بـمراجعة النفس والتغيير؟",
+        "What is مراجعة النفس والتغيير in Islamic studies?",
+        "eشرح مراجعة النفس والتغيير ya3ni eh",
+        "درس عن مراجعة النفس والتغيير"
+      ],
+      "a": [
+        "تدعو آية من سورة الرعد إلى مراجعة النفس والعمل، ويستفيد منها المسلم في التوبة والإصلاح. لا تعني أن كل ظرف قاسٍ سببه الشخص؛ ولا تغني عن مساعدة مختص عند الحاجة.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "tazkiyah",
+        "مراجعة النفس والتغيير"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "القرآن الكريم، الرعد 13:11",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "القرآن الكريم، الرعد 13:11"
+      }
+    },
+    {
+      "id": "religion-tazkiyah-three-axes",
+      "pack": "religion",
+      "title": "محاسبة النفس والعمل",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح محاسبة النفس والعمل",
+        "ما المقصود بـمحاسبة النفس والعمل؟",
+        "What is محاسبة النفس والعمل in Islamic studies?",
+        "eشرح محاسبة النفس والعمل ya3ni eh",
+        "درس عن محاسبة النفس والعمل"
+      ],
+      "a": [
+        "من معاني التزكية أن يراجع الإنسان نيته وأعماله ويخطط لإصلاح ما يستطيع. هذا توجيه أخلاقي عام وليس وصفة نفسية أو لومًا لمن يواجه مرضًا أو ظرفًا خارج سيطرته.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "tazkiyah",
+        "محاسبة النفس والعمل"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "القرآن الكريم، الحشر 59:18",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "القرآن الكريم، الحشر 59:18"
+      }
+    },
+    {
+      "id": "religion-tazkiyah-ubudiyyah",
+      "pack": "religion",
+      "title": "العبودية لله",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح العبودية لله",
+        "ما المقصود بـالعبودية لله؟",
+        "What is العبودية لله in Islamic studies?",
+        "eشرح العبودية لله ya3ni eh",
+        "درس عن العبودية لله"
+      ],
+      "a": [
+        "العبودية لله مفهوم ديني يتصل بالعبادة والطاعة في الإسلام. يوضح القرآن غاية الخلق في سورة الذاريات؛ هذه خلاصة عامة وليست فتوى في عبادة بعينها.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "tazkiyah",
+        "العبودية لله"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "القرآن الكريم، الذاريات 51:56",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "القرآن الكريم، الذاريات 51:56"
+      }
+    },
+    {
+      "id": "religion-tazkiyah-asbab",
+      "pack": "religion",
+      "title": "الأخذ بالأسباب والتوكل",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح الأخذ بالأسباب والتوكل",
+        "ما المقصود بـالأخذ بالأسباب والتوكل؟",
+        "What is الأخذ بالأسباب والتوكل in Islamic studies?",
+        "eشرح الأخذ بالأسباب والتوكل ya3ni eh",
+        "درس عن الأخذ بالأسباب والتوكل"
+      ],
+      "a": [
+        "في السلوك الإسلامي يجتمع بذل السبب المتاح مع التوكل على الله، من غير ادعاء معرفة الغيب أو ضمان نتيجة. عند سؤال عملي أو حكم شرعي محدد، يُرجع لأهل العلم.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "tazkiyah",
+        "الأخذ بالأسباب والتوكل"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "القرآن الكريم، آل عمران 3:159؛ التوبة 9:51",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "القرآن الكريم، آل عمران 3:159؛ التوبة 9:51"
+      }
+    },
+    {
+      "id": "religion-tazkiyah-dunya",
+      "pack": "religion",
+      "title": "التوازن في التعامل مع الدنيا",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح التوازن في التعامل مع الدنيا",
+        "ما المقصود بـالتوازن في التعامل مع الدنيا؟",
+        "What is التوازن في التعامل مع الدنيا in Islamic studies?",
+        "eشرح التوازن في التعامل مع الدنيا ya3ni eh",
+        "درس عن التوازن في التعامل مع الدنيا"
+      ],
+      "a": [
+        "تتناول سورة الحديد زينة الحياة الدنيا في سياق تذكير أخلاقي؛ لا يلزم من ذلك ذم العمل أو الأسرة أو الممتلكات. المقصود هنا عرض موضوع روحي عام لا حكم على اختيارات الناس.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "tazkiyah",
+        "التوازن في التعامل مع الدنيا"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "القرآن الكريم، الحديد 57:20",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "القرآن الكريم، الحديد 57:20"
+      }
+    },
+    {
+      "id": "religion-tazkiyah-quran",
+      "pack": "religion",
+      "title": "القرآن والتدبر",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح القرآن والتدبر",
+        "ما المقصود بـالقرآن والتدبر؟",
+        "What is القرآن والتدبر in Islamic studies?",
+        "eشرح القرآن والتدبر ya3ni eh",
+        "درس عن القرآن والتدبر"
+      ],
+      "a": [
+        "القرآن كتاب هداية وعبادة للمسلمين، وتدبره يكون بفهم النص وسياقه والاستعانة بتفسير موثوق. وصفه بالشفاء معنى ديني ولا يغني عن العلاج الطبي أو النفسي.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "tazkiyah",
+        "القرآن والتدبر"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "القرآن الكريم، الإسراء 17:82؛ ص 38:29",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "القرآن الكريم، الإسراء 17:82؛ ص 38:29"
+      }
+    },
+    {
+      "id": "religion-tazkiyah-jihad-nafs",
+      "pack": "religion",
+      "title": "مجاهدة النفس على الخير",
+      "intent": "religious_reference",
+      "q": [
+        "اشرح مجاهدة النفس على الخير",
+        "ما المقصود بـمجاهدة النفس على الخير؟",
+        "What is مجاهدة النفس على الخير in Islamic studies?",
+        "eشرح مجاهدة النفس على الخير ya3ni eh",
+        "درس عن مجاهدة النفس على الخير"
+      ],
+      "a": [
+        "يمكن استعمال هذا العنوان للدلالة على تدريب النفس على الصبر وترك السلوك الضار وفعل الخير. لا ننسب حديثًا غير موثق لعبارة مشهورة، ولا يعني المصطلح هنا إيذاء النفس أو الآخرين.",
+        "هذه مادة تثقيفية عامة وليست فتوى. المسائل الخلافية أو الشخصية تُحال إلى عالم مؤهل ومصدر موثوق؛ لم يُنقل نص من الطبعة المشار إليها."
+      ],
+      "tags": [
+        "دين",
+        "tazkiyah",
+        "مجاهدة النفس على الخير"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "religious_reference",
+      "weight": 1.0,
+      "source": {
+        "name": "مرجع إسلامي — موضع محدد؛ صياغة تفسيرية أصلية دون نقل نص",
+        "location": "القرآن الكريم، الشمس 91:9–10",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "reference": "القرآن الكريم، الشمس 91:9–10"
+      }
+    }
+  ]
+}

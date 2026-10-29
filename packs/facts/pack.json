@@ -1,0 +1,160 @@
+{
+  "pack": "facts",
+  "version": "1.0.0",
+  "license": "CC-BY-SA-4.0",
+  "generatedBy": "Zahra AI / Arena",
+  "reviewStatus": "owner-waived-no-human-review",
+  "authors": [
+    "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية"
+  ],
+  "sources": [],
+  "generatedAt": "2026-10-29",
+  "note": "حقائق ثابتة محددة النطاق مع مصادر موضعية؛ لا لقطة ويكيبيديا ولا معلومات حية. المحتوى مولّد آليًا؛ لا توجد مراجعة بشرية. نصوص المصادر الخارجية غير منقولة؛ ترخيصها لا يُستنتج من الاستشهاد.",
+  "units": [
+    {
+      "id": "fact-light-speed",
+      "pack": "facts",
+      "title": "سرعة الضوء في الفراغ",
+      "intent": "query_knowledge",
+      "q": [
+        "سرعة الضوء كام؟",
+        "ما قيمة سرعة الضوء في الفراغ؟",
+        "What is the speed of light in vacuum?",
+        "sor3et el do2 kam"
+      ],
+      "a": [
+        "قيمة سرعة الضوء في الفراغ ثابتة بالتعريف: 299,792,458 مترًا في الثانية.",
+        "المعلومة تخص الفراغ؛ سرعة انتشار الضوء في مادة مثل الماء أقل وتتوقف على خواص الوسط."
+      ],
+      "tags": [
+        "ضوء",
+        "فيزياء",
+        "ثابت"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "source": {
+        "name": "BIPM — The International System of Units",
+        "location": "SI Brochure, defining constants: speed of light c",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "url": "https://www.bipm.org/en/publications/si-brochure"
+      }
+    },
+    {
+      "id": "fact-water-boiling",
+      "pack": "facts",
+      "title": "درجة غليان الماء تعتمد على الضغط",
+      "intent": "query_knowledge",
+      "q": [
+        "المية بتغلي على كام درجة؟",
+        "ما درجة غليان الماء؟",
+        "At what temperature does water boil?",
+        "el mayya betghely 3ala kam"
+      ],
+      "a": [
+        "قرب الضغط الجوي القياسي يغلي الماء النقي عند نحو 100 درجة مئوية. تتغير درجة الغليان مع الضغط والارتفاع؛ لذلك ليست قيمة ثابتة لكل مكان."
+      ],
+      "tags": [
+        "ماء",
+        "حرارة",
+        "ضغط"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "source": {
+        "name": "NIST Chemistry WebBook — Water",
+        "location": "Phase-change data at stated pressure",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&Mask=4"
+      }
+    },
+    {
+      "id": "fact-au-definition",
+      "pack": "facts",
+      "title": "تعريف الوحدة الفلكية",
+      "intent": "query_knowledge",
+      "q": [
+        "الوحدة الفلكية بتساوي إيه؟",
+        "ما تعريف الوحدة الفلكية AU؟",
+        "What is one astronomical unit?",
+        "el wehda el falakeya betesawy eh"
+      ],
+      "a": [
+        "الوحدة الفلكية وحدة طول تساوي 149,597,870,700 متر بالضبط، وتُستخدم لوصف المسافات داخل النظام الشمسي.",
+        "هي وحدة قياس معرفة، وليست وعدًا بأن المسافة الفعلية بين الأرض والشمس ثابتة طوال مدار الأرض."
+      ],
+      "tags": [
+        "فلك",
+        "وحدة",
+        "مسافة"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "source": {
+        "name": "International Astronomical Union",
+        "location": "Resolution B2 (2012): definition of the astronomical unit",
+        "license": "reference-only; no text reproduced; third-party rights not asserted"
+      }
+    },
+    {
+      "id": "fact-binary-place-value",
+      "pack": "facts",
+      "title": "قيمة الخانات في النظام الثنائي",
+      "intent": "define_word",
+      "q": [
+        "إزاي أقرأ الرقم الثنائي؟",
+        "كيف تعمل خانات النظام الثنائي؟",
+        "How do binary place values work?",
+        "ezay aqra el ra2m el thona2y"
+      ],
+      "a": [
+        "النظام الثنائي أساسه 2؛ قيمة الخانة من اليمين هي 1 ثم 2 ثم 4 ثم 8، وهكذا. الرقم 1011₂ يساوي 8+0+2+1 = 11₁₀.",
+        "هذا تحويل حسابي مباشر، ولا يحتاج اتصالًا أو سعرًا متغيرًا."
+      ],
+      "tags": [
+        "ثنائي",
+        "رياضيات",
+        "حاسوب"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "examples": [
+        {
+          "lang": "text",
+          "code": "1*8 + 0*4 + 1*2 + 1*1",
+          "expected": "11",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    }
+  ]
+}

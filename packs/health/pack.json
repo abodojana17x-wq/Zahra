@@ -1,0 +1,135 @@
+{
+  "pack": "health",
+  "version": "1.0.0",
+  "license": "CC-BY-SA-4.0",
+  "generatedBy": "Zahra AI / Arena",
+  "reviewStatus": "owner-waived-no-human-review",
+  "authors": [
+    "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية"
+  ],
+  "sources": [],
+  "generatedAt": "2026-10-29",
+  "note": "معلومات صحية عامة محافظة؛ إخلاء المسؤولية موجود في كل إجابة ولا توجد تشخيصات أو جرعات. المحتوى مولّد آليًا؛ لا توجد مراجعة بشرية. نصوص المصادر الخارجية غير منقولة؛ ترخيصها لا يُستنتج من الاستشهاد.",
+  "units": [
+    {
+      "id": "health-urgent-signs",
+      "pack": "health",
+      "title": "التعامل مع حالة صحية طارئة",
+      "intent": "query_knowledge",
+      "q": [
+        "إيه أعمل لو الحالة طارئة؟",
+        "ماذا أفعل عند خطر صحي فوري؟",
+        "What should I do in a medical emergency?",
+        "a3mel eh law 7ala tare2a"
+      ],
+      "a": [
+        "إذا بدا أن الشخص في خطر فوري أو فقد الوعي أو يعاني صعوبة شديدة في التنفس، اتصل بخدمات الطوارئ المحلية فورًا واتبع تعليمات المجيب. لا تؤخر طلب المساعدة بحثًا عن تشخيص عبر التطبيق.",
+        "تنبيه صحي: هذه معلومات عامة لا تشخّص ولا تستبدل الطبيب. للحالة الطارئة اتصل بالطوارئ المحلية فورًا."
+      ],
+      "tags": [
+        "طوارئ",
+        "سلامة",
+        "طبيب"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "medical_disclaimer",
+      "weight": 1.0
+    },
+    {
+      "id": "health-medication-label",
+      "pack": "health",
+      "title": "قراءة ملصق الدواء بأمان",
+      "intent": "query_knowledge",
+      "q": [
+        "أستخدم الدوا إزاي بأمان؟",
+        "ما الاحتياطات عند استخدام دواء؟",
+        "How can I use medicine safely?",
+        "astakhdem el dawa ezay"
+      ],
+      "a": [
+        "اقرأ الملصق والنشرة واتبع تعليمات الطبيب أو الصيدلي، ولا تشارك دواءك مع شخص آخر. إذا لم تفهم الجرعة أو حدث تفاعل غير متوقع، اسأل مختصًا.",
+        "تنبيه صحي: هذه معلومات عامة لا تشخّص ولا تستبدل الطبيب. للحالة الطارئة اتصل بالطوارئ المحلية فورًا."
+      ],
+      "tags": [
+        "دواء",
+        "صيدلي",
+        "سلامة"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "medical_disclaimer",
+      "weight": 1.0
+    },
+    {
+      "id": "health-symptom-log",
+      "pack": "health",
+      "title": "تسجيل الأعراض لمناقشتها مع مختص",
+      "intent": "query_knowledge",
+      "q": [
+        "إيه أقول للدكتور عن الأعراض؟",
+        "كيف أستعد لموعد طبي؟",
+        "How should I prepare for a medical visit?",
+        "a2ol lel doctor eh 3an el a3rad"
+      ],
+      "a": [
+        "دوّن وقت بداية العرض، ما لاحظته، الأدوية المعروفة والحساسية، والأسئلة التي تريد طرحها. لا تستنتج التشخيص بنفسك من قائمة أعراض.",
+        "تنبيه صحي: هذه معلومات عامة لا تشخّص ولا تستبدل الطبيب. للحالة الطارئة اتصل بالطوارئ المحلية فورًا."
+      ],
+      "tags": [
+        "أعراض",
+        "موعد طبي",
+        "معلومات"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "medical_disclaimer",
+      "weight": 1.0
+    },
+    {
+      "id": "health-sleep-general",
+      "pack": "health",
+      "title": "عادات عامة تساعد على انتظام النوم",
+      "intent": "query_knowledge",
+      "q": [
+        "إزاي أظبط مواعيد نومي؟",
+        "ما العادات العامة لنوم منتظم؟",
+        "What habits support a regular sleep schedule?",
+        "azabat mawa3ed nomy ezay"
+      ],
+      "a": [
+        "حاول تثبيت وقت الاستيقاظ، واجعل مكان النوم هادئًا، وقلل المنبهات قرب وقت النوم إن كانت تؤثر عليك. الاحتياجات تختلف وقد تتأثر الصحة بأسباب أخرى؛ استشر مختصًا عند استمرار المشكلة.",
+        "تنبيه صحي: هذه معلومات عامة لا تشخّص ولا تستبدل الطبيب. للحالة الطارئة اتصل بالطوارئ المحلية فورًا."
+      ],
+      "tags": [
+        "نوم",
+        "روتين",
+        "صحة"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "medical_disclaimer",
+      "weight": 1.0
+    }
+  ]
+}

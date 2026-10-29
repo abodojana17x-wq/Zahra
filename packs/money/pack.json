@@ -1,0 +1,189 @@
+{
+  "pack": "money",
+  "version": "1.0.0",
+  "license": "CC-BY-SA-4.0",
+  "generatedBy": "Zahra AI / Arena",
+  "reviewStatus": "owner-waived-no-human-review",
+  "authors": [
+    "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية"
+  ],
+  "sources": [],
+  "generatedAt": "2026-10-29",
+  "note": "حسابات وتثقيف مالي عام فقط؛ لا أسعار لحظية ولا مشورة شخصية. المحتوى مولّد آليًا؛ لا توجد مراجعة بشرية. نصوص المصادر الخارجية غير منقولة؛ ترخيصها لا يُستنتج من الاستشهاد.",
+  "units": [
+    {
+      "id": "money-budget-basics",
+      "pack": "money",
+      "title": "إنشاء ميزانية شهرية بسيطة",
+      "intent": "query_knowledge",
+      "q": [
+        "أعمل ميزانية شهرية إزاي؟",
+        "كيف أبدأ إعداد ميزانية؟",
+        "How do I make a simple budget?",
+        "a3mel budget shahria ezay"
+      ],
+      "a": [
+        "سجّل الدخل المتاح، المصروفات الضرورية، الالتزامات، ثم ما يتبقى للأهداف والادخار. راجع الأرقام الفعلية وعدّل الخطة.",
+        "مثال حسابي فقط: دخل 10,000 ومصروفات 7,500 يترك 2,500 قبل الالتزامات الأخرى. هذا ليس توصية بنسبة ثابتة أو استشارة شخصية."
+      ],
+      "tags": [
+        "ميزانية",
+        "مصروف",
+        "دخل"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "source": {
+        "name": "Consumer Financial Protection Bureau",
+        "location": "Budgeting tools and spending tracker",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "url": "https://www.consumerfinance.gov/consumer-tools/budgeting/"
+      }
+    },
+    {
+      "id": "money-percent",
+      "pack": "money",
+      "title": "حساب النسبة المئوية",
+      "intent": "request_code",
+      "q": [
+        "أحسب نسبة من رقم إزاي؟",
+        "كيف أحسب نسبة مئوية من قيمة؟",
+        "How do I calculate a percentage?",
+        "a7seb nesba men ra2m ezay"
+      ],
+      "a": [
+        "لإيجاد p بالمئة من قيمة x: اضرب x في p ثم اقسم على 100.",
+        "مثال: 15% من 240 = 240 × 15 ÷ 100 = 36. هذه عملية حسابية وليست نصيحة استثمار."
+      ],
+      "tags": [
+        "نسبة",
+        "حساب",
+        "رياضيات"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "examples": [
+        {
+          "lang": "text",
+          "code": "240 * 15 / 100",
+          "expected": "36",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "money-simple-interest",
+      "pack": "money",
+      "title": "حساب الفائدة البسيطة",
+      "intent": "define_word",
+      "q": [
+        "إيه هي الفائدة البسيطة؟",
+        "ما المقصود بالفائدة البسيطة؟",
+        "What is simple interest?",
+        "eh el fa2da el baseeta"
+      ],
+      "a": [
+        "في نموذج الفائدة البسيطة، الفائدة = أصل المبلغ × المعدل السنوي × الزمن بالسنوات.",
+        "مثال رياضي غير تعاقدي: 1,000 × 0.05 × 2 = 100. العقود الحقيقية قد تستخدم رسومًا وشروطًا مختلفة؛ راجعها قبل الالتزام."
+      ],
+      "tags": [
+        "فائدة",
+        "رياضيات",
+        "مال"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "examples": [
+        {
+          "lang": "text",
+          "code": "1000 * 0.05 * 2",
+          "expected": "100",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "money-exchange-rates",
+      "pack": "money",
+      "title": "التعامل مع أسعار العملات",
+      "intent": "query_knowledge",
+      "q": [
+        "أعرف سعر الصرف منين؟",
+        "كيف أتحقق من سعر تحويل العملة؟",
+        "How can I check an exchange rate?",
+        "a3raf se3r el sarf menen"
+      ],
+      "a": [
+        "سعر الصرف يتغير بحسب الوقت ومزود الخدمة، وقد تضاف رسوم أو فروق سعرية. تحقّق من مصدر موثوق يذكر وقت التحديث والرسوم.",
+        "هذه الحزمة لا تعرض سعرًا حيًا ولا توصي بتحويل محدد؛ لا تستخدم رقمًا بلا تاريخ ومصدر."
+      ],
+      "tags": [
+        "عملة",
+        "سعر صرف",
+        "مصدر"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0
+    },
+    {
+      "id": "money-debt-checklist",
+      "pack": "money",
+      "title": "مراجعة التزامات مالية قبل القرار",
+      "intent": "query_knowledge",
+      "q": [
+        "أراجع قرض قبل ما أوافق إزاي؟",
+        "ما الذي أتحقق منه قبل قبول قرض؟",
+        "What should I check before taking a loan?",
+        "arage3 el qard abl ma awafe2 ezay"
+      ],
+      "a": [
+        "اقرأ إجمالي المبلغ الواجب سداده، المعدل والرسوم، مواعيد الدفع، شروط التأخر، وإمكانية السداد المبكر. اطلب نسخة مكتوبة واسأل جهة مستقلة عند عدم الوضوح.",
+        "هذه قائمة تثقيفية عامة وليست توصية مالية أو قانونية؛ القواعد تختلف حسب العقد والبلد."
+      ],
+      "tags": [
+        "قرض",
+        "التزامات",
+        "رسوم"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0
+    }
+  ]
+}
