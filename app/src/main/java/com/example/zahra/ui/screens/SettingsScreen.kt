@@ -46,7 +46,7 @@ fun SettingsScreen(
   onAddFact: (FactCategory, String, String) -> Unit,
   onUpdateFact: (String, String, String, FactCategory?) -> Unit,
   onDeleteFact: (String) -> Unit,
-  onClearMemory: () -> Unit,
+  onClearMemory: () -> String,
   onSelectAccentColor: (String) -> Unit,
   onBackToChat: () -> Unit,
   isGlassmorphismEnabled: Boolean = false,
@@ -58,6 +58,7 @@ fun SettingsScreen(
   BackHandler { onBackToChat() }
 
   var showMemorySheet by remember { mutableStateOf(false) }
+  var showClearMemoryConfirmation by remember { mutableStateOf(false) }
   // المرحلة 0: زر «تشخيص» — يشغّل فحوصات حقيقية على الجهاز (DiagnosticsEngine)
   var showDiagnostics by remember { mutableStateOf(false) }
   var diagnosticsReport by remember { mutableStateOf<DiagnosticsReport?>(null) }
@@ -78,6 +79,20 @@ fun SettingsScreen(
     if (showDiagnostics && diagnosticsReport == null) {
       diagnosticsReport = withContext(Dispatchers.IO) { DiagnosticsEngine.run(context) }
     }
+  }
+
+  if (showClearMemoryConfirmation) {
+    AlertDialog(
+      onDismissRequest = { showClearMemoryConfirmation = false },
+      title = { Text("مسح الذاكرة؟") },
+      text = { Text("سيتم مسح الحقائق والملف والمواضيع وسياق الجلسة. أرشيف الدردشة والمهام والملاحظات لن تُحذف.") },
+      confirmButton = { TextButton(onClick = {
+        val result = onClearMemory()
+        showClearMemoryConfirmation = false
+        Toast.makeText(context, result, Toast.LENGTH_LONG).show()
+      }) { Text("مسح") } },
+      dismissButton = { TextButton(onClick = { showClearMemoryConfirmation = false }) { Text("إلغاء") } }
+    )
   }
 
   if (showDiagnostics) {
@@ -587,12 +602,11 @@ fun SettingsScreen(
           Spacer(modifier = Modifier.height(8.dp))
           TextButton(
             onClick = {
-              onClearMemory()
-              Toast.makeText(context, "تم مسح كافة سجلات الذاكرة بنجاح", Toast.LENGTH_SHORT).show()
+              showClearMemoryConfirmation = true
             },
             colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
           ) {
-            Text("مسح كافة سجلات الذاكرة نهائياً", fontSize = 12.sp)
+            Text("مسح الذاكرة", fontSize = 12.sp)
           }
         }
       }

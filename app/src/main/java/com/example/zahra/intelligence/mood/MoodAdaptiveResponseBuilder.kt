@@ -210,63 +210,16 @@ class MoodAdaptiveResponseBuilder {
         userInput: String,
         personality: PersonalityPreferences
     ): ZahraResponse {
-        // Don't modify tool payloads, clarifications, or plans — they need their original structure
-        if (coreResponse.toolPayload != null || coreResponse.clarification != null || 
-            coreResponse.executionPlan != null || coreResponse.deepThinking != null) {
-            // Just prepend a brief mood-aware opener to tool responses
-            val mood = moodAnalyzer.analyze(userInput)
-            val briefOpener = getBriefMoodOpener(mood.primaryMood, personality)
-            
-            val adaptedText = if (briefOpener.isNotEmpty() && coreResponse.text.isNotBlank()) {
-                "$briefOpener\n\n${coreResponse.text}"
-            } else {
-                coreResponse.text
-            }
-            
-            return coreResponse.copy(text = adaptedText)
-        }
-        
         val mood = moodAnalyzer.analyze(userInput)
-        
-        // Build composed response layers
-        val layers = mutableListOf<String>()
-        
-        // Layer 1: Mood-aware opening (skip for urgent)
-        if (mood.urgencyLevel != MoodAnalyzer.UrgencyLevel.CRITICAL) {
-            val opener = getEmpathyOpener(mood.primaryMood, personality)
-            if (opener.isNotEmpty()) layers.add(opener)
+        if (coreResponse.toolPayload != null || coreResponse.clarification != null ||
+            coreResponse.executionPlan != null || coreResponse.deepThinking != null ||
+            mood.urgencyLevel == MoodAnalyzer.UrgencyLevel.CRITICAL) return coreResponse
+        val opener = when (mood.primaryMood) {
+            MoodAnalyzer.Mood.SAD, MoodAnalyzer.Mood.LONELY, MoodAnalyzer.Mood.TIRED -> "أتفهم إن الأمر صعب."
+            else -> ""
         }
-        
-        // Layer 2: Empathy bridge (only for emotional moods)
-        if (mood.primaryMood in setOf(
-            MoodAnalyzer.Mood.SAD, MoodAnalyzer.Mood.LONELY, 
-            MoodAnalyzer.Mood.ANXIOUS, MoodAnalyzer.Mood.ANGRY,
-            MoodAnalyzer.Mood.TIRED
-        )) {
-            val bridge = getEmpathyBridge(mood, personality)
-            if (bridge.isNotEmpty()) layers.add(bridge)
-        }
-        
-        // Layer 3: Core answer (UNCHANGED)
-        if (coreResponse.text.isNotBlank()) {
-            layers.add(coreResponse.text)
-        }
-        
-        // Layer 4: Enrichment (dua/tip for emotional moods, follow-up for curious)
-        val enrichment = getEnrichment(mood, coreResponse)
-        if (enrichment.isNotEmpty() && mood.urgencyLevel == MoodAnalyzer.UrgencyLevel.LOW) {
-            layers.add(enrichment)
-        }
-        
-        // Layer 5: Closing suggestion
-        val closing = getClosing(mood)
-        if (closing.isNotEmpty() && mood.urgencyLevel != MoodAnalyzer.UrgencyLevel.CRITICAL) {
-            layers.add(closing)
-        }
-        
-        val composedText = layers.joinToString("\n\n")
-        
-        return coreResponse.copy(text = composedText)
+        return if (opener.isBlank() || coreResponse.text.isBlank()) coreResponse
+               else coreResponse.copy(text = "$opener\n\n${coreResponse.text}")
     }
 
     // ========== Layer Builders ==========

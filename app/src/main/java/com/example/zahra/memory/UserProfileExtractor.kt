@@ -76,13 +76,10 @@ class UserProfileExtractor {
     // ========== Name Extraction ==========
     private fun extractName(original: String, normalized: String): String? {
         val namePatterns = listOf(
-            // Arabic patterns
-            Regex("""(?:اسمي|أنا|انا)\s+([^\s،,.!؟?]{2,20})"""),
-            Regex("""(?:أنا|انا)\s+(?:اسمي)\s+([^\s،,.!؟?]{2,20})"""),
-            Regex("""اسمي\s+([^\s،,.!؟?]{2,20})"""),
+            // Specific introductions must precede the generic "أنا X" rule.
+            Regex("""اسمي\s+(?:هو\s+)?([^\s،,.!؟?]{2,20})"""),
             Regex("""ناديني\s+([^\s،,.!؟?]{2,20})"""),
-            Regex("""انا\s+([أ-ي]{2,15})\s"""),
-            // English patterns
+            Regex("""(?:أنا|انا)\s+([^\s،,.!؟?]{2,20})"""),
             Regex("""(?:my name is|i'm|i am|call me)\s+([a-zA-Z]{2,20})""", RegexOption.IGNORE_CASE)
         )
         
@@ -91,7 +88,7 @@ class UserProfileExtractor {
             if (match != null) {
                 val name = match.groupValues[1].trim()
                 // Filter out common words that aren't names
-                val nonNames = setOf("زهرة", "طالب", "مهندس", "دكتور", "من", "في", "عايز", 
+                val nonNames = setOf("زهرة", "اسمي", "طالب", "مهندس", "دكتور", "من", "في", "عايز",
                     "بحب", "بكره", "عاوز", "مش", "كده", "جداً", "طيب", "كويس")
                 if (name.isNotBlank() && name !in nonNames && name.length >= 2) {
                     // Capitalize first letter

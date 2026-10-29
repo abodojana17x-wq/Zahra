@@ -120,6 +120,9 @@ class SafeMemoryStore(
   fun getTemporaryFacts(): List<ZahraUserFact> = temporarySessionFacts.toList()
 
   @Synchronized
+  fun clearTemporaryFacts() { temporarySessionFacts.clear() }
+
+  @Synchronized
   fun getCorruptedRecords(): List<CorruptedMemoryRecord> = corruptedRecords.toList()
 
   @Synchronized

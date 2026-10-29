@@ -61,13 +61,12 @@ class ContextAndCorrectionTracker {
     }
 
     // 2. Fact correction pattern: "لا، أنا اسمي [X] مش [Y]" or "اسمي مش [Y]، اسمي [X]"
-    val nameCorrectionMatch = Regex("""(?:اسمي\s+مش|لست|مش|لا\s+انا\s+اسمي|لا\s+اسمي)\s+([^\s،,]+)\s*(?:بل|مش|ولكن|انما|,|،)?\s*(?:اسمي)?\s*([^\s،,]+)?""").find(norm)
-    if (nameCorrectionMatch != null) {
-      val g1 = nameCorrectionMatch.groupValues.getOrNull(1) ?: ""
-      val g2 = nameCorrectionMatch.groupValues.getOrNull(2) ?: ""
-      // Determine which one is the new name
-      val newName = if (g2.isNotBlank() && g2 != "مش") g2 else g1
-      if (newName.isNotBlank() && newName.length >= 2) {
+    // Require an explicit name correction. A bare "مش ..." can be an emotion,
+    // not permission to replace the user's name.
+    val nameCorrection = Regex("""^(?:اسمي\s+مش\s+[^\s،,]+\s*[,،]?\s*(?:بل|لكن|اسمي)\s+|(?:لا\s*[,،]?\s*)?(?:انا\s+)?اسمي\s+)([^\s،,]+)(?:\s+مش\s+[^\s،,]+)?""").find(norm)
+    if (nameCorrection != null) {
+      val newName = nameCorrection.groupValues[1].trim()
+      if (newName.length >= 2 && newName != "مش") {
         return CorrectionResolution.UpdateFact(FactCategory.PERSONAL, "الاسم", newName)
       }
     }

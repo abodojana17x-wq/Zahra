@@ -1,6 +1,7 @@
 package com.example.zahra.engines
 
 import android.content.Context
+import com.example.zahra.dialogue.*
 import com.example.zahra.core.LanguageDetector
 import com.example.zahra.core.ZahraNormalizer
 import com.example.zahra.entities.EntityExtractor
@@ -169,7 +170,143 @@ class ZahraRouter(
     }
   }
 
+  val dialogueState = DialogueState()
+  private val referenceResolver = ReferenceResolver()
+  private var dialogueSessionId: String? = null
+
+  /** Associate background work with the originating UI session, even if it was
+   * switched before the worker started. Never carry its state into another session. */
+  @Synchronized
+  fun processForSession(sessionId: String, rawInput: String, isDeepThinking: Boolean = false): ZahraResponse {
+    if (dialogueSessionId != sessionId) {
+      clearConversation()
+      dialogueSessionId = sessionId
+    }
+    return process(rawInput, isDeepThinking)
+  }
+
+  /** One boundary for every return path, including tools, refusals and corrections. */
+  @Synchronized
   fun process(rawInput: String, isDeepThinking: Boolean = false): ZahraResponse {
+    val city = Cities.find(rawInput)?.nameAr
+    val crisis = EmotionalSupport.crisisAnswer(rawInput)
+    val resolved = if (crisis != null) {
+      dialogueState.pendingClarification = null
+      Resolution.Unchanged
+    } else ClarificationPolicy.resolve(referenceResolver.resolve(rawInput, dialogueState, city), dialogueState, rawInput)
+    val previousClarification = dialogueState.lastWasClarification
+    val response = when (resolved) {
+      is Resolution.Query -> processInternal(resolved.text, isDeepThinking)
+      is Resolution.Ask -> ZahraResponse(
+        text = resolved.question, intent = "clarification", confidence = 0.5,
+        confidenceTier = ConfidenceTier.QUALIFIED, outcomeState = OutcomeState.AMBIGUOUS,
+        source = "توضيح سياق الحوار", followups = resolved.options
+      )
+      is Resolution.Abstain -> ZahraResponse(
+        text = resolved.text, intent = "dialogue_abstain", confidence = 0.0,
+        confidenceTier = ConfidenceTier.UNCERTAIN, outcomeState = OutcomeState.UNSUPPORTED,
+        source = "حدود سياق الحوار"
+      )
+      Resolution.Unchanged -> {
+        val support = crisis ?: EmotionalSupport.answer(rawInput)
+        if (support == null) processInternal(rawInput, isDeepThinking)
+        else ZahraResponse(text = support, intent = if (crisis != null) "safety_support" else "emotional_support", confidence = 0.8,
+          confidenceTier = ConfidenceTier.QUALIFIED, outcomeState = OutcomeState.SUPPORTED,
+          source = "دعم محادثة محلي")
+      }
+    }
+    // The legacy router can also ask for clarification: bound that path as well.
+    val asks = response.outcomeState == OutcomeState.AMBIGUOUS &&
+      (response.clarification != null || response.text.contains('؟') || response.text.contains('?'))
+    val hasActionResult = response.createdTask != null || response.createdNote != null ||
+      response.createdSchedule != null || response.executionPlan != null ||
+      response.toolPayload is ZahraToolPayload.TaskPayload || response.toolPayload is ZahraToolPayload.NotePayload ||
+      response.toolPayload is ZahraToolPayload.SchedulePayload || response.toolPayload is ZahraToolPayload.MemoryFactPayload
+    val boundedResponse = if (previousClarification && asks && !hasActionResult) response.copy(
+      text = "لم أستطع تحديد المقصود، لذلك لا أستطيع الإجابة دون تخمين.",
+      intent = "dialogue_abstain", outcomeState = OutcomeState.UNSUPPORTED,
+      confidence = 0.0, confidenceTier = ConfidenceTier.UNCERTAIN,
+      clarification = null, followups = emptyList(), evidenceTrace = null
+    ) else response
+    // Legacy templates cannot prove the referent, even when some unrelated turn exists.
+    val validationProblem = DialogueResponseValidator.problem(boundedResponse.text,
+      boundedResponse.evidenceTrace?.groundedFacts?.any { it.source.isNotBlank() } == true)
+    val safeResponse = if (validationProblem != null) {
+      if (hasActionResult) boundedResponse.copy(text = "تعذر التحقق من جزء في الرد؛ راجع التفاصيل المرفقة.")
+      else boundedResponse.copy(text = "لا أستطيع التحقق من هذا الرد، لذلك أمتنع عن عرضه.",
+        intent = "dialogue_abstain", outcomeState = OutcomeState.UNSUPPORTED,
+        confidence = 0.0, confidenceTier = ConfidenceTier.UNCERTAIN,
+        evidenceTrace = null, clarification = null, followups = emptyList())
+    } else boundedResponse
+    dialogueState.lastWasClarification = asks && !previousClarification && safeResponse.outcomeState == OutcomeState.AMBIGUOUS
+    val countries = listOf("مصر", "السعودية", "فرنسا", "اليابان", "الأردن", "المغرب", "الجزائر", "تونس")
+    val mentionedCountries = countries.filter { rawInput.contains(it) }
+    val topic = mentionedCountries.singleOrNull()
+    if (mentionedCountries.size > 1) dialogueState.invalidateTopic()
+    val date = listOf("بكرة", "بكره", "غدا", "اليوم", "النهاردة").firstOrNull { rawInput.contains(it) }
+    val source = when {
+      safeResponse.outcomeState == OutcomeState.UNSUPPORTED -> BlockSource.ABSTAIN
+      safeResponse.outcomeState == OutcomeState.AMBIGUOUS -> BlockSource.CLARIFICATION
+      safeResponse.intent.contains("memory") -> BlockSource.MEMORY
+      safeResponse.toolPayload != null || safeResponse.intent == "weather" -> BlockSource.TOOL
+      safeResponse.intent in setOf("emotional_support", "safety_support") -> BlockSource.LOCAL
+      safeResponse.source?.contains("معرف") == true -> BlockSource.RETRIEVAL
+      else -> BlockSource.LEGACY
+    }
+    // Only the known mood prefix is a separate presentation block; the original
+    // answer stays byte-for-byte intact as the core.
+    val empathyPrefix = "أتفهم إن الأمر صعب.\n\n"
+    val hasOpener = safeResponse.text.startsWith(empathyPrefix)
+    val coreText = if (hasOpener) safeResponse.text.removePrefix(empathyPrefix) else safeResponse.text
+    val opening = if (hasOpener) ResponseBlock(
+      com.example.zahra.personality.StyleApplier.applyToText(empathyPrefix.trim(), personalityManager.getCurrentPersonality()),
+      BlockSource.LOCAL
+    ) else null
+    val composed = ResponseComposer.compose(ResponseBlock(coreText, source), opening = opening)
+    val trace = safeResponse.evidenceTrace?.let {
+      if (resolved is Resolution.Query || it.originalRequest != rawInput)
+        it.copy(originalRequest = rawInput, appliedRuleIds = it.appliedRuleIds + "dialogue_context_rewrite")
+      else it
+    }
+    val final = safeResponse.copy(text = composed.text, dialogueTraceId = composed.traceId,
+      dialogueBlockSources = composed.blocks.map { it.source.name },
+      dialogueBlocks = composed.blocks.map { DialogueBlockTrace(it.text, it.source.name) }, evidenceTrace = trace)
+    dialogueState.record(rawInput, final.text, final.intent, city, topic, date, mentionedCountries,
+      SlotExtractor.extract(rawInput), (final.toolPayload as? ZahraToolPayload.KnowledgePayload)?.recordId,
+      runCatching { moodAnalyzer.analyze(rawInput).primaryMood.name }.getOrNull())
+    // Legacy components are projections of the single delivered turn, not independent
+    // histories with missing early-return paths. Profile persistence remains separate.
+    contextTracker.recordTurn(rawInput, final)
+    contextManager.recordTurn(rawInput, final)
+    unifiedMemory.recordTurn(rawInput, final.text, final.intent)
+    return final
+  }
+
+  @Synchronized
+  fun clearConversation(): Int {
+    val count = dialogueState.clearConversation()
+    dialogueSessionId = null
+    contextTracker.clear()
+    contextManager.clearAllConversations()
+    unifiedMemory.clearConversation()
+    memoryEngine.store.clearTemporaryFacts()
+    return count
+  }
+
+  data class MemoryClearResult(val facts: Int, val topics: Int, val turns: Int, val success: Boolean)
+
+  @Synchronized
+  fun clearDialogueMemory(): MemoryClearResult {
+    val facts = memoryEngine.getFacts().size
+    val topics = unifiedMemory.topicMemory.getAllTopics().size
+    val turns = dialogueState.turns.size
+    val factsCleared = memoryEngine.clearMemory()
+    val unifiedCleared = unifiedMemory.clearAll()
+    clearConversation()
+    return MemoryClearResult(facts, topics, turns, factsCleared && unifiedCleared)
+  }
+
+  private fun processInternal(rawInput: String, isDeepThinking: Boolean = false): ZahraResponse {
     // Phase 6: Personality and Context Integration
     // Check for personality change commands
     val personalityCmd = personalityManager.detectPersonalityChange(rawInput)
@@ -178,11 +315,11 @@ class ZahraRouter(
       if (cmdResult is com.example.zahra.personality.PersonalityChangeResult.Success) {
         // Return a confirmation response
         val personality = personalityManager.getCurrentPersonality()
-        val confirmationText = com.example.zahra.personality.StyleApplier.getPersonalityChangeConfirmation(personality, cmdResult)
+        val confirmationText = cmdResult.confirmationMessage
         val trace = EpistemicGroundingPipeline.buildTrace(
           rawRequest = rawInput,
           intent = "change_personality",
-          entities = mapOf("change_type" to cmdResult.changeType),
+          entities = mapOf("change_type" to cmdResult.changedFields.joinToString(",")),
           appliedRules = listOf("rule_personality_change"),
           facts = listOf(
             GroundedFact(
@@ -205,15 +342,12 @@ class ZahraRouter(
           source = "Personality Manager",
           evidenceTrace = trace
         )
-        contextManager.recordTurn(rawInput, res)
-        contextTracker.recordTurn(rawInput, res)
         return res
       }
     }
 
     // Get current personality and conversation context
     val personality = personalityManager.getCurrentPersonality()
-    val conversationContext = contextManager.getCurrentConversation()
 
     // Phase 4: Dialect and colloquial normalization
     val adapted = DialectAndColloquialAdapter.adapt(rawInput)
@@ -253,7 +387,6 @@ class ZahraRouter(
         followups = impermissibleRel.followups,
         evidenceTrace = trace
       )
-      contextTracker.recordTurn(rawInput, res)
       // Phase 6.5: Mood-adaptive wrapping for religious responses
       return applyMoodAdaptation(rawInput, res)
     }
@@ -263,8 +396,6 @@ class ZahraRouter(
     // لأن ثقتها 1.0 ومصدرها معلن، وليس لأنها تتجاوز بوابة الأمانة: الجمل غير الواضحة
     // تُعاد `null` وتكمل مسارها الطبيعي عبر الموجّه.
     deterministicToolResponse(rawInput)?.let { toolResponse ->
-      contextManager.recordTurn(rawInput, toolResponse)
-      contextTracker.recordTurn(rawInput, toolResponse)
       return applyMoodAdaptation(rawInput, toolResponse)
     }
 
@@ -279,8 +410,13 @@ class ZahraRouter(
           MemorySource.USER_EXPLICIT,
           isExplicitCorrection = true
         )
-        memoryEngine.addFact(correction.category, correction.key, correction.newValue, 1.0)
-        val updatedFact = memoryEngine.getFacts().find { it.key == correction.key }
+        val saveResult = memoryEngine.saveFactWithResult(correction.category, correction.key, correction.newValue, 1.0)
+        if (saveResult !is MemorySaveResult.Success) return ZahraResponse(
+          text = "تعذر حفظ تصحيح الاسم والتحقق منه؛ لم أؤكد تغيير الذاكرة.",
+          intent = "correct_fact", confidence = 0.0, confidenceTier = ConfidenceTier.UNCERTAIN,
+          outcomeState = OutcomeState.EXECUTION_ERROR, source = "حفظ الذاكرة المحلية"
+        )
+        val updatedFact = saveResult.fact
         val responseText = "تم تصحيح وتحديث المعلومة في ذاكرتك الدائمة بنجاح:\n• ${correction.key}: \"${correction.newValue}\"\n\n${conflictReport.explanationAr}"
         val trace = EpistemicGroundingPipeline.buildTrace(
           rawRequest = rawInput,
@@ -309,34 +445,18 @@ class ZahraRouter(
           evidenceTrace = trace,
           toolPayload = updatedFact?.let { ZahraToolPayload.MemoryFactPayload(it, isNew = false) }
         )
-        contextTracker.recordTurn(rawInput, res)
         return res
       }
       is CorrectionResolution.UndoAction -> {
-        val trace = EpistemicGroundingPipeline.buildTrace(
-          rawRequest = rawInput,
-          intent = "undo_action",
-          entities = mapOf("target" to correction.actionDescription),
-          appliedRules = listOf("rule_undo_action"),
-          facts = emptyList(),
-          uncertainty = emptyList(),
-          outcomeState = OutcomeState.SUPPORTED,
-          sourceDesc = "محرك تتبع السياق والتراجع"
+        return ZahraResponse(
+          text = "لا أستطيع التراجع تلقائيًا عن الإجراء الأخير؛ لم أغيّر أي بيانات.",
+          intent = "undo_action", confidence = 0.0, confidenceTier = ConfidenceTier.UNCERTAIN,
+          outcomeState = OutcomeState.UNSUPPORTED, source = "حدود التراجع"
         )
-        val res = ZahraResponse(
-          text = "تم التراجع عن الإجراء الأخير (${correction.actionDescription}) والتأكد من سلامة واستقرار البيانات.",
-          intent = "undo_action",
-          confidence = 0.95,
-          confidenceTier = ConfidenceTier.DIRECT,
-          outcomeState = OutcomeState.SUPPORTED,
-          source = "محرك تتبع السياق لزهرة 4",
-          evidenceTrace = trace
-        )
-        contextTracker.recordTurn(rawInput, res)
-        return res
       }
       is CorrectionResolution.RefinedQuery -> {
-        // Will be handled seamlessly
+        if (correction.reformulatedQuery != rawInput && correction.reformulatedQuery.isNotBlank())
+          return processInternal(correction.reformulatedQuery, isDeepThinking)
       }
       is CorrectionResolution.None -> {
         // Continue
@@ -390,7 +510,6 @@ class ZahraRouter(
         evidenceTrace = trace,
         executionPlan = executedPlan
       )
-      contextTracker.recordTurn(rawInput, planResponse)
       return planResponse
     }
 
@@ -400,21 +519,10 @@ class ZahraRouter(
       val memSummary = memoryEngine.summarizeKnownMemory()
       val firstFact = memoryEngine.getFacts().firstOrNull()
       
-      // Phase 6.6: Combine old memory summary with new unified profile + topics
-      val profileSummary = unifiedMemory.getUserProfileSummary()
-      val topicSummary = unifiedMemory.getTopicSummary()
-      
-      val combinedText = buildString {
-        append(profileSummary)
-        append("\n\n")
-        if (memSummary.isNotBlank() && memSummary != "لا توجد معلومات محفوظة حالياً.") {
-          append("📋 معلومات محفوظة إضافية:\n")
-          append(memSummary)
-          append("\n\n")
-        }
-        append(topicSummary)
-      }
-      
+      // Legacy profile/topics have no turn-level provenance. Only confirmed facts are
+      // reported here; never turn an inferred topic into a claim about a past conversation.
+      val combinedText = if (memSummary.isNotBlank()) memSummary else "لا توجد معلومات محفوظة حالياً."
+
       val memRes = ZahraResponse(
         text = combinedText,
         intent = "query_memory",
@@ -425,7 +533,6 @@ class ZahraRouter(
         followups = listOf("تذكر أن اسمي أحمد", "أنا بحب القراءة", "أنا من مصر", "مواقيت الصلاة؟"),
         toolPayload = firstFact?.let { ZahraToolPayload.MemoryFactPayload(it, isNew = false) }
       )
-      contextTracker.recordTurn(rawInput, memRes)
       return applyMoodAdaptation(rawInput, memRes)
     }
 
@@ -523,12 +630,14 @@ class ZahraRouter(
     // If an explicit fact was extracted and general greeting/unknown, give acknowledgment
     if (autoExtractedFact != null && (intent == "unknown" || intent == "greet" || confidence < 0.45)) {
       return ZahraResponse(
-        text = "حفظتُ ذلك في ذاكرتي المشفرة بدقة:\n• [${autoExtractedFact.category.labelAr}] ${autoExtractedFact.key}: \"${autoExtractedFact.value}\"\n\nيمكنك دائماً مراجعة وإدارة كل ما أحفظه عنك من تبويب \"الإعدادات والذاكرة\".",
+        text = if (autoExtractedFact.isConfirmed)
+          "حفظتُ ذلك في ذاكرتي المشفرة:\n• ${autoExtractedFact.key}: \"${autoExtractedFact.value}\""
+        else "فهمت من كلامك: ${autoExtractedFact.value}. هذا سياق مؤقت للمحادثة، وليس معلومة محفوظة دائمًا.",
         intent = "remember_fact",
         confidence = 0.98,
         confidenceTier = ConfidenceTier.DIRECT,
         outcomeState = OutcomeState.SUPPORTED,
-        source = "محرك الذاكرة الذاتية الدائم لزهرة 3",
+        source = if (autoExtractedFact.isConfirmed) "ذاكرة محلية محفوظة" else "سياق محادثة مؤقت",
         followups = listOf("ماذا تعرف عني؟", "أضف مهمة جديدة", "مواقيت الصلاة اليوم"),
         toolPayload = ZahraToolPayload.MemoryFactPayload(autoExtractedFact, isNew = true)
       )
@@ -599,7 +708,6 @@ class ZahraRouter(
         toolPayload = ZahraToolPayload.ClarificationToolPayload(clar),
         evidenceTrace = trace
       )
-      contextTracker.recordTurn(rawInput, ambigRes)
       return ambigRes
     }
 
@@ -1040,12 +1148,13 @@ class ZahraRouter(
       "greet" -> {
         // Phase 6.6: Use GreetingVariator for dynamic, varied greetings
         val greetingContext = GreetingVariator.GreetingContext(
-          userName = unifiedMemory.getUserName(),
+          userName = dialogueState.slots[Slot.PERSON]?.value
+            ?: memoryEngine.getFacts().firstOrNull { it.key == "الاسم" }?.value,
           timeOfDay = GreetingVariator.detectTimeOfDay(),
-          isFirstSession = unifiedMemory.isFirstTimeUser(),
-          previousTopics = unifiedMemory.getPreviousTopics().take(3).map { it.topic },
-          isReturningUser = unifiedMemory.isReturningUser(),
-          userGender = unifiedMemory.getUserGender()
+          isFirstSession = dialogueState.turns.isEmpty(),
+          previousTopics = emptyList(),
+          isReturningUser = false,
+          userGender = null
         )
         responseText = greetingVariator.generateGreeting(clean, greetingContext)
         source = "نظام التحيات المتنوع لزهرة (Phase 6.6)"
@@ -1058,8 +1167,9 @@ class ZahraRouter(
       "farewell" -> {
         // Phase 6.6: Varied farewell too
         val farewellContext = GreetingVariator.GreetingContext(
-          userName = unifiedMemory.getUserName(),
-          userGender = unifiedMemory.getUserGender()
+          userName = dialogueState.slots[Slot.PERSON]?.value
+            ?: memoryEngine.getFacts().firstOrNull { it.key == "الاسم" }?.value,
+          userGender = null
         )
         responseText = greetingVariator.generateFarewell(farewellContext)
         source = "نظام التحيات المتنوع لزهرة (Phase 6.6)"
@@ -1496,19 +1606,6 @@ class ZahraRouter(
       createdSchedule = createdSchedule
     )
 
-    contextManager.recordTurn(
-      text = rawInput,
-      normalizedText = normalized,
-      speaker = Sender.USER,
-      intent = finalIntent,
-      entities = mapOf("query" to clean),
-      response = finalResponse
-    )
-    contextTracker.recordTurn(rawInput, finalResponse)
-    
-    // Phase 6.6: Record in unified memory (auto-extracts profile + detects topics)
-    unifiedMemory.recordTurn(rawInput, finalResponse.text, finalIntent)
-    
     // Phase 6.5: Apply mood-adaptive composed response
     return applyMoodAdaptation(rawInput, finalResponse)
   }
@@ -1580,7 +1677,6 @@ class ZahraRouter(
       clarification = clar,
       evidenceTrace = trace
     )
-    contextTracker.recordTurn(rawInput, res)
     return applyMoodAdaptation(rawInput, res)
   }
 
@@ -1817,7 +1913,6 @@ class ZahraRouter(
         "ماذا تعرف عني؟"
       )
     )
-    contextTracker.recordTurn(input, fallback)
     
     // Phase 6.5: Apply mood-adaptive wrapping to fallback too
     return applyMoodAdaptation(input, fallback)

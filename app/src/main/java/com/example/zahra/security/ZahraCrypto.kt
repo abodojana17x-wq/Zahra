@@ -95,11 +95,18 @@ object ZahraCrypto {
   }
 
   private fun encodeBytes(bytes: ByteArray): String {
-    return java.util.Base64.getEncoder().encodeToString(bytes)
+    return android.util.Base64.encodeToString(bytes, android.util.Base64.NO_WRAP)
   }
 
   private fun decodeBytes(str: String): ByteArray {
-    return java.util.Base64.getDecoder().decode(str)
+    // Android's decoder can accept non-canonical input. Require the strict,
+    // padded form that our encoder has always emitted before authenticating GCM.
+    if (str.length % 4 != 0 || !Regex("[A-Za-z0-9+/]*={0,2}").matches(str))
+      throw SecurityException("صيغة Base64 غير صالحة")
+    val decoded = android.util.Base64.decode(str, android.util.Base64.NO_WRAP)
+    if (android.util.Base64.encodeToString(decoded, android.util.Base64.NO_WRAP) != str)
+      throw SecurityException("صيغة Base64 غير معيارية")
+    return decoded
   }
 
   /**

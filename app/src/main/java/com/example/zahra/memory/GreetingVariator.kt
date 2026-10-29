@@ -240,13 +240,6 @@ class GreetingVariator {
         
         val followUps = mutableListOf<String>()
         
-        // Previous topics?
-        if (context.previousTopics.isNotEmpty()) {
-            val topic = context.previousTopics.random()
-            followUps.add("\n\nتحب نكمل كلامنا عن $topic؟")
-            followUps.add("\n\nلسة فاكرة إننا اتكلمنا عن $topic، عندك جديد؟")
-        }
-        
         // Time-aware follow-ups
         when (context.timeOfDay) {
             TimeOfDay.MORNING -> {
