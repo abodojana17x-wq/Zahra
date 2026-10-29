@@ -69,6 +69,7 @@ PASS · لا يوجد أي «Pending Execution» في المستودع (AC-0.7)
 | [`stats-selftest.log`](stats-selftest.log) | مخرج `scripts/test_stats.py` الفعلي |
 | `gradle-test.log` · `eval-run.log` · `assemble.log` · `SUMMARY-after.md` · `results.json` | **لم تُنشأ بعد** — تُرفع تلقائيًا من CI (`if: always()`) عند التفعيل |
 | [`failing-tests.md`](failing-tests.md) | سياسة تصنيف/معالجة الاختبارات الفاشلة (D6) + القالب الجاهز للتعبئة من أول تشغيل |
+| [`CI-ACTIVATION-BLOCKER-2026-10-29.md`](CI-ACTIVATION-BLOCKER-2026-10-29.md) | فحص إعادة الإنتاج الأحدث: تجميد المجموعة وبوابة Python ناجحان، وسبب غياب تشغيل CI وخطوة المالك الوحيدة |
 | `BASELINE` (خارج المجلد) | [`../../eval/BASELINE.md`](../../eval/BASELINE.md) يُكتب آليًا من أول تشغيل |
 
 ---

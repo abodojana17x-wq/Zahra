@@ -1,0 +1,17 @@
+PASS · عدد الحالات الأساسية 223 ≥ 200
+PASS · التوزيع مطابق للمعلن في plans/00-measurement.md
+PASS · held-out 50 ≥ 50
+PASS · كل المعرفات فريدة
+PASS · مخطط كل الحالات صحيح
+PASS · هاش eval/cases.jsonl مطابق للمجمّد
+PASS · هاش eval/held-out.jsonl مطابق للمجمّد
+INFO · مراجعة الجودة: 39 مصطلح إجابة يظهر داخل سؤاله (معظمها حالات برمجة/كتابة كود مقبولة)
+       أمثلة: coding-002:ثابت, coding-003:تكرار, coding-004:كائن, coding-005:استدعاء, coding-020:users, coding-022:try, coding-022:except, coding-023:Car
+PASS · لا محارف غريبة (CJK/Cyrillic) في الأسئلة أو التوقعات
+PASS · research.md: 12 مصادر
+PASS · research.md: جدول الاكتشافات موجود
+PASS · research.md: قسم التوسيع موجود
+PASS · research.md: أوامر القياس مكتوبة
+PASS · لا يوجد أي «Pending Execution» في المستودع (AC-0.7)
+
+كل فحوصات بوابة المرحلة 0 نجحت.
