@@ -41,5 +41,18 @@ norm = اهلا وسهلا                          # إزالة التشكيل 
 ./tools/offline-typecheck/phase03/run.sh --probe "سؤال" …    # تشخيص: المرشحون + تفسير الدرجات + قرار البوابة
 ```
 
+## المرحلة 4 — `phase04/`
+
+```bash
+./tools/offline-typecheck/phase04/run.sh                # فحوص منطق الحوار المعزولة (SelfCheck)
+./tools/offline-typecheck/phase04/run-tests.sh          # 35 دالة اختبار Kotlin خالص بJUnit مصغّر حقيقي
+./tools/offline-typecheck/phase04/run-memory-typecheck.sh  # تحقق نوعي لحزمة الذاكرة + التشفير مقابل stubs
+```
+
+`run-tests.sh` يستخدم `testkit/` (بديل مصغّر عن JUnit: `@Test` و`Assert` **تنفّذ فعلًا**، بلا Rules/Lifecycle)
+وينسخ الاختبارات مؤقتًا مستبدلًا `import org.junit.Assert.*` بـ`import org.junit.*` — لا يُعدَّل أي ملف اختبار في المستودع.
+`run-memory-typecheck.sh` يستخدم `phase04/stubs/` (توقيعات Android/org.json محاكية) ويُثبت الترجمة فقط؛
+لا يشغّل SharedPreferences ولا AndroidKeyStore ولا Robolectric ولا `ZahraRouter` ولا Compose.
+
 `phase03` لا يستخدم `stubs/`: كود الاسترجاع والبوابة **نقيّ** (لا أندرويد ولا `org.json`)، فيُترجم ويُشغَّل
 كما هو. التفاصيل والأرقام في [`evidence/phase-03/README.md`](../../evidence/phase-03/README.md).

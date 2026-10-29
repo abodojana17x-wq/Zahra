@@ -364,6 +364,52 @@ class ContextManager {
     
     // Maximum number of conversations to keep in history
     private val maxHistorySize: Int = 10
+
+    // المرحلة 4: عند الربط، لا يحتفظ هذا المدير بسجل مستقل؛ ينسخ الدورات
+    // المسلَّمة من المصدر الوحيد (`DialogueState`).
+    private var dialogueProvider: (() -> com.example.zahra.dialogue.DialogueHistorySource?)? = null
+
+    /**
+     * يربط المدير بالمصدر الوحيد. في الوضع `PROJECTED` يعيد المزوّد مصدرًا،
+     * وفي وضع الرجوع `MIRRORED` يعيد `null` فيبقى السجل المحلي كما كان.
+     */
+    fun bindDialogueSource(provider: (() -> com.example.zahra.dialogue.DialogueHistorySource?)?) {
+        dialogueProvider = provider
+        if (provider?.invoke() != null) currentConversation = ConversationState()
+    }
+
+    /**true حين يقرأ هذا المدير من مصدر الحالة الوحيد. */
+    fun isProjected(): Boolean = dialogueProvider?.invoke() != null
+
+    /**
+     * يعيد بناء المحادثة الحالية من السجل المسلَّم. لا يُخترع دور غير موجود،
+     * ولا تُحفظ نسخة ثانية قابلة للانحراف.
+     * @return عدد الدورات المنسوخة (0 في وضع MIRRORED).
+     */
+    fun syncFromDialogue(): Int {
+        val source = dialogueProvider?.invoke() ?: return 0
+        val rebuilt = ConversationState()
+        source.turns().forEach { turn ->
+            rebuilt.addTurn(
+                ConversationTurn(
+                    speaker = Sender.USER,
+                    text = turn.user,
+                    normalizedText = turn.user,
+                    intent = turn.intent.takeIf { it.isNotBlank() }
+                )
+            )
+            rebuilt.addTurn(
+                ConversationTurn(
+                    speaker = Sender.ZAHRA,
+                    text = turn.response,
+                    normalizedText = turn.response,
+                    intent = turn.intent.takeIf { it.isNotBlank() }
+                )
+            )
+        }
+        currentConversation = rebuilt
+        return source.turnCount()
+    }
     
     /**
      * Get the current conversation
@@ -391,6 +437,9 @@ class ContextManager {
             entities = entities,
             response = response
         )
+
+        // في الوضع المُسقَط، التسجيل مرة واحدة في DialogueState ثم syncFromDialogue().
+        if (isProjected()) return turn
         
         currentConversation.addTurn(turn)
         

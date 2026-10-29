@@ -91,7 +91,15 @@ class ZahraRouter(
   val localImageEngine = LocalImageEngine()
   val scheduleEngine = ScheduleEngine(context)
   val knowledgeEngine = KnowledgeEngine(context)
-  val contextTracker = ContextAndCorrectionTracker()
+
+  // ——— المرحلة 4: مصدر الحالة الوحيد (يُعرَّف قبل أي مستهلك قديم يقرأ منه) ———
+  val dialogueState = DialogueState()
+  private val dialogueHistory = DialogueStateHistory(dialogueState)
+  private var dialogueSessionId: String? = null
+  private val referenceResolver = ReferenceResolver()
+
+  // الوضع الافتراضي: تقرأ هذه الواجهة من DialogueState ولا تحتفظ بسجل ثانٍ.
+  val contextTracker = ContextAndCorrectionTracker { LegacyContextPolicy.projectedSource(dialogueHistory) }
   val reasoningEngine = ReasoningEngine()
   val actionExecutor = SafeActionExecutor()
   val planExecutor = PlanExecutor(
@@ -142,6 +150,8 @@ class ZahraRouter(
     scheduleEngine.reconcileSchedules()
     // Phase 6.6: Load unified memory from persistent storage
     unifiedMemory.loadAll()
+    // Phase 4: legacy context manager projects the single dialogue state.
+    contextManager.bindDialogueSource { LegacyContextPolicy.projectedSource(dialogueHistory) }
     // Phase 6.7: Initialize Vision OCR (Arabic + English)
     visionEngine.initializeOCR("ara+eng")
   }
@@ -169,10 +179,6 @@ class ZahraRouter(
       e.printStackTrace()
     }
   }
-
-  val dialogueState = DialogueState()
-  private val referenceResolver = ReferenceResolver()
-  private var dialogueSessionId: String? = null
 
   /** Associate background work with the originating UI session, even if it was
    * switched before the worker started. Never carry its state into another session. */
@@ -216,14 +222,21 @@ class ZahraRouter(
       }
     }
     // The legacy router can also ask for clarification: bound that path as well.
-    val asks = response.outcomeState == OutcomeState.AMBIGUOUS &&
-      (response.clarification != null || response.text.contains('؟') || response.text.contains('?'))
+    // كل مسار قديم يُصنَّف غامضًا أو يحمل كائن توضيح أو خيارات سؤال يدخل الحد،
+    // لا فقط الردود التي تحمل علامة استفهام.
+    val asks = ClarificationBudget.asksForClarification(
+      intent = response.intent,
+      outcomeStateName = response.outcomeState.name,
+      hasClarificationPayload = response.clarification != null,
+      hasQuestionMark = response.text.contains('؟') || response.text.contains('?'),
+      hasOptions = response.followups.any { it.contains('؟') || it.contains('?') }
+    )
     val hasActionResult = response.createdTask != null || response.createdNote != null ||
       response.createdSchedule != null || response.executionPlan != null ||
       response.toolPayload is ZahraToolPayload.TaskPayload || response.toolPayload is ZahraToolPayload.NotePayload ||
       response.toolPayload is ZahraToolPayload.SchedulePayload || response.toolPayload is ZahraToolPayload.MemoryFactPayload
-    val boundedResponse = if (previousClarification && asks && !hasActionResult) response.copy(
-      text = "لم أستطع تحديد المقصود، لذلك لا أستطيع الإجابة دون تخمين.",
+    val boundedResponse = if (ClarificationBudget.mustAbstain(previousClarification, asks, hasActionResult)) response.copy(
+      text = ClarificationBudget.ABSTENTION,
       intent = "dialogue_abstain", outcomeState = OutcomeState.UNSUPPORTED,
       confidence = 0.0, confidenceTier = ConfidenceTier.UNCERTAIN,
       clarification = null, followups = emptyList(), evidenceTrace = null
@@ -238,7 +251,8 @@ class ZahraRouter(
         confidence = 0.0, confidenceTier = ConfidenceTier.UNCERTAIN,
         evidenceTrace = null, clarification = null, followups = emptyList())
     } else boundedResponse
-    dialogueState.lastWasClarification = asks && !previousClarification && safeResponse.outcomeState == OutcomeState.AMBIGUOUS
+    // «آخر رد كان توضيحًا» يتبع نفس تعريف الحد أعلاه، لا شرط علامة الاستفهام وحده.
+    dialogueState.lastWasClarification = asks && !previousClarification
     val countries = listOf("مصر", "السعودية", "فرنسا", "اليابان", "الأردن", "المغرب", "الجزائر", "تونس")
     val mentionedCountries = countries.filter { rawInput.contains(it) }
     val topic = mentionedCountries.singleOrNull()
@@ -262,7 +276,11 @@ class ZahraRouter(
       com.example.zahra.personality.StyleApplier.applyToText(empathyPrefix.trim(), personalityManager.getCurrentPersonality()),
       BlockSource.LOCAL
     ) else null
-    val composed = ResponseComposer.compose(ResponseBlock(coreText, source), opening = opening)
+    val composedOpening = ResponseComposer.compose(ResponseBlock(coreText, source), opening = opening)
+    // D8 final check: presentation may not alter numbers, links or an abstention.
+    val composed = if (DialogueResponseValidator.integrityProblem(coreText, composedOpening.text) == null)
+      composedOpening
+    else ResponseComposer.compose(ResponseBlock(coreText, source))
     val trace = safeResponse.evidenceTrace?.let {
       if (resolved is Resolution.Query || it.originalRequest != rawInput)
         it.copy(originalRequest = rawInput, appliedRuleIds = it.appliedRuleIds + "dialogue_context_rewrite")
@@ -276,8 +294,16 @@ class ZahraRouter(
       runCatching { moodAnalyzer.analyze(rawInput).primaryMood.name }.getOrNull())
     // Legacy components are projections of the single delivered turn, not independent
     // histories with missing early-return paths. Profile persistence remains separate.
+    // In PROJECTED mode the calls below are no-ops: state already holds the turn.
     contextTracker.recordTurn(rawInput, final)
-    contextManager.recordTurn(rawInput, final)
+    if (contextManager.isProjected()) contextManager.syncFromDialogue()
+    else contextManager.recordTurn(
+      text = rawInput,
+      normalizedText = ZahraNormalizer.normalize(rawInput),
+      speaker = Sender.USER,
+      intent = final.intent,
+      response = final
+    )
     unifiedMemory.recordTurn(rawInput, final.text, final.intent)
     return final
   }
@@ -293,18 +319,48 @@ class ZahraRouter(
     return count
   }
 
-  data class MemoryClearResult(val facts: Int, val topics: Int, val turns: Int, val success: Boolean)
+  data class MemoryClearResult(
+    val facts: Int,
+    val topics: Int,
+    val turns: Int,
+    val success: Boolean,
+    val failures: List<String> = emptyList()
+  )
 
   @Synchronized
   fun clearDialogueMemory(): MemoryClearResult {
     val facts = memoryEngine.getFacts().size
     val topics = unifiedMemory.topicMemory.getAllTopics().size
     val turns = dialogueState.turns.size
-    val factsCleared = memoryEngine.clearMemory()
-    val unifiedCleared = unifiedMemory.clearAll()
+    // مسح جزئي ممكن: نُسمّي ما فشل بدل «نجح/فشل» فقط.
+    val failures = buildList {
+      if (!memoryEngine.clearMemory()) add("الحقائق المحفوظة")
+      if (!unifiedMemory.clearAll()) add("الملف الشخصي والمواضيع")
+      if (!memoryEngine.getFacts().isEmpty()) add("بقايا الحقائق")
+    }
     clearConversation()
-    return MemoryClearResult(facts, topics, turns, factsCleared && unifiedCleared)
+    return MemoryClearResult(facts, topics, turns, failures.isEmpty(), failures)
   }
+
+  /** تقرير صحة قراءة الذاكرة المحلية، ليُعرَض في الإعدادات بدل كتمان التلف. */
+  data class MemoryHealth(
+    val issues: List<UnifiedMemoryManager.LoadIssue>,
+    val persistenceError: String?
+  ) {
+    val isHealthy: Boolean get() = issues.isEmpty() && persistenceError == null
+
+    fun summaryAr(): String? = when {
+      issues.isEmpty() && persistenceError == null -> null
+      persistenceError != null ->
+        "تعذر حفظ آخر تعديل في الذاكرة المحلية: $persistenceError"
+      else -> "تعذرت قراءة جزء من الذاكرة المحفوظة (${issues.joinToString("، ") { it.area }}). " +
+        "البيانات التالفة لم تُحذف من وحدة التخزين بعد؛ يمكنك مسح الذاكرة أو متابعة الاستخدام."
+    }
+  }
+
+  @Synchronized
+  fun memoryHealth(): MemoryHealth =
+    MemoryHealth(unifiedMemory.lastLoadIssues, unifiedMemory.lastPersistenceError)
 
   private fun processInternal(rawInput: String, isDeepThinking: Boolean = false): ZahraResponse {
     // Phase 6: Personality and Context Integration

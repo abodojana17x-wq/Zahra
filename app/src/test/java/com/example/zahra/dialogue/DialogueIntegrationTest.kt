@@ -57,11 +57,11 @@ class DialogueIntegrationTest {
     @Test fun earlyReturnsSynchronizeLegacyViewsAndSessionsDoNotShareCity() {
         val router = ZahraRouter(context)
         router.processForSession("A", "الطقس في القاهرة")
-        assertEquals("الطقس في القاهرة", router.contextTracker.getLastTurn()?.userQuery)
+        assertEquals("الطقس في القاهرة", router.contextTracker.getLastUserQuery())
         assertEquals(1, router.unifiedMemory.getConversationLength())
         router.processForSession("B", "مرحبا")
         assertNull(router.dialogueState.slots[Slot.CITY])
-        assertEquals("مرحبا", router.contextTracker.getLastTurn()?.userQuery)
+        assertEquals("مرحبا", router.contextTracker.getLastUserQuery())
         assertEquals(1, router.unifiedMemory.getConversationLength())
         router.release()
     }
