@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "updatedAt": "2026-10-29",
+  "auditedBy": "tools/phase06/release_audit.py",
+  "noteAr": "هذا الملف يُحدَّث يدويًا عند تغيّر الحالة (قناة/قياس/توقيع)، ويفحصه المدقق؛ لا يُولَّد آليًا.",
+  "app": {
+    "nameAr": "زهرة",
+    "nameEn": "Zahra",
+    "applicationId": "com.aistudio.zahra.kpxq",
+    "versionName": "3.1",
+    "versionCode": 2,
+    "minSdk": 24,
+    "targetSdk": 36
+  },
+  "release": {
+    "channel": "source-only",
+    "apkPublished": false,
+    "aabPublished": false,
+    "storeListing": null,
+    "signedReleaseVerified": false,
+    "reproducibleBuildVerified": false,
+    "ciActivated": false,
+    "date": "2026-10-29"
+  },
+  "measurement": {
+    "status": "not-run",
+    "datasetVersion": "v1",
+    "datasetCases": 223,
+    "heldOutCases": 50,
+    "resultsFile": null,
+    "resultsSha256": null,
+    "lastRunAt": null,
+    "command": "./gradlew :app:testDebugUnitTest --tests 'com.example.eval.EvalReportTest' --no-daemon",
+    "blindBenchmark": "not-run",
+    "performanceBenchmark": "not-run"
+  },
+  "content": {
+    "packs": 11,
+    "units": 181,
+    "humanReview": "owner-waived-no-human-review",
+    "licenseAudit": "evidence/phase-05/license-audit.md"
+  },
+  "docs": {
+    "index": "docs/README.md",
+    "usage": "docs/USAGE.md",
+    "limitations": "docs/LIMITATIONS.md",
+    "results": "docs/RESULTS.md",
+    "evaluationProtocol": "docs/EVALUATION-PROTOCOL.md",
+    "performance": "docs/PERFORMANCE.md",
+    "privacy": "docs/PRIVACY.md",
+    "security": "docs/SECURITY.md",
+    "distribution": "docs/DISTRIBUTION.md",
+    "systemCard": "docs/SYSTEM-CARD.md",
+    "releaseChecklist": "docs/RELEASE-CHECKLIST.md",
+    "postRelease": "docs/POST-RELEASE.md"
+  },
+  "claims": {
+    "zeroNetworkPermission": true,
+    "medicalAdvice": false,
+    "religiousFatwa": false,
+    "measuredAccuracyPublished": false,
+    "humanContentReview": false,
+    "externalSecurityAudit": false,
+    "accessibleVerified": false
+  },
+  "openDecisions": [
+    "D1",
+    "D2",
+    "D3",
+    "D7",
+    "D9",
+    "D10",
+    "D11",
+    "D12",
+    "D14",
+    "D15"
+  ]
+}

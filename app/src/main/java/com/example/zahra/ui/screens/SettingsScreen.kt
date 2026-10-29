@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.sp
 import com.example.ui.theme.GptAccentBlue
 import com.example.zahra.diagnostics.DiagnosticsEngine
 import com.example.zahra.diagnostics.DiagnosticsReport
+import com.example.zahra.diagnostics.ReleaseInfo
+import com.example.zahra.diagnostics.ReleaseInfoCatalog
 import com.example.zahra.model.FactCategory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -63,6 +65,10 @@ fun SettingsScreen(
   // المرحلة 0: زر «تشخيص» — يشغّل فحوصات حقيقية على الجهاز (DiagnosticsEngine)
   var showDiagnostics by remember { mutableStateOf(false) }
   var diagnosticsReport by remember { mutableStateOf<DiagnosticsReport?>(null) }
+  // المرحلة 6: «الاستخدام والحدود» تُعرض من أصل مولّد (release_info.json)
+  var showReleaseInfo by remember { mutableStateOf(false) }
+  var releaseInfo by remember { mutableStateOf<ReleaseInfo?>(null) }
+  var releaseInfoError by remember { mutableStateOf<String?>(null) }
   var showColorPicker by remember { mutableStateOf(false) }
   var showEditNameDialog by remember { mutableStateOf(false) }
   var editNameValue by remember { mutableStateOf(userProfileName) }
@@ -79,6 +85,21 @@ fun SettingsScreen(
   LaunchedEffect(showDiagnostics) {
     if (showDiagnostics && diagnosticsReport == null) {
       diagnosticsReport = withContext(Dispatchers.IO) { DiagnosticsEngine.run(context) }
+    }
+  }
+
+  LaunchedEffect(showReleaseInfo) {
+    if (showReleaseInfo && releaseInfo == null && releaseInfoError == null) {
+      val loaded = withContext(Dispatchers.IO) {
+        runCatching {
+          context.assets.open(ReleaseInfoCatalog.ASSET_NAME).bufferedReader().use { it.readText() }
+            .let(ReleaseInfoCatalog::parse)
+        }
+      }
+      loaded.fold(
+        onSuccess = { releaseInfo = it },
+        onFailure = { releaseInfoError = it.message ?: it.javaClass.simpleName }
+      )
     }
   }
 
@@ -100,6 +121,17 @@ fun SettingsScreen(
     DiagnosticsDialog(
       report = diagnosticsReport,
       onDismiss = { showDiagnostics = false }
+    )
+  }
+
+  if (showReleaseInfo) {
+    ReleaseInfoDialog(
+      info = releaseInfo,
+      loadError = releaseInfoError,
+      onDismiss = {
+        showReleaseInfo = false
+        releaseInfoError = null
+      }
     )
   }
 
@@ -133,7 +165,7 @@ fun SettingsScreen(
         // Info Button on the other side
         IconButton(
           onClick = {
-            Toast.makeText(context, "نظام زهرة يعمل محلياً 100% دون خوادم أو اشتراكات خارجية", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "يعمل محليًا بلا خوادم أو اشتراكات خارجية", Toast.LENGTH_SHORT).show()
           },
           modifier = Modifier
             .size(40.dp)
@@ -238,9 +270,9 @@ fun SettingsScreen(
           SettingsRowItem(
             title = "نوع النظام",
             icon = Icons.Outlined.Devices,
-            trailingText = "محلي 100% (أوفلاين)",
+            trailingText = "محلي (بلا شبكة)",
             onClick = {
-              Toast.makeText(context, "البرنامج يعمل محلياً بالكامل دون أي اتصال بالإنترنت أو حسابات سحابية", Toast.LENGTH_SHORT).show()
+              Toast.makeText(context, "البرنامج لا يطلب إذن إنترنت ولا حسابًا سحابيًا", Toast.LENGTH_SHORT).show()
             }
           )
           HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
@@ -350,36 +382,42 @@ fun SettingsScreen(
             Toast.makeText(context, "الإعدادات العامة", Toast.LENGTH_SHORT).show()
           }
           HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-          SettingsRowItem(title = "الاستخدام والحدود", icon = Icons.Outlined.InsertChartOutlined) {
-            Toast.makeText(context, "استخدام غير محدود ومحلي 100% دون خوادم", Toast.LENGTH_SHORT).show()
-          }
+          SettingsRowItem(
+            title = "الاستخدام والحدود",
+            icon = Icons.Outlined.InsertChartOutlined,
+            trailingText = "القيود المعروفة",
+            onClick = {
+              releaseInfoError = null
+              showReleaseInfo = true
+            }
+          )
           HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
           SettingsRowItem(title = "الإشعارات", icon = Icons.Outlined.Notifications) {
             Toast.makeText(context, "إعدادات الإشعارات والتنبيهات المحلية", Toast.LENGTH_SHORT).show()
           }
           HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
           SettingsRowItem(title = "الصوت", icon = Icons.Outlined.GraphicEq) {
-            Toast.makeText(context, "الصوت: محلي بالعربية الفصحى", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "الصوت: يستخدم محرك TTS في جهازك؛ توفّر العربية غير مضمون", Toast.LENGTH_LONG).show()
           }
           HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
           SettingsRowItem(title = "السلامة والموثوقية", icon = Icons.Outlined.Security) {
-            Toast.makeText(context, "حماية كاملة حتمية دون جمع أي بيانات", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "حماية محلية بلا جمع بيانات سحابية؛ اقرأ القيود", Toast.LENGTH_LONG).show()
           }
           HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
           SettingsRowItem(title = "الأمان والخصوصية", icon = Icons.Outlined.Lock) {
-            Toast.makeText(context, "مشفر محلياً 100% — لا اتصال بالإنترنت", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "تشفير محلي لبعض البيانات — لا اتصال بالإنترنت", Toast.LENGTH_LONG).show()
           }
           HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
           SettingsRowItem(title = "التخزين المحلي", icon = Icons.Outlined.Storage) {
-            Toast.makeText(context, "الذاكرة والمحادثات والملاحظات مشفرة، وجميع بيانات التشغيل محفوظة على جهازك", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "المحادثات والذاكرة والملاحظات مشفرة؛ المهام والمواعيد والمزاج غير مشفرة", Toast.LENGTH_LONG).show()
           }
           HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
           SettingsRowItem(title = "مركز الخصوصية", icon = Icons.Outlined.Policy) {
-            Toast.makeText(context, "لا يطلب التطبيق إذن الإنترنت، والنسخ الاحتياطي السحابي معطل", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "لا يطلب إذن الإنترنت؛ النسخ الاحتياطي/النقل مستثنيان بقواعد (غير مُختبرين على جهاز)", Toast.LENGTH_LONG).show()
           }
           HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
           SettingsRowItem(title = "السجل والبيانات", icon = Icons.Outlined.Archive) {
-            Toast.makeText(context, "البيانات محفوظة محلياً بالكامل", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "البيانات محفوظة على جهازك، مع تفاوت في التشفير", Toast.LENGTH_LONG).show()
           }
         }
       }
@@ -497,7 +535,7 @@ fun SettingsScreen(
               color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-              text = "🔐 مشفرة محلياً (AES-256) وتخضع لتحكمك التام",
+              text = "🔐 مشفرة محلياً (AES-256) ضمن نطاق التطبيق",
               fontSize = 11.sp,
               color = MaterialTheme.colorScheme.onSurfaceVariant
             )

@@ -1127,7 +1127,7 @@ fun LocalImageCard(
         color = MaterialTheme.colorScheme.surfaceVariant
       ) {
         Text(
-          text = "توليد محلي 100%",
+          text = "توليد محلي بلا شبكة",
           color = MaterialTheme.colorScheme.onSurfaceVariant,
           fontSize = 10.sp,
           modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)

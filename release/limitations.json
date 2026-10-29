@@ -1,0 +1,259 @@
+{
+  "schema": 1,
+  "updatedAt": "2026-10-29",
+  "noteAr": "مصدر الحقيقة الوحيد للقيود المعلنة. تُولَّد منه docs/LIMITATIONS.md وصفحة «الاستخدام والحدود» داخل التطبيق. لا تُحذف قيود معروفة لتجميل صورة الإصدار، وأي قيد جديد يُضاف هنا أولًا.",
+  "limitations": [
+    {
+      "id": "LIM-001",
+      "category": "measurement",
+      "severity": "critical",
+      "titleAr": "لا توجد نتائج قياس منشورة",
+      "detailAr": "لم يُشغَّل هارنس القياس الكامل (223 حالة × 8 تكرارات) ولا مجموعة held-out في هذه البيئة. لا يوجد results.json ولا SUMMARY.md ولا فاصل ثقة منشور. أي نسبة دقة تُعرض خارج هذه الحقيقة غير موثوقة.",
+      "evidence": "docs/RESULTS.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-002",
+      "category": "release",
+      "severity": "critical",
+      "titleAr": "لا يوجد APK أو AAB منشور",
+      "detailAr": "الإصدار الحالي مصدر فقط (source-only). لم يُبنَ APK موقّع ولم يُختبر التثبيت على جهاز، ولا يوجد رابط توزيع رسمي. البناء من المصدر يتطلب JDK 21 وAndroid SDK، ولم يُنفَّذ هنا.",
+      "evidence": "docs/DISTRIBUTION.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-003",
+      "category": "measurement",
+      "severity": "critical",
+      "titleAr": "الاختبارات مكتوبة ولم تُشغَّل عبر Gradle/JUnit",
+      "detailAr": "يوجد 703 وسم @Test في 56 ملف اختبار، لكن لم يُشغَّل Gradle ولا JUnit ولا Robolectric في بيئة التنفيذ الحالية. نجاح فحوصات Python المعزولة و7 اختبارات Kotlin لا يعني نجاح اختبارات Android.",
+      "evidence": "evidence/phase-06/README.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-004",
+      "category": "measurement",
+      "severity": "critical",
+      "titleAr": "لا قياس أداء على أجهزة حقيقية",
+      "detailAr": "لم تُقَس مدة البدء البارد/الدافئ، ولا p95 لزمن الرد، ولا الذاكرة، ولا البطارية، ولا حجم APK، على API 24 أو 31 أو 36. أدوات القياس موجودة لكنها لم تُشغَّل على جهاز.",
+      "evidence": "docs/PERFORMANCE.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-005",
+      "category": "measurement",
+      "severity": "major",
+      "titleAr": "لا مقارنة عمياء ولا ترتيب Elo/Bradley-Terry",
+      "detailAr": "بروتوكول المقارنة العمياء وأدوات الإحصاء والترتيب منفّذة، لكن لا توجد أصوات محكّمين ولا نتائج. أي جدول ترتيب مستقبلي يلزمه ملف تسجيل مسبق وأصوات خام وهاش للمجموعة.",
+      "evidence": "docs/EVALUATION-PROTOCOL.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-006",
+      "category": "capability",
+      "severity": "major",
+      "titleAr": "لا نموذج توليدي في النواة",
+      "detailAr": "زهرة نظام استرجاع وأدوات وقواعد، لا نموذج لغوي توليدي. الكتابة الإبداعية والتلخيص الطويل والترجمة الحرة والاستدلال المفتوح محدودة أو غائبة، وهذا قيد تصميم معلن (Zero-LLM) لا خطأ عارض.",
+      "evidence": "docs/SYSTEM-CARD.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-007",
+      "category": "capability",
+      "severity": "major",
+      "titleAr": "فهم العربية والدوالج جزئي وقواعدي",
+      "detailAr": "الفهم يعتمد على تطبيع عربي وقواعد ومعاجم وبصمات نصية. اللهجات المصرية والخليجية والمغاربية والفرانكو والأخطاء الإملائية لا تُغطَّى تغطية كاملة، وقد يفشل النظام في الأسئلة المركبة أو غير المباشرة.",
+      "evidence": "docs/SYSTEM-CARD.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-008",
+      "category": "capability",
+      "severity": "major",
+      "titleAr": "OCR لا يعمل من البداية على الأرجح",
+      "detailAr": "Tesseract يحتاج ملفات tessdata (ara/eng) غير المشحونة في assets. يلتقط الكود غيابها ويُبقي OCR معطّلًا بدل الانهيار، لذا قراءة الصور غير متاحة خارج الصندوق حتى تُضاف الملفات بترخيصها.",
+      "evidence": "app/src/main/java/com/example/zahra/vision/VisionEngine.kt",
+      "inApp": true
+    },
+    {
+      "id": "LIM-009",
+      "category": "capability",
+      "severity": "major",
+      "titleAr": "كشف الوجوه يعتمد على خدمات جوجل",
+      "detailAr": "مكتبة ML Kit لكشف الوجوه غير المدمجة قد تحتاج تنزيل نموذج عبر Google Play services. التطبيق لا يملك إذن INTERNET، ولم يُختبر السلوك على جهاز جديد بلا نموذج محمّل مسبقًا.",
+      "evidence": "docs/SYSTEM-CARD.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-010",
+      "category": "capability",
+      "severity": "minor",
+      "titleAr": "الصوت يعتمد على محرك النظام",
+      "detailAr": "تحويل النص إلى كلام يستخدم TextToSpeech الخاص بالجهاز. جودة الصوت وتوفر العربية وسلوك الأصوات السحابية يختلف بين الأجهزة ولا يضمنه التطبيق.",
+      "evidence": "docs/USAGE.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-011",
+      "category": "content",
+      "severity": "major",
+      "titleAr": "المحتوى مولّد آليًا بلا مراجعة بشرية",
+      "detailAr": "حزم المرحلة 5 مولّدة آليًا وفق D31، وموسومة reviewStatus=owner-waived-no-human-review. لم تُراجع الحقائق بشريًا، ولا تثبت صحة كل إجابة. verifiedAt يوثّق فحص البنية فقط.",
+      "evidence": "evidence/phase-05/README.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-012",
+      "category": "content",
+      "severity": "major",
+      "titleAr": "المعرفة محدودة بـ181 وحدة في 11 حزمة",
+      "detailAr": "هذا أقل بكثير من آلاف الوحدات التي تستهدفها الخطة. التغطية غير متوازنة، وفئات مثل البرمجة والصحة والدراسة ما زالت صغيرة، وقد يمتنع النظام أو يجيب إجابة عامة عن أسئلة كثيرة.",
+      "evidence": "packs/",
+      "inApp": true
+    },
+    {
+      "id": "LIM-013",
+      "category": "legal",
+      "severity": "major",
+      "titleAr": "تراخيص بعض المواد الموروثة غير محسومة",
+      "detailAr": "سجل تدقيق التراخيص يوضح مواد من seed-legacy لم تُثبت حقوقها. موافقة المالك لا تمنح حقوقًا لطرف ثالث، ولم يُجرَ مراجعة قانونية مستقلة.",
+      "evidence": "evidence/phase-05/license-audit.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-014",
+      "category": "content",
+      "severity": "critical",
+      "titleAr": "لا فتوى ولا تشخيص طبي",
+      "detailAr": "المحتوى الديني ملخصات موثقة تحيل إلى مراجع، وليس فتوى شرعية. المحتوى الصحي معلومات عامة وليس تشخيصًا أو وصفة. الحالات الفقهية الخلافية والحالات الطارئة تُحال إلى أهل العلم أو الطبيب/الطوارئ.",
+      "evidence": "docs/SYSTEM-CARD.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-015",
+      "category": "privacy",
+      "severity": "major",
+      "titleAr": "بعض البيانات المحلية غير مشفرة بطبقة التطبيق",
+      "detailAr": "المحادثات والأرشيف والذاكرة والملاحظات مشفرة، لكن المهام والمواعيد ومفكرة المزاج وتفضيلات الشخصية تُحفظ في SharedPreferences خاصة بالتطبيق دون تشفير إضافي. حماية نظام أندرويد وسانده ليست كتشفير تطبيقي.",
+      "evidence": "docs/PRIVACY.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-016",
+      "category": "privacy",
+      "severity": "major",
+      "titleAr": "التشفير وترحيل البيانات لم يُختبرا على جهاز",
+      "detailAr": "تعتمد الذاكرة على AndroidKeyStore وAES-GCM، وقد جُرِّب المنطق باختبارات معزولة، لكن لم يُختبر AndroidKeyStore ولا الترحيل ولا فقدان المفتاح على Android 24–36 فعليًا. لا يُدَّعى وجود حماية عتادية دائمًا.",
+      "evidence": "docs/SECURITY.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-017",
+      "category": "privacy",
+      "severity": "minor",
+      "titleAr": "النسخ الاحتياطي والنقل بين الأجهزة غير مُتحقق على الأجهزة",
+      "detailAr": "الوضع المعلن: allowBackup=false مع استثناء كل النطاقات من cloud-backup وdevice-transfer وcross-platform-transfer. توجد تقارير مجتمعية بأن allowBackup=false وحده لا يمنع النقل على Android 12+، لذلك أُضيفت قواعد الاستثناء صراحةً، لكن السلوك الفعلي لم يُختبر على جهاز أو OEM.",
+      "evidence": "docs/PRIVACY.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-018",
+      "category": "security",
+      "severity": "critical",
+      "titleAr": "لا مراجعة أمنية مستقلة",
+      "detailAr": "لم يُجرَ تدقيق أمني خارجي ولا اختبار اختراق ولا fuzzing. لا يوجد برنامج مكافآت ثغرات. القنوات والضوابط موثقة، لكن غياب الحادث لا يثبت الأمان.",
+      "evidence": "docs/SECURITY.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-019",
+      "category": "security",
+      "severity": "major",
+      "titleAr": "توقيع الإصدار وبناء قابل لإعادة الإنتاج غير مُتحققين",
+      "detailAr": "إعدادات التوقيع تقرأ كلمة المرور من متغيرات بيئة، لكن لا يوجد APK موقّع أو بصمة شهادة منشورة. لم يُختبر بناء حتمي ولا مقارنة بايت-ببايت. لا توجد مفاتيح توقيع في المستودع.",
+      "evidence": "docs/DISTRIBUTION.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-020",
+      "category": "security",
+      "severity": "major",
+      "titleAr": "مهام CI غير مفعّلة ولم تُشغَّل",
+      "detailAr": "ملف CI محفوظ في ci/github-actions.yml ولم يُثبَّت في .github/workflows، ولم تُشغَّل أي وظيفة منه. الإجراءات مثبتة الآن بـcommit SHA كامل وactions/checkout بلا persist-credentials، لكن التثبيت البنيوي لا يثبت نجاحًا أو أمانًا لأنه لم يُشغَّل.",
+      "evidence": "docs/SECURITY.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-021",
+      "category": "platform",
+      "severity": "major",
+      "titleAr": "لا اختبار توافق على أجهزة أو إصدارات Android",
+      "detailAr": "النطاق المعلن minSdk 24 إلى targetSdk 36، لكن لم يُختبر التطبيق على أي جهاز حقيقي أو محاكي. سلوك الأذونات الدقيقة (POST_NOTIFICATIONS وRECORD_AUDIO وSCHEDULE_EXACT_ALARM) والمنبهات والتمهيد قد يختلف.",
+      "evidence": "docs/PERFORMANCE.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-022",
+      "category": "platform",
+      "severity": "major",
+      "titleAr": "تبعيات وبيانات وصفية غير متوافقة مع Zero-Network",
+      "detailAr": "build.gradle يضم Firebase/Gemini وGoogle services رغم عدم وجود إذن INTERNET وعدم استخدامها في كود التطبيق. ملف metadata.json يعلن MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API. هذا تناقض معلن يحتاج قرار المالك وتنظيفًا، ولم يُحذف تلقائيًا لتجنب كسر البناء.",
+      "evidence": "docs/POST-RELEASE.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-023",
+      "category": "process",
+      "severity": "major",
+      "titleAr": "لا مراجعة مستقلة للاختبارات أو الخطة",
+      "detailAr": "لم يراجع وكيل ثانٍ مستقل مجموعة held-out ولا اختبارات المراحل. كتابة الأسئلة وتصحيح النظام ومراجعة النتائج ليست فصلًا كاملًا للواجبات، وهذا تحفظ موروث من تقرير المنافس ومعالَج جزئيًا فقط.",
+      "evidence": "docs/EVALUATION-PROTOCOL.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-024",
+      "category": "process",
+      "severity": "minor",
+      "titleAr": "ملف رؤية المستقبل المذكور غير موجود في تاريخ Git",
+      "detailAr": "قائمة البحث للمرحلة 6 تطلب ZAHRA_FUTURE_VISION_RESEARCH.md من الالتزام 4edbb18، لكن تاريخ المستودع الحالي مضغوط في التزام واحد ولا يحتوي الملف. لم تُختلق أفكاره ولم تُنسب إليه أي مادة.",
+      "evidence": "plans/06-final-evaluation.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-025",
+      "category": "release",
+      "severity": "minor",
+      "titleAr": "سياسة الإصدارات غير محسومة",
+      "detailAr": "versionName=3.1 مع versionCode=2، ولا توجد سياسة معلنة للترقيات والتوافق الخلفي أو دعم الإصدارات السابقة. لا توجد قناة إصدار (Play/F-Droid/GitHub Releases) معتمدة.",
+      "evidence": "docs/DISTRIBUTION.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-026",
+      "category": "accessibility",
+      "severity": "major",
+      "titleAr": "لم يُختبر الوصول ولا واجهة Compose",
+      "detailAr": "لا اختبارات TalkBack أو أحجام خطوط أو تباين ألوان أو RTL على أجهزة. واجهة Compose لم تُبنَ أو تُشغَّل في هذه البيئة، وأي وصف لسهولة الاستخدام غير مُثبت.",
+      "evidence": "docs/USAGE.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-027",
+      "category": "measurement",
+      "severity": "major",
+      "titleAr": "قرارات المالك الأساسية ما زالت معلقة",
+      "detailAr": "D1 (الشبكة)، D2 (embeddings)، D3 (تشغيل الكود)، D7 (حد حجم APK) بلا قرار نهائي. لذلك لا شبكة ولا embeddings ولا تنفيذ كود، وحجم الإصدار غير مقيس مقابل السقف.",
+      "evidence": "plans/DECISIONS.md",
+      "inApp": true
+    },
+    {
+      "id": "LIM-028",
+      "category": "content",
+      "severity": "minor",
+      "titleAr": "الروابط والمصادر لم تُفحص حيويتها",
+      "detailAr": "مدقق الحزم يفحص شكل الرابط والترخيص المسجل، لا يستدعي الشبكة ولا يثبت أن المصدر حي أو أن الاقتباس مطابق. قد تتغير المصادر أو تختفي.",
+      "evidence": "tools/validate_packs.py",
+      "inApp": true
+    }
+  ]
+}
