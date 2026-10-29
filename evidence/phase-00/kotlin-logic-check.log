@@ -1,0 +1,14 @@
+# تحقق نوعي/تشغيلي لكود القياس بلا Gradle — 2026-10-26T23:21:59Z
+# الأمر: ./tools/offline-typecheck/run.sh
+# الأدوات: JDK 25 (jdk4py) + kotlinc 2.4.21 (npm)
+# ملاحظة: تبعيات Gson/JUnit/Robolectric/Android stubs بتوقيعات محاكاة؛ المنطق المُختبَر حقيقي.
+
+wilson 60/100 = 0.502003 0.690599
+wilson 0/20 = 0.000000 0.161125
+wilson 20/20 = 0.838875 1.000000
+mcnemar 0,5 = 0.062500
+mcnemar 1,9 = 0.021484
+bootstrap = 0.2100 0.4000 deterministic=true
+pct = 86.0% interval=75.0%–85.4%
+numbers = [56.0, 1.5, 1.536, 56.0, 1.5, 1536.0]
+norm = اهلا وسهلا
