@@ -81,7 +81,7 @@ object ZahraNormalizer {
     "ezay" to "ازاي", "ezzay" to "ازاي", "izzay" to "ازاي", "azay" to "ازاي",
     "ezayak" to "ازيك", "ezayek" to "ازيك", "akhbarak" to "اخبارك", "akhbarek" to "اخبارك",
     "leh" to "ليه", "fein" to "فين", "fen" to "فين", "emta" to "متى", "emteh" to "متى",
-    "eh" to "ايه", "eih" to "ايه"
+    "eh" to "ايه", "eih" to "ايه",
     // --- رغبة وحاجة ---
     "aez" to "عايز", "ayez" to "عايز", "ayeza" to "عايزه", "ayzeen" to "عايزين",
     "3ayez" to "عايز", "3ayza" to "عايزه", "3awz" to "عاوز", "3awza" to "عاوزة",
@@ -112,7 +112,7 @@ object ZahraNormalizer {
     "7aga" to "حاجة", "7agat" to "حاجات", "haga" to "حاجه", "hagat" to "حاجات",
     // --- دين (إشارات عامة فقط؛ الأحكام من ReligionEngine) ---
     "inshallah" to "ان شاء الله", "alhamdulillah" to "الحمد لله", "mashallah" to "ما شاء الله",
-    "allah" to "الله"
+    "allah" to "الله",
     // --- تقنية وبرمجة (محمية من التجذيع عبر STEM_EXCEPTIONS بعد التعريب) ---
     "code" to "كود", "programming" to "برمجة", "programing" to "برمجة", "debugging" to "تصحيح",
     "bug" to "باج", "python" to "بايثون", "javascript" to "جافاسكربت", "css" to "سي اس اس",
@@ -151,7 +151,7 @@ object ZahraNormalizer {
     // --- أسماء وأفعال وأشكال إضافية موثقة في اللهجة المصرية ---
     "sayyara" to "سيارة", "arabiya" to "عربية", "dokkan" to "دكان",
     "madrasa" to "مدرسة", "gam3a" to "جامعة", "mustashfa" to "مستشفى",
-    "saydalia" to "صيدلية", "souq" to "سوق", "bank" to "بنك"
+    "saydalia" to "صيدلية", "souq" to "سوق", "bank" to "بنك",
     "naharda" to "نهاردة", "elnaharda" to "النهاردة", "elyoum" to "اليوم",
     "elbokra" to "البكرة", "elbaramg" to "البرنامج",
     "3arifa" to "عارفة", "fhimit" to "فهمت", "sam3it" to "سمعت",

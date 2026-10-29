@@ -25,7 +25,8 @@
 | أدوات القياس المُختبرة فعليًا | بوابة R0 + تحقق المجموعة + إحصاءات (Wilson/bootstrap/McNemar) تعمل وتنجح الآن | `python3 scripts/validate_eval.py --phase 00` · `python3 scripts/test_stats.py` |
 | الإطلاق | لا يوجد APK منشور بعد؛ مسار البناء جاهز في CI (artifact باسم `zahra-debug-apk`) | بعد تفعيل CI |
 | المحتوى | `general_kb.json` ≈ 3.6KB، `religion_kb.json` ≈ 11.9KB، `translation_kb.json` ≈ 5.8KB، و`intent_corpus.json` فيه 25 نية فقط | `app/src/main/assets/` |
-| الحساب | `MathEngine` فيه 10 أزواج تحويل وحدات مثبتة يدويًا فقط | `app/src/main/java/com/example/zahra/engines/MathEngine.kt` |
+| الحساب والوحدات | **المرحلة 2 (2026-10-29):** محلّل كامل (27 دالة + أسماء عربية + شجرة عمليات) ونظام وحدات عام (9 تصنيفات، فدان/قيراط) و9 قوالب مسائل كلامية؛ `MathEngine` صار Adapter متوافقًا | [`evidence/phase-02/README.md`](evidence/phase-02/README.md) |
+| الوقت والبيانات | **المرحلة 2:** أدوات وقت/تاريخ بساعة قابلة للحقن + هجري أم القرى (ICU + جدول مدمج) + طبقة مصادر Opt-in (Open-Meteo/ويكيبيديا/ويكي‌داتا) بالرخصة والكاش | [`plans/02-tools.md`](plans/02-tools.md) |
 | الفهم | `SemanticSearchEngine` يعتمد TF-IDF + cosine + مرادفات، **لا يوجد BM25 ولا embeddings** | المرحلة 3 |
 
 **الخلاصة الاستراتيجية:** زهرة عمارة أكبر من منافسها المباشر (رقيم 2.0)، لكنها «غير مُثبتة». المرحلة 0 بَنَت **أداة الإثبات** (مجموعة أسئلة مجمّدة + هارنس 223×8 + إحصاءات عيّنة صغيرة + بوابة CI + زر تشخيص داخل التطبيق)، ولم تُثبت بعد تشغيل الـ 452 اختبارًا. لا يُنشر رقم قبل تشغيل حقيقي — التفصيل الصادق (المنفَّذ مقابل المنتظر) في [`evidence/phase-00/README.md`](evidence/phase-00/README.md).

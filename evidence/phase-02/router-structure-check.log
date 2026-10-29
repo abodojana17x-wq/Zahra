@@ -1,0 +1,24 @@
+# فحص بنيوي لملف الراوتر: ترجمة الملف وحده ثم تصفية أخطاء الصياغة (الباقي مراجع خارجية متوقعة لأن الملف يُترجم منفردًا)
+     80 unresolved reference 'OutcomeState'.
+     36 unresolved reference 'record'.
+     29 unresolved reference 'ZahraToolPayload'.
+     27 unresolved reference 'ZahraResponse'.
+     22 unresolved reference 'ConfidenceTier'.
+     18 unresolved reference 'KnowledgeRetrievalState
+     18 unresolved reference 'Intent'.
+     17 unresolved reference 'outcomeState'.
+     17 unresolved reference 'it'.
+     14 unresolved reference 'confidence'.
+     11 unresolved reference 'tools'.
+     11 unresolved reference 'source'.
+     11 unresolved reference 'GroundedFact'.
+     11 unresolved reference 'EpistemicGroundingPipel
+     10 unresolved reference 'EvidenceType'.
+      8 unresolved reference 'routing'.
+      8 unresolved reference 'key'.
+      7 unresolved reference 'message'.
+      7 unresolved reference 'formattedText'.
+      7 unresolved reference 'MathEngine'.
+
+عدد أخطاء الصياغة (يجب أن يكون 0):
+0
