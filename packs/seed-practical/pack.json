@@ -1,0 +1,440 @@
+{
+  "pack": "seed-practical",
+  "version": "1.0.0",
+  "license": "mixed-see-unit-sources",
+  "authors": [
+    "زهرة — المرحلة 3 (بذور المهارات العملية)"
+  ],
+  "sources": [
+    {
+      "name": "Dunlosky et al. 2013 — Improving Students' Learning",
+      "url": "https://journals.sagepub.com/doi/10.1177/1529100612453266",
+      "license": "نشر أكاديمي"
+    },
+    {
+      "name": "NIST SP 800-63B — Digital Identity Guidelines",
+      "url": "https://pages.nist.gov/800-63-3/sp800-63b.html",
+      "license": "Public Domain (US Government)"
+    },
+    {
+      "name": "CISA — Cybersecurity Basics",
+      "url": "https://www.cisa.gov/topics/cybersecurity-best-practices",
+      "license": "Public Domain (US Government)"
+    },
+    {
+      "name": "CFPB — Budgeting",
+      "url": "https://www.consumerfinance.gov/consumer-tools/budgeting/",
+      "license": "Public Domain (US Government)"
+    }
+  ],
+  "generatedAt": "2026-10-29",
+  "note": "إرشادات عامة مبنية على مصادر منشورة أو خبرة عملية موثّقة. ليست استشارة طبية أو مالية شخصية.",
+  "units": [
+    {
+      "id": "prac-active-recall",
+      "pack": "seed-practical",
+      "title": "أفضل طريقة للمذاكرة (الاستدعاء النشط)",
+      "intent": "query_knowledge",
+      "tags": [
+        "مذاكرة",
+        "study",
+        "active-recall",
+        "تعلم",
+        "مراجعة"
+      ],
+      "source": {
+        "name": "Dunlosky et al. 2013 — Improving Students' Learning With Effective Learning Techniques",
+        "url": "https://journals.sagepub.com/doi/10.1177/1529100612453266",
+        "license": "نشر أكاديمي",
+        "location": "Psychological Science in the Public Interest, 14(1)"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "ازاي أذاكر بفاعلية",
+        "ما أفضل طريقة للمذاكرة؟",
+        "how to study effectively",
+        "active recall ezay",
+        "أذاكر إزاي وأنا بنسى بسرعة"
+      ],
+      "a": [
+        "أقوى تقنيتين في المراجعة المنشورة: **الاستدعاء النشط** (تحاول تفتكر قبل ما تبص) و**التوزيع الزمني** (مراجعات متباعدة بدل حشو ليلة الامتحان).",
+        "تطبيق عملي: بعد كل جزء، اقفل الكتاب واكتب من الذاكرة 5 نقاط، ثم قارن. راجع بعد يوم، ثم 3 أيام، ثم أسبوع.\n`اقرأ 20 دقيقة → استدعاء 5 دقائق → مراجعة خطأك`",
+        "خطأ شائع: إعادة القراءة والتظليل — بتحس بسهولة لكنه لا يقيس الفهم؛ الامتحان الحقيقي هو الاستدعاء بلا مصدر."
+      ]
+    },
+    {
+      "id": "prac-spaced-repetition",
+      "pack": "seed-practical",
+      "title": "ما هو الحفظ المتباعد (Spaced Repetition)؟",
+      "intent": "query_knowledge",
+      "tags": [
+        "مذاكرة",
+        "spaced-repetition",
+        "حفظ",
+        "تعلم"
+      ],
+      "source": {
+        "name": "Dunlosky et al. 2013 — Improving Students' Learning With Effective Learning Techniques",
+        "url": "https://journals.sagepub.com/doi/10.1177/1529100612453266",
+        "license": "نشر أكاديمي",
+        "location": "Practice testing & distributed practice"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "يعني ايه spaced repetition",
+        "ما هو التكرار المتباعد؟",
+        "what is spaced repetition",
+        "المراجعة المتباعدة إزاي",
+        "أنسى اللي ذاكرته بعد يومين"
+      ],
+      "a": [
+        "التكرار المتباعد: تُراجع المعلومة على فواصل زمنية متزايدة (يوم، 3 أيام، أسبوع، شهر) بحيث تُراجعها قرب لحظة نسيانها — كل مراجعة تثبّت أطول.",
+        "عمليًا: بطاقات سؤال/جواب + جدول مواعيد. لو نسيت البطاقة، ترجع لفترتها الأولى؛ لو تذكرتها، تتضاعف الفترة.\n`فترة جديدة = فترة قديمة × 2 (بحد أقصى أسبوعين)`",
+        "خطأ شائع: مراجعة كل شيء كل يوم — وقت كبير بعائد أقل من مراجعة المنسي فقط."
+      ]
+    },
+    {
+      "id": "prac-pomodoro",
+      "pack": "seed-practical",
+      "title": "تقنية بومودورو للتركيز",
+      "intent": "query_knowledge",
+      "tags": [
+        "تركيز",
+        "pomodoro",
+        "وقت",
+        "إنتاجية"
+      ],
+      "source": {
+        "name": "Pomodoro Technique — الموقع الرسمي",
+        "url": "https://www.pomodorotechnique.com/",
+        "license": "",
+        "location": "الوصف الرسمي للتقنية"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "ازاي أستخدم تقنية بومودورو",
+        "ما هي تقنية Pomodoro؟",
+        "what is the pomodoro technique",
+        "pomodoro ezay",
+        "مش قادر أركز أكتر من دقايق"
+      ],
+      "a": [
+        "بومودورو = فترات عمل مركّز قصيرة (25 دقيقة تقليديًا) ثم استراحة قصيرة 5 دقائق، وبعد كل 4 دورات استراحة أطول.",
+        "تطبيق:\n`25 دقيقة عمل بلا هاتف → 5 دقائق راحة → ×4 → 15–30 دقيقة راحة`\nالمهم الاستمرارية لا دقة الرقم: 15/3 مناسبة لمن يبدأ.",
+        "خطأ شائع: قضاء الاستراحة في تصفح مفتوح — غالبًا يستهلك الطاقة الذهنية ويصعّب العودة."
+      ]
+    },
+    {
+      "id": "prac-budget-503020",
+      "pack": "seed-practical",
+      "title": "قاعدة 50/30/20 للميزانية",
+      "intent": "query_knowledge",
+      "tags": [
+        "ميزانية",
+        "مال",
+        "budget",
+        "ادخار"
+      ],
+      "source": {
+        "name": "CFPB — Budgeting",
+        "url": "https://www.consumerfinance.gov/consumer-tools/budgeting/",
+        "license": "Public Domain (US Government)",
+        "location": "consumerfinance.gov/budgeting"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "ازاي أعمل ميزانية شهرية",
+        "ما هي قاعدة 50/30/20 للميزانية؟",
+        "how to budget my salary 50 30 20",
+        "budget shahri ezay",
+        "راتبي بيخلص قبل آخر الشهر"
+      ],
+      "a": [
+        "قاعدة 50/30/20 تقسّم صافي الدخل: 50% احتياجات أساسية (سكن، طعام، مواصلات)، 30% رغبات، 20% ادّخار وسداد دين.",
+        "مثال على دخل 6000:\n`3000 احتياجات · 1800 رغبات · 1200 ادّخار/دين`\nابدأ بتسجيل مصروف شهر كامل قبل التقسيم — الأرقام الواقعية أهم من القاعدة.",
+        "خطأ شائع: اعتبار القاعدة قانونًا — لو الإيجار وحده 60% من الدخل فالأولوية لتقليل الالتزامات الثابتة لا لضغط بند الادّخار لصفر."
+      ]
+    },
+    {
+      "id": "prac-strong-password",
+      "pack": "seed-practical",
+      "title": "كيف أختار كلمة سر قوية؟",
+      "intent": "query_knowledge",
+      "tags": [
+        "أمان",
+        "password",
+        "خصوصية",
+        "حساب"
+      ],
+      "source": {
+        "name": "NIST SP 800-63B — Memorized Secret Verifiers",
+        "url": "https://pages.nist.gov/800-63-3/sp800-63b.html",
+        "license": "Public Domain (US Government)",
+        "location": "§5.1.1 Memorized Secrets"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "ازاي أعمل باسورد قوي",
+        "ما مواصفات كلمة السر القوية؟",
+        "how to choose a strong password",
+        "password qawy ezay",
+        "كلمة السر بتتخمن بسهولة"
+      ],
+      "a": [
+        "توصيات NIST الحديثة: الطول أهم من التعقيد، استخدم عبارة طويلة سهلة التذكر (16+ حرفًا) فريدة لكل موقع، وقائمة حظر للكلمات الشائعة، ولا إجبار على تغيير دوري بلا سبب.",
+        "مثال:\n`مش: Ahmed@2024`\n`أفضل: كلمه-طويله-بتفتكرها-بسهوله`\n+ مدير كلمات سر.",
+        "خطأ شائع: إعادة استخدام نفس الكلمة مع تغيير رقم — تسريب موقع واحد يفتح الباقي (credential stuffing)."
+      ]
+    },
+    {
+      "id": "prac-2fa",
+      "pack": "seed-practical",
+      "title": "ما هي المصادقة الثنائية (2FA)؟",
+      "intent": "query_knowledge",
+      "tags": [
+        "أمان",
+        "2fa",
+        "حساب",
+        "خصوصية"
+      ],
+      "source": {
+        "name": "CISA — Multifactor Authentication",
+        "url": "https://www.cisa.gov/topics/cybersecurity-best-practices",
+        "license": "Public Domain (US Government)",
+        "location": "cisa.gov / MFA"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "يعني ايه 2FA",
+        "ما هي المصادقة الثنائية؟",
+        "what is two factor authentication",
+        "2fa ezay",
+        "ليه أفعّل التحقق بخطوتين"
+      ],
+      "a": [
+        "2FA طبقة تحقق ثانية بعد كلمة السر: رمز من تطبيق مصادقة، أو مفتاح أمان، أو رمز SMS (الأضعف بينها).",
+        "الترتيب المفضّل:\n`مفتاح أمان/Passkey > تطبيق TOTP > رمز SMS`",
+        "خطأ شائع: الاعتماد على SMS فقط — معرّض لتبديل الشريحة (SIM swap)؛ استخدم تطبيقًا أو مفتاحًا إن أمكن."
+      ]
+    },
+    {
+      "id": "prac-phishing",
+      "pack": "seed-practical",
+      "title": "كيف أتعرف على رسالة تصيّد (Phishing)؟",
+      "intent": "query_knowledge",
+      "tags": [
+        "أمان",
+        "phishing",
+        "خصوصية",
+        "احتيال"
+      ],
+      "source": {
+        "name": "CISA — Phishing Guidance",
+        "url": "https://www.cisa.gov/topics/cybersecurity-best-practices",
+        "license": "Public Domain (US Government)",
+        "location": "cisa.gov / Phishing"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "ازاي أعرف رسالة نصب أو تصيد",
+        "كيف أكتشف التصيّد الإلكتروني؟",
+        "how to spot a phishing email",
+        "phishing ezay a3rafha",
+        "وصلني لينك غريب على الواتساب"
+      ],
+      "a": [
+        "علامات شائعة: إلحاح غير مبرر («الآن وإلا يُغلق الحساب»)، مرسل غريب أو نطاق مشابه بحرف، رابط لا يطابق النطاق الرسمي، طلب كلمة سر أو رمز تحقق، وأخطاء صياغة.",
+        "قاعدة عملية:\n`لا تضغط الرابط — افتح الموقع بنفسك من المتصفح`\nولا تُدخل رمز 2FA لأي شخص يطلبه.",
+        "خطأ شائع: الثقة لأن الرسالة من صديق — حساباته المخترقة أكثر مصدر تصيّد يقنع الناس."
+      ]
+    },
+    {
+      "id": "prac-backup-321",
+      "pack": "seed-practical",
+      "title": "كيف أعمل نسخة احتياطية آمنة؟",
+      "intent": "query_knowledge",
+      "tags": [
+        "backup",
+        "بيانات",
+        "أمان",
+        "احتياطي"
+      ],
+      "source": {
+        "name": "CISA — Data Backup Options",
+        "url": "https://www.cisa.gov/sites/default/files/publications/data_backup_options.pdf",
+        "license": "Public Domain (US Government)",
+        "location": "CISA publication"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "ازاي أعمل نسخة احتياطية لملفاتي",
+        "ما هي قاعدة 3-2-1 للنسخ الاحتياطي؟",
+        "how to backup my files 3-2-1",
+        "backup ezay",
+        "خايف أضيع ملفاتي لو الجهاز باظ"
+      ],
+      "a": [
+        "قاعدة 3-2-1: 3 نسخ من البيانات، على وسيطين مختلفين، ونسخة واحدة خارج المكان (سحابة أو قرص في مكان آخر).",
+        "مثال:\n`الجهاز + قرص خارجي + نسخة سحابية`\nواختبر الاستعادة فعليًا مرة كل فترة.",
+        "خطأ شائع: نسخة على نفس القرص أو نفس الجهاز — عطل واحد يضيع الأصل والنسخة. ونسخة لم تُختبر استعادتها = افتراض لا ضمان."
+      ]
+    },
+    {
+      "id": "prac-cv",
+      "pack": "seed-practical",
+      "title": "كيف أكتب سيرة ذاتية (CV) جيدة؟",
+      "intent": "query_knowledge",
+      "tags": [
+        "cv",
+        "سيرة ذاتية",
+        "وظيفة",
+        "توظيف"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "بذور المرحلة 3 — إرشاد عملي (بلا مصدر خارجي)",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ازاي أكتب CV",
+        "كيف أكتب سيرة ذاتية احترافية؟",
+        "how to write a good cv",
+        "cv ezay aktbo",
+        "سيرتي الذاتية مش بتوصل لمقابلات"
+      ],
+      "a": [
+        "اجعلها صفحة واحدة (لخبرة أقل من 5 سنوات): بيانات تواصل، ملخص سطرين، خبرات/مشاريع بترتيب زمني عكسي، مهارات، تعليم. لكل بند: فعل + ما فعلته + أثر قابل للقياس.",
+        "قبل/بعد:\n`مش: مسؤول عن تحسين الموقع`\n`أفضل: خفّضت زمن تحميل الصفحة من 4s إلى 2s بإزالة صور ثقيلة`",
+        "خطأ شائع: نسخة واحدة لكل الوظائف + إطالة غير ضرورية — التخصيص لكل وظيفة (نفس كلمات الإعلان الصادقة) يرفع فرص الفلترة الإيجابية."
+      ]
+    },
+    {
+      "id": "prac-interview",
+      "pack": "seed-practical",
+      "title": "كيف أستعد لمقابلة عمل؟",
+      "intent": "query_knowledge",
+      "tags": [
+        "مقابلة",
+        "وظيفة",
+        "توظيف",
+        "interview"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "بذور المرحلة 3 — إرشاد عملي (بلا مصدر خارجي)",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ازاي أستعد لمقابلة عمل",
+        "كيف أستعد لمقابلة وظيفة؟",
+        "how to prepare for a job interview",
+        "interview ezay a7addar",
+        "بتوتر في المقابلات"
+      ],
+      "a": [
+        "ثلاثة محاور: (1) ابحث عن الشركة والدور، (2) حضّر 5 قصص بنمط «موقف ← تصرف ← نتيجة»، (3) حضّر 3 أسئلة تسألها أنت.",
+        "قبل المقابلة:\n`راجع الإعلان → اربط خبرتك بمتطلباته → تمرين بصوت عالٍ مرة`",
+        "خطأ شائع: الإجابة بجمل عامة («أنا مجتهد») بلا مثال محدد — المثال هو الدليل."
+      ]
+    },
+    {
+      "id": "prac-time-eisenhower",
+      "pack": "seed-practical",
+      "title": "مصفوفة أيزنهاور لترتيب المهام",
+      "intent": "query_knowledge",
+      "tags": [
+        "أولويات",
+        "وقت",
+        "إنتاجية",
+        "مهام"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "بذور المرحلة 3 — إرشاد عملي (بلا مصدر خارجي)",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ازاي أرتب أولوياتي اليومية",
+        "ما هي مصفوفة أيزنهاور؟",
+        "how to prioritize tasks eisenhower matrix",
+        "تنظيم المهام ezay",
+        "كل حاجة عاجلة ومش عارف أبدأ بإيه"
+      ],
+      "a": [
+        "قسّم المهام على محورين: مهم/غير مهم، عاجل/غير عاجل. الناتج أربع خانات: نفّذ الآن، خطّط لها، فوّضها، احذفها.",
+        "مثال:\n`عاجل + مهم → ابدأ به\nغير عاجل + مهم → جدول له (تعلّم، تمرين)\nعاجل + غير مهم → فوّض/قلّل\nغير عاجل + غير مهم → احذف`",
+        "خطأ شائع: البقاء في خانة «عاجل» دائمًا — المهام المهمة غير العاجلة هي التي تُهمَل وتصنع الفرق لاحقًا."
+      ]
+    },
+    {
+      "id": "prac-sleep-hygiene",
+      "pack": "seed-practical",
+      "title": "عادات تحسّن جودة النوم",
+      "intent": "query_knowledge",
+      "tags": [
+        "نوم",
+        "صحة",
+        "sleep",
+        "روتين"
+      ],
+      "source": {
+        "name": "AASM / CDC — Sleep recommendations",
+        "url": "https://www.cdc.gov/sleep/about/index.html",
+        "license": "Public Domain (US Government)",
+        "location": "cdc.gov/sleep"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "medical_disclaimer",
+      "weight": 1.0,
+      "q": [
+        "ازاي أنام كويس",
+        "كيف أحسّن جودة نومي؟",
+        "how to improve sleep quality",
+        "النوم عندي مش منتظم",
+        "بصحى تعبان رغم إني نمت"
+      ],
+      "a": [
+        "عادات مدعومة عمليًا: موعد نوم واستيقاظ ثابت، تقليل الكافيين بعد الظهر، إضاءة خافتة قبل النوم، غرفة باردة وهادئة، وعدم استخدام الشاشة في السرير.",
+        "روتين بسيط:\n`آخر كافيين 2م → رياضة قبل المساء → إضاءة خافتة 10م → نوم ثابت`",
+        "تنبيه: المعلومات عامة للتوعية وليست تشخيصًا. لو فيه شخير شديد مع تعب نهاري أو أرق مزمن، راجع طبيبًا مختصًا."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,917 @@
+{
+  "pack": "seed-programming",
+  "version": "1.0.0",
+  "license": "mixed-see-unit-sources",
+  "authors": [
+    "زهرة — المرحلة 3 (بذور البرمجة، تُوسَّع في المرحلة 5)"
+  ],
+  "sources": [
+    {
+      "name": "MDN Web Docs",
+      "url": "https://developer.mozilla.org/",
+      "license": "CC-BY-SA-2.5"
+    },
+    {
+      "name": "Python Documentation",
+      "url": "https://docs.python.org/3/",
+      "license": "PSF-2.0"
+    },
+    {
+      "name": "Git Reference",
+      "url": "https://git-scm.com/docs",
+      "license": "GPL-2.0 (صفحات الدليل)"
+    },
+    {
+      "name": "SQLite Documentation",
+      "url": "https://www.sqlite.org/docs.html",
+      "license": "Public Domain"
+    }
+  ],
+  "generatedAt": "2026-10-29",
+  "note": "كل وحدة: تعريف قصير + مثال كود بين `…` + خطأ شائع. الأسئلة بصياغات مصرية/فصحى/إنجليزية/فرانكو. الرخص تحتاج تدقيق المرحلة 5.",
+  "units": [
+    {
+      "id": "prog-closure",
+      "pack": "seed-programming",
+      "title": "الـ Closure في JavaScript",
+      "intent": "define_word",
+      "tags": [
+        "javascript",
+        "closure",
+        "scope",
+        "دالة",
+        "برمجة"
+      ],
+      "source": {
+        "name": "MDN — Closures",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures",
+        "license": "CC-BY-SA-2.5",
+        "location": "JavaScript Guide / Closures"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "يعني ايه closure في جافاسكربت",
+        "ما هو الـ Closure في JavaScript؟",
+        "what is a closure in javascript",
+        "3ayez afham el closure",
+        "شرح الـ closures مع مثال"
+      ],
+      "a": [
+        "الـ Closure هي دالة «بتفتكر» المتغيرات اللي كانت موجودة في النطاق (scope) اللي اتولدت فيه، حتى لو الدالة الخارجية خلصت وخرجت من التنفيذ.",
+        "مثال:\n`function makeCounter() {\n  let count = 0;\n  return function () { return ++count; };\n}\nconst next = makeCounter();\nnext(); // 1\nnext(); // 2`",
+        "خطأ شائع: استخدام `var` داخل حلقة `for` مع دوال مؤجلة — كل الدوال بتشوف آخر قيمة. الحل: `let` أو إنشاء نطاق جديد لكل دورة."
+      ]
+    },
+    {
+      "id": "prog-var-let-const",
+      "pack": "seed-programming",
+      "title": "الفرق بين var و let و const",
+      "intent": "define_word",
+      "tags": [
+        "javascript",
+        "متغير",
+        "var",
+        "let",
+        "const"
+      ],
+      "source": {
+        "name": "MDN — let / const",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const",
+        "license": "CC-BY-SA-2.5",
+        "location": "Statements / const"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "الفرق بين var و let و const",
+        "إيه الفرق بين let و const في جافاسكربت",
+        "difference between var let and const",
+        "2eh el far2 bein var w let",
+        "امتى استخدم const بدل let"
+      ],
+      "a": [
+        "`var` نطاقه الدالة (function scope) ويُرفع للأعلى (hoisting) ويسمح بإعادة التعريف. `let` و`const` نطاقهما الكتلة `{}` ولا يُعاد تعريفهما في نفس النطاق.",
+        "مثال:\n`let x = 1;\nx = 2;      // مسموح\nconst y = 1;\n// y = 2;   // TypeError`",
+        "خطأ شائع: الظن أن `const` تجعل الكائن غير قابل للتغيير — هي تمنع إعادة الإسناد فقط: `const a = []; a.push(1); // مسموح`."
+      ]
+    },
+    {
+      "id": "prog-api",
+      "pack": "seed-programming",
+      "title": "ما معنى API؟",
+      "intent": "define_word",
+      "tags": [
+        "api",
+        "برمجة",
+        "واجهة",
+        "rest"
+      ],
+      "source": {
+        "name": "MDN — Glossary: API",
+        "url": "https://developer.mozilla.org/en-US/docs/Glossary/API",
+        "license": "CC-BY-SA-2.5",
+        "location": "Glossary / API"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "يعني ايه API",
+        "ما معنى API؟",
+        "what is an api",
+        "3ayez a3raf el api",
+        "اشرحلي الـ API ببساطة"
+      ],
+      "a": [
+        "API اختصار Application Programming Interface: عقد أو مجموعة قواعد بتخلّي برنامجين يتكلموا مع بعض من غير ما يعرفوا تفاصيل تنفيذ بعض.",
+        "عتبرها «قائمة طلبات» في مطعم: أنت بتطلب باسم الصنف، ومش محتاج تعرف المطبخ بيعمل إيه.\n`fetch(\"https://api.example.com/users\").then(r => r.json())`",
+        "خطأ شائع: الخلط بين API والـ endpoint — الـ endpoint عنوان واحد، والـ API هو العقد كله (مسارات + مدخلات + مخرجات + أخطاء)."
+      ]
+    },
+    {
+      "id": "prog-rest",
+      "pack": "seed-programming",
+      "title": "ما هي REST API؟",
+      "intent": "define_word",
+      "tags": [
+        "api",
+        "rest",
+        "http",
+        "برمجة",
+        "endpoint"
+      ],
+      "source": {
+        "name": "MDN — HTTP methods",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods",
+        "license": "CC-BY-SA-2.5",
+        "location": "HTTP / Methods"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "ايه هي REST API",
+        "ما هي REST API؟",
+        "what is a rest api",
+        "el rest api eh",
+        "الفرق بين REST و GraphQL"
+      ],
+      "a": [
+        "REST نمط لتصميم واجهات الويب: كل «مصدر» له مسار (URL)، والتعامل معه بأفعال HTTP (`GET` للقراءة، `POST` للإنشاء، `PUT/PATCH` للتعديل، `DELETE` للحذف)، والرد عادة JSON بلا حالة محفوظة على السيرفر.",
+        "مثال:\n`GET    /users/42\nPOST   /users\nPATCH  /users/42\nDELETE /users/42`",
+        "خطأ شائع: تسمية المسارات بأفعال (`/getUser`) — الأصح اسم المصدر (`/users/42`) والفعل في HTTP method."
+      ]
+    },
+    {
+      "id": "prog-git",
+      "pack": "seed-programming",
+      "title": "ما هو Git؟",
+      "intent": "define_word",
+      "tags": [
+        "git",
+        "version-control",
+        "برمجة",
+        "branch"
+      ],
+      "source": {
+        "name": "Git Reference",
+        "url": "https://git-scm.com/docs",
+        "license": "GPL-2.0 (صفحات الدليل)",
+        "location": "git-scm.com/docs"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "ايه هو git",
+        "ما هو Git؟",
+        "what is git",
+        "3ayez a3raf git",
+        "ليه أستخدم git بدل نسخ الملفات"
+      ],
+      "a": [
+        "Git نظام تحكم إصدارات موزّع: بيسجل تاريخ التغييرات في «كوميتات»، ويسمح بفروع (branches) ودمج، وكل نسخة عند المطوّر فيها التاريخ كامل.",
+        "أساسيات:\n`git init\ngit add .\ngit commit -m \"first commit\"\ngit branch feature\ngit checkout feature`",
+        "خطأ شائع: `git add .` أعمى قبل مراجعة `git status` — ممكن تدخل ملفات أسرار أو مخرجات بناء."
+      ]
+    },
+    {
+      "id": "prog-git-commit-push",
+      "pack": "seed-programming",
+      "title": "الفرق بين git commit و git push",
+      "intent": "define_word",
+      "tags": [
+        "git",
+        "commit",
+        "push",
+        "برمجة"
+      ],
+      "source": {
+        "name": "Git Reference — git-commit / git-push",
+        "url": "https://git-scm.com/docs/git-commit",
+        "license": "GPL-2.0 (صفحات الدليل)",
+        "location": "git-commit, git-push"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "الفرق بين commit و push",
+        "إيه الفرق بين git commit و git push",
+        "difference between commit and push",
+        "el commit wel push",
+        "امتى أعمل commit وامتى أعمل push"
+      ],
+      "a": [
+        "`git commit` يسجّل تغييراتك **محليًا** في تاريخ المستودع على جهازك. `git push` يرفع الكوميتات المسجلة إلى مستودع بعيد (GitHub مثلًا).",
+        "التسلسل:\n`git add file.kt\ngit commit -m \"fix: guard null\"\ngit push origin main`",
+        "خطأ شائع: الظن أن commit «انحفظ أونلاين» — لو الجهاز ضاع قبل push، الكوميتات المحلية تضيع."
+      ]
+    },
+    {
+      "id": "prog-sql-nosql",
+      "pack": "seed-programming",
+      "title": "الفرق بين SQL و NoSQL",
+      "intent": "define_word",
+      "tags": [
+        "sql",
+        "nosql",
+        "database",
+        "قاعدة بيانات",
+        "برمجة"
+      ],
+      "source": {
+        "name": "SQLite — About",
+        "url": "https://www.sqlite.org/about.html",
+        "license": "Public Domain",
+        "location": "sqlite.org/about.html"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "الفرق بين SQL و NoSQL",
+        "إيه الفرق بين قواعد البيانات العلائقية و NoSQL",
+        "difference between sql and nosql",
+        "sql wla nosql",
+        "امتى أختار NoSQL"
+      ],
+      "a": [
+        "قواعد SQL (علائقية) بتمثّل البيانات جداول بعلاقات ومخطط ثابت، وتستخدم لغة SQL، وممتازة في المعاملات (transactions) والاستعلامات المركّبة.",
+        "NoSQL عائلة أوسع: مستندات (MongoDB)، أزواج مفتاح/قيمة (Redis)، أعمدة، رسم بياني. مرنة المخطط وأسهل في التوسّع الأفقي، لكن ضمانات المعاملات تختلف بين منتج وآخر.",
+        "خطأ شائع: اختيار NoSQL «لأنها أسرع» بلا قياس — لو بياناتك علائقية بحتة، SQL غالبًا أبسط وأصح."
+      ]
+    },
+    {
+      "id": "prog-sql-index",
+      "pack": "seed-programming",
+      "title": "ما هو الفهرس (Index) في قاعدة البيانات؟",
+      "intent": "define_word",
+      "tags": [
+        "sql",
+        "index",
+        "database",
+        "أداء"
+      ],
+      "source": {
+        "name": "SQLite — Query Planning / Indexes",
+        "url": "https://www.sqlite.org/optoverview.html",
+        "license": "Public Domain",
+        "location": "sqlite.org/optoverview.html"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "يعني ايه index في قاعدة البيانات",
+        "ما هو الفهرس في SQL؟",
+        "what is a database index",
+        "el index fel database",
+        "ليه الاستعلام بطيء رغم وجود index"
+      ],
+      "a": [
+        "الفهرس بنية مساعدة (غالبًا شجرة B) بترتّب عمودًا أو أكثر، فتقلّل قراءة الصفحات عند البحث بدل مسح الجدول كله.",
+        "مثال:\n`CREATE INDEX idx_users_email ON users(email);\nSELECT * FROM users WHERE email = 'a@b.c';`",
+        "خطأ شائع: فهرسة كل شيء — كل فهرس يبطئ الإدخال/التحديث ويزيد الحجم. كمان لو الشرط دالة على العمود (`WHERE lower(email)=…`) الفهرس العادي مش هيُستخدم."
+      ]
+    },
+    {
+      "id": "prog-primary-key",
+      "pack": "seed-programming",
+      "title": "ما هو المفتاح الأساسي (Primary Key)؟",
+      "intent": "define_word",
+      "tags": [
+        "sql",
+        "primary-key",
+        "database",
+        "مفتاح"
+      ],
+      "source": {
+        "name": "SQLite — CREATE TABLE",
+        "url": "https://www.sqlite.org/lang_createtable.html",
+        "license": "Public Domain",
+        "location": "lang_createtable.html"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "يعني ايه primary key",
+        "ما هو المفتاح الأساسي في قاعدة البيانات؟",
+        "what is a primary key",
+        "el primary key eh",
+        "الفرق بين primary key و foreign key"
+      ],
+      "a": [
+        "المفتاح الأساسي عمود (أو مجموعة أعمدة) يميّز كل صف تمييزًا فريدًا، ولا يقبل NULL، ولا يتكرر.",
+        "مثال:\n`CREATE TABLE users (\n  id INTEGER PRIMARY KEY,\n  email TEXT UNIQUE NOT NULL\n);`",
+        "خطأ شائع: استخدام قيمة قابلة للتغيّر كمفتاح (رقم هاتف/بريد) — الأفضل مفتاح اصطناعي ثابت، وتغيير البريد في عمود منفصل."
+      ]
+    },
+    {
+      "id": "prog-http-status",
+      "pack": "seed-programming",
+      "title": "أكواد حالة HTTP المهمة",
+      "intent": "define_word",
+      "tags": [
+        "http",
+        "status-codes",
+        "api",
+        "برمجة"
+      ],
+      "source": {
+        "name": "MDN — HTTP response status codes",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status",
+        "license": "CC-BY-SA-2.5",
+        "location": "HTTP / Status"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "يعني ايه 404 و 500",
+        "ما معنى أكواد حالة HTTP؟",
+        "what do http status codes mean",
+        "el status code fel api",
+        "امتى أرجّع 401 وامتى 403"
+      ],
+      "a": [
+        "أكواد الحالة ثلاث خانات: `2xx` نجاح، `3xx` تحويل، `4xx` خطأ من العميل، `5xx` خطأ من السيرفر.",
+        "أهمها:\n`200 OK` نجاح · `201 Created` أُنشئ مصدر · `204 No Content` نجاح بلا محتوى · `400 Bad Request` مدخلات خاطئة · `401 Unauthorized` لا إثبات هوية · `403 Forbidden` هوية موجودة بلا صلاحية · `404 Not Found` غير موجود · `409 Conflict` تعارض حالة · `429 Too Many Requests` تجاوز الحد · `500 Internal Server Error` عطل داخلي · `503 Service Unavailable` خدمة غير متاحة",
+        "خطأ شائع: إرجاع `200` مع `{\"error\": ...}` — يجعل المراقبة وSDK تفهم الخطأ كنجاح."
+      ]
+    },
+    {
+      "id": "prog-css-center",
+      "pack": "seed-programming",
+      "title": "كيف أوسّط عنصرًا في CSS؟",
+      "intent": "define_word",
+      "tags": [
+        "css",
+        "flexbox",
+        "توسيط",
+        "واجهة",
+        "frontend"
+      ],
+      "source": {
+        "name": "MDN — CSS Flexible Box Layout",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout",
+        "license": "CC-BY-SA-2.5",
+        "location": "CSS / Flexbox"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "ازاي أوسط div في CSS",
+        "كيف أوسّط عنصرًا أفقيًا ورأسيًا في CSS؟",
+        "how to center a div in css",
+        "ezay awasset div fel css",
+        "توسيط العناصر بـ flexbox"
+      ],
+      "a": [
+        "أسهل طريقة حديثة: Flexbox على الأب بثلاث خصائص: `display: flex; justify-content: center; align-items: center;`.",
+        "مثال:\n`.parent { display: flex; justify-content: center; align-items: center; height: 100vh; }\n.child { width: 200px; }`\nبديل: `.parent { display: grid; place-items: center; }`",
+        "خطأ شائع: نسيان أن الأب لازم يكون له ارتفاع محدد (أو `min-height`) — بدونه مفيش مساحة رأسية أصلًا."
+      ]
+    },
+    {
+      "id": "prog-debounce",
+      "pack": "seed-programming",
+      "title": "ما هي دالة debounce؟",
+      "intent": "define_word",
+      "tags": [
+        "javascript",
+        "debounce",
+        "performance",
+        "برمجة"
+      ],
+      "source": {
+        "name": "MDN — setTimeout",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/setTimeout",
+        "license": "CC-BY-SA-2.5",
+        "location": "Window / setTimeout"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "يعني ايه debounce",
+        "ما هي دالة debounce وكيف أكتبها؟",
+        "how to write a debounce function",
+        "debonce fel javascript",
+        "ازاي أقلل استدعاءات البحث أثناء الكتابة"
+      ],
+      "a": [
+        "الـ debounce يمنع تنفيذ دالة قبل مرور مدة هدوء من آخر حدث — مفيدة في البحث أثناء الكتابة.",
+        "مثال:\n`function debounce(fn, ms) {\n  let t;\n  return (...args) => {\n    clearTimeout(t);\n    t = setTimeout(() => fn(...args), ms);\n  };\n}\nconst onSearch = debounce(q => console.log(q), 300);`",
+        "خطأ شائع: الخلط بين `debounce` و`throttle` — الأول ينفّذ مرة بعد التوقف، والثاني ينفّذ بحد أقصى مرة كل فترة أثناء الحدث."
+      ]
+    },
+    {
+      "id": "prog-async-await",
+      "pack": "seed-programming",
+      "title": "الفرق بين async/await و Promise",
+      "intent": "define_word",
+      "tags": [
+        "javascript",
+        "async",
+        "promise",
+        "برمجة"
+      ],
+      "source": {
+        "name": "MDN — async function",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function",
+        "license": "CC-BY-SA-2.5",
+        "location": "Statements / async function"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "ايه الفرق بين async await و promise",
+        "ما هو async/await في JavaScript؟",
+        "difference between promise and async await",
+        "async await fel js",
+        "امتى استخدم await"
+      ],
+      "a": [
+        "`Promise` كائن يمثّل نتيجة ستأتي لاحقًا (نجاح/فشل). `async/await` صياغة أوضح فوقها: الدالة `async` ترجع Promise دائمًا، و`await` ينتظر نتيجته داخل `try/catch`.",
+        "مثال:\n`async function load() {\n  try {\n    const res = await fetch(\"/api/users\");\n    const data = await res.json();\n    return data;\n  } catch (e) {\n    console.error(e);\n  }\n}`",
+        "خطأ شائع: `await` داخل `forEach` — لن ينتظر فعليًا. استخدم `for…of` أو `Promise.all(arr.map(...))`."
+      ]
+    },
+    {
+      "id": "prog-map-filter",
+      "pack": "seed-programming",
+      "title": "الفرق بين map و filter و reduce",
+      "intent": "define_word",
+      "tags": [
+        "javascript",
+        "array",
+        "map",
+        "filter",
+        "reduce"
+      ],
+      "source": {
+        "name": "MDN — Array",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+        "license": "CC-BY-SA-2.5",
+        "location": "JavaScript / Array"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "الفرق بين map و filter و reduce",
+        "إيه استخدامات map و filter في JavaScript",
+        "difference between map filter and reduce",
+        "map w filter w reduce",
+        "ازاي أحوّل مصفوفة لمصفوفة تانية"
+      ],
+      "a": [
+        "`map` يحوّل كل عنصر ويعيد مصفوفة بنفس الطول. `filter` يعيد مصفوفة بالعناصر المطابقة فقط. `reduce` يجمّع كل العناصر في قيمة واحدة.",
+        "مثال:\n`const nums = [1,2,3,4];\nconst doubled = nums.map(n => n * 2);      // [2,4,6,8]\nconst evens = nums.filter(n => n % 2 === 0); // [2,4]\nconst sum = nums.reduce((a, n) => a + n, 0); // 10`",
+        "خطأ شائع: استخدام `map` لإحداث أثر جانبي (`forEach` أنسب)، أو استخدام `push` داخل `map` بدل `reduce`."
+      ]
+    },
+    {
+      "id": "prog-oop-class",
+      "pack": "seed-programming",
+      "title": "ما معنى Class و Object؟",
+      "intent": "define_word",
+      "tags": [
+        "oop",
+        "class",
+        "object",
+        "فئة",
+        "كائن"
+      ],
+      "source": {
+        "name": "MDN — Classes",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes",
+        "license": "CC-BY-SA-2.5",
+        "location": "JavaScript / Classes"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "يعني ايه class و object",
+        "ما الفرق بين الفئة والكائن في البرمجة؟",
+        "what is a class and an object",
+        "class w object fel oop",
+        "اشرح البرمجة الكائنية ببساطة"
+      ],
+      "a": [
+        "الفئة (`class`) قالب يحدد بيانات (خصائص) وسلوكًا (دوال). الكائن (`object`) نسخة مُنشأة من هذا القالب بقيم محددة.",
+        "مثال:\n`class User {\n  constructor(name) { this.name = name; }\n  greet() { return `hi ${this.name}`; }\n}\nconst u = new User(\"Sara\");`",
+        "خطأ شائع: الخلط بين المفهوم والوراثة — الوراثة أداة واحدة فقط، و«التركيب» (composition) غالبًا أبسط."
+      ]
+    },
+    {
+      "id": "prog-python-list-tuple",
+      "pack": "seed-programming",
+      "title": "الفرق بين list و tuple في Python",
+      "intent": "define_word",
+      "tags": [
+        "python",
+        "list",
+        "tuple",
+        "بايثون"
+      ],
+      "source": {
+        "name": "Python — Data Structures",
+        "url": "https://docs.python.org/3/tutorial/datastructures.html",
+        "license": "PSF-2.0",
+        "location": "Tutorial / Data Structures"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "الفرق بين list و tuple في بايثون",
+        "إيه الفرق بين list و tuple؟",
+        "difference between list and tuple in python",
+        "list w tuple fel python",
+        "امتى أستخدم tuple"
+      ],
+      "a": [
+        "`list` قابلة للتعديل (`append`, `remove`)، و`tuple` ثابتة بعد الإنشاء — أخف قليلًا وصالحة كمفتاح قاموس إذا كانت عناصرها غير قابلة للتعديل.",
+        "مثال:\n`nums = [1, 2, 3]\nnums.append(4)      # مسموح\npoint = (10, 20)\n# point[0] = 11      # TypeError`",
+        "خطأ شائع: استخدام `tuple` لمجموعة عناصر متشابهة تتغيّر — الـ tuple تُعبّر عن بنية ثابتة (إحداثيات، سجل ثابت) لا قائمة قابلة للنمو."
+      ]
+    },
+    {
+      "id": "prog-python-venv",
+      "pack": "seed-programming",
+      "title": "ما هو الـ virtualenv في Python؟",
+      "intent": "define_word",
+      "tags": [
+        "python",
+        "venv",
+        "اعتماديات",
+        "بايثون"
+      ],
+      "source": {
+        "name": "Python — venv",
+        "url": "https://docs.python.org/3/library/venv.html",
+        "license": "PSF-2.0",
+        "location": "Library / venv"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "يعني ايه virtualenv",
+        "ما هو البيئة الافتراضية في بايثون؟",
+        "what is a python virtual environment",
+        "venv fel python",
+        "ازاي أعزل مكتبات مشروع بايثون"
+      ],
+      "a": [
+        "البيئة الافتراضية مجلد فيه مترجم بايثون مستقل ومكتباته، فتفصل اعتماديات كل مشروع بدل ما تتصادم عالميًا.",
+        "مثال:\n`python3 -m venv .venv\nsource .venv/bin/activate   # على ويندوز: .venv\\Scripts\\activate\npip install requests\npip freeze > requirements.txt`",
+        "خطأ شائع: عدم إضافة `.venv/` إلى `.gitignore` — فيُرفع مئات الميجابايت من المكتبات للمستودع."
+      ]
+    },
+    {
+      "id": "prog-debug",
+      "pack": "seed-programming",
+      "title": "كيف أصلّح خطأ في الكود (debugging)؟",
+      "intent": "define_word",
+      "tags": [
+        "debugging",
+        "برمجة",
+        "خطأ",
+        "تصحيح"
+      ],
+      "source": {
+        "name": "MDN — Debugging",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Debugging_JavaScript",
+        "license": "CC-BY-SA-2.5",
+        "location": "Learn / Debugging"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "ازاي أصحح خطأ في الكود",
+        "كيف أبدأ في تصحيح الأخطاء البرمجية؟",
+        "how to debug code",
+        "debugging ezay",
+        "الكود بيرمي error ومش عارف السبب"
+      ],
+      "a": [
+        "اتبع التسلسل: اقرأ رسالة الخطأ كاملة (نوعه + رقم السطر) ← أعد إنتاج الخطأ بأصغر مثال ← ضيّق المكان (طباعة/نقاط توقف) ← افحص آخر تغيير ← اكتب اختبارًا يفشل قبل الإصلاح.",
+        "أدوات:\n`print(repr(x))` أو `console.log({x})` · نقاط توقف في IDE · `git bisect` لتحديد الكوميت الذي أدخل العطل.",
+        "خطأ شائع: تغيير عدة أسطر دفعة واحدة بلا فهم — يصبح من المستحيل معرفة أي تغيير أصلح أو أفشل."
+      ]
+    },
+    {
+      "id": "prog-html-css-js",
+      "pack": "seed-programming",
+      "title": "دور HTML و CSS و JavaScript",
+      "intent": "define_word",
+      "tags": [
+        "html",
+        "css",
+        "javascript",
+        "frontend",
+        "ويب"
+      ],
+      "source": {
+        "name": "MDN — Learn web development",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development",
+        "license": "CC-BY-SA-2.5",
+        "location": "Learn / Core"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "الفرق بين HTML و CSS و JavaScript",
+        "ما دور كل من HTML و CSS و JS؟",
+        "difference between html css and javascript",
+        "html css js eh",
+        "أبدأ تعلم تطوير الويب من فين"
+      ],
+      "a": [
+        "`HTML` بنية المحتوى (عناصر ودلالة)، `CSS` الشكل والتنسيق، `JavaScript` السلوك والتفاعل.",
+        "تشبيه عملي:\n`<button class=\"cta\">اشترِ</button>` ← HTML\n`.cta { background: #0a7; color: white; }` ← CSS\n`document.querySelector(\".cta\").addEventListener(\"click\", buy)` ← JS",
+        "خطأ شائع: تعلم أطر العمل (frameworks) قبل الأساسيات — الأخطاء تبقى غامضة لأنك لا تعرف ما تفعله الأداة بدلًا عنك."
+      ]
+    },
+    {
+      "id": "prog-frontend-backend",
+      "pack": "seed-programming",
+      "title": "الفرق بين Frontend و Backend",
+      "intent": "define_word",
+      "tags": [
+        "frontend",
+        "backend",
+        "web",
+        "برمجة"
+      ],
+      "source": {
+        "name": "MDN — Learn web development",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development",
+        "license": "CC-BY-SA-2.5",
+        "location": "Learn / Core"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "الفرق بين frontend و backend",
+        "ما هو الفرق بين الواجهة والخادم؟",
+        "difference between frontend and backend",
+        "frontend w backend",
+        "أدرس backend ولا frontend"
+      ],
+      "a": [
+        "`Frontend` ما يجرى في المتصفح/التطبيق: العرض والتفاعل. `Backend` ما يجرى على السيرفر: منطق العمل، قاعدة البيانات، المصادقة، والتكامل مع خدمات أخرى.",
+        "الحد بينهما غالبًا API:\n`fetch(\"/api/orders\").then(r => r.json())` ← الواجهة تطلب\n`app.get(\"/api/orders\", handler)` ← الخادم يرد",
+        "خطأ شائع: اعتبار الواجهة «غير آمنة» فتوضع فيها قواعد الصلاحيات — الصلاحيات تُفرض على الخادم دائمًا."
+      ]
+    },
+    {
+      "id": "prog-database",
+      "pack": "seed-programming",
+      "title": "ما هي قاعدة البيانات؟",
+      "intent": "define_word",
+      "tags": [
+        "database",
+        "قاعدة بيانات",
+        "sql",
+        "برمجة"
+      ],
+      "source": {
+        "name": "SQLite — About",
+        "url": "https://www.sqlite.org/about.html",
+        "license": "Public Domain",
+        "location": "sqlite.org/about.html"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "يعني ايه database",
+        "ما هي قاعدة البيانات؟",
+        "what is a database",
+        "قاعدة بيانات يعني ايه",
+        "ليه أحتاج قاعدة بيانات بدل ملف"
+      ],
+      "a": [
+        "قاعدة البيانات نظام منظّم لتخزين واسترجاع البيانات، يوفّر استعلامات، فهارس، معاملات (transactions)، وتحمّل قراءة/كتابة متزامنة.",
+        "فرق عملي:\n`SELECT name FROM users WHERE age > 20;` بدل قراءة ملف كامل وتصفية يدوية في الذاكرة.",
+        "خطأ شائع: استخدام ملف JSON/CSV لتخزين بيانات يتزامن عليها أكثر من كاتب — تفقد الذرّية وتفسد البيانات."
+      ]
+    },
+    {
+      "id": "prog-recursion",
+      "pack": "seed-programming",
+      "title": "ما هي الدالة التكرارية (Recursion)؟",
+      "intent": "define_word",
+      "tags": [
+        "recursion",
+        "algorithm",
+        "بايثون",
+        "برمجة"
+      ],
+      "source": {
+        "name": "Python — Defining Functions",
+        "url": "https://docs.python.org/3/tutorial/controlflow.html#defining-functions",
+        "license": "PSF-2.0",
+        "location": "Tutorial / Functions"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "يعني ايه recursion",
+        "ما هي الدالة العودية؟",
+        "what is recursion",
+        "recursion fel programming",
+        "امتى أستخدم العودية وامتى loop"
+      ],
+      "a": [
+        "العودية أن تستدعي الدالة نفسها على مسألة أصغر حتى تصل إلى حالة توقّف (base case).",
+        "مثال:\n`def fact(n):\n    if n <= 1:      # شرط التوقف\n        return 1\n    return n * fact(n - 1)\nprint(fact(5))      # 120`",
+        "خطأ شائع: نسيان شرط التوقف ⇒ `RecursionError`/`stack overflow`. وللمسائل الطويلة جدًا، استخدم حلقة أو memoization."
+      ]
+    },
+    {
+      "id": "prog-big-o",
+      "pack": "seed-programming",
+      "title": "ما معنى Big-O؟",
+      "intent": "define_word",
+      "tags": [
+        "big-o",
+        "complexity",
+        "algorithm",
+        "برمجة"
+      ],
+      "source": {
+        "name": "Python — TimeComplexity (wiki)",
+        "url": "https://wiki.python.org/moin/TimeComplexity",
+        "license": "PSF-2.0",
+        "location": "wiki.python.org / TimeComplexity"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "يعني ايه big o",
+        "ما هو تعقيد الخوارزمية Big-O؟",
+        "what is big o notation",
+        "big o fel algorithm",
+        "ايه الفرق بين O(n) و O(log n)"
+      ],
+      "a": [
+        "`Big-O` تصف كيف ينمو زمن التنفيذ/الذاكرة مع حجم المدخلات، مع إهمال الثوابت والحدود الدنيا.",
+        "أمثلة:\n`O(1)`       وصول بالمعجم/الفهرس\n`O(log n)`  بحث ثنائي\n`O(n)`       مرور واحد على القائمة\n`O(n log n)` ترتيب فعّال (merge sort)\n`O(n²)`      حلقتان متداخلتان",
+        "خطأ شائع: اعتبار Big-O «سرعة» مطلقة — لمدخلات صغيرة قد يكون O(n²) أسرع فعليًا من O(n log n) بسبب الثوابت."
+      ]
+    },
+    {
+      "id": "prog-json",
+      "pack": "seed-programming",
+      "title": "ما هو JSON؟",
+      "intent": "define_word",
+      "tags": [
+        "json",
+        "api",
+        "data",
+        "برمجة"
+      ],
+      "source": {
+        "name": "MDN — JSON",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
+        "license": "CC-BY-SA-2.5",
+        "location": "JavaScript / JSON"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "يعني ايه JSON",
+        "ما هو JSON؟",
+        "what is json",
+        "json fel api",
+        "الفرق بين JSON و XML"
+      ],
+      "a": [
+        "JSON صيغة نصية لتبادل البيانات: كائنات `{}` ومصفوفات `[]` ونصوص وأرقام وقيم `true/false/null` — مقروءة ومحلّلة في كل اللغات.",
+        "مثال:\n`{ \"id\": 1, \"name\": \"زهرة\", \"tags\": [\"offline\", \"kotlin\"], \"active\": true }`",
+        "خطأ شائع: وضع تعليقات أو فاصلة زائدة في JSON — غير مسموح في الصيغة القياسية؛ بعض المحلّلات المتساهلة تخفي الخطأ حتى يصل لعميل صارم."
+      ]
+    },
+    {
+      "id": "prog-git-branch",
+      "pack": "seed-programming",
+      "title": "ما هو الـ Branch في Git؟",
+      "intent": "define_word",
+      "tags": [
+        "git",
+        "branch",
+        "merge",
+        "برمجة"
+      ],
+      "source": {
+        "name": "Git Reference — git-branch",
+        "url": "https://git-scm.com/docs/git-branch",
+        "license": "GPL-2.0 (صفحات الدليل)",
+        "location": "git-branch"
+      },
+      "authored": true,
+      "author": "بذور المرحلة 3 — وكيل الفهم الدلالي",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "يعني ايه branch في git",
+        "ما هو الفرع في Git؟",
+        "what is a git branch",
+        "branch fel git eh",
+        "ازاي أدمج فرع في main"
+      ],
+      "a": [
+        "الفرع مؤشر متحرك على كوميت؛ يسمح بتطوير ميزة بمعزل عن `main` ثم دمجها.",
+        "مثال:\n`git switch -c feature/login\ngit commit -m \"add login\"\ngit switch main\ngit merge feature/login`",
+        "خطأ شائع: الدمج بلا تحديث `main` أولًا أو بلا اختبار — فتظهر تعارضات متأخرة أو عطل في الفرع الرئيسي."
+      ]
+    }
+  ]
+}

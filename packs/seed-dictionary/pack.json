@@ -1,0 +1,1396 @@
+{
+  "pack": "seed-dictionary",
+  "version": "1.0.0",
+  "license": "mixed-see-unit-sources",
+  "authors": [
+    "ترحيل آلي من قواعد المعرفة القديمة — المرحلة 3"
+  ],
+  "sources": [
+    {
+      "name": "translation_kb.json (قاموس داخلي)",
+      "url": "",
+      "license": "مُؤلَّف داخليًا"
+    }
+  ],
+  "generatedAt": "2026-10-29",
+  "note": "الرخص تحتاج مراجعة المرحلة 5 (license-audit)؛ لا يُنسب أي مصدر لم يُذكر في السجل الأصلي.",
+  "units": [
+    {
+      "id": "dict-001",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «سلام» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "سلام",
+        "peace",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة سلام",
+        "معنى كلمة سلام بالإنجليزي",
+        "what is سلام in english",
+        "كيف أقول سلام بالإنجليزية؟"
+      ],
+      "a": [
+        "«سلام» بالإنجليزية: peace. بالفرنسية: paix."
+      ]
+    },
+    {
+      "id": "dict-002",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «مرحبا» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "مرحبا",
+        "hello",
+        "ترجمة",
+        "interjection"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة مرحبا",
+        "معنى كلمة مرحبا بالإنجليزي",
+        "what is مرحبا in english",
+        "كيف أقول مرحبا بالإنجليزية؟"
+      ],
+      "a": [
+        "«مرحبا» بالإنجليزية: hello. بالفرنسية: bonjour."
+      ]
+    },
+    {
+      "id": "dict-003",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «شكرا» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "شكرا",
+        "thank you",
+        "ترجمة",
+        "phrase"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة شكرا",
+        "معنى كلمة شكرا بالإنجليزي",
+        "what is شكرا in english",
+        "كيف أقول شكرا بالإنجليزية؟"
+      ],
+      "a": [
+        "«شكرا» بالإنجليزية: thank you. بالفرنسية: merci."
+      ]
+    },
+    {
+      "id": "dict-004",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «كتاب» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "كتاب",
+        "book",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة كتاب",
+        "معنى كلمة كتاب بالإنجليزي",
+        "what is كتاب in english",
+        "كيف أقول كتاب بالإنجليزية؟"
+      ],
+      "a": [
+        "«كتاب» بالإنجليزية: book. بالفرنسية: livre."
+      ]
+    },
+    {
+      "id": "dict-005",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «علم» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "علم",
+        "science",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة علم",
+        "معنى كلمة علم بالإنجليزي",
+        "what is علم in english",
+        "كيف أقول علم بالإنجليزية؟"
+      ],
+      "a": [
+        "«علم» بالإنجليزية: science. بالفرنسية: science."
+      ]
+    },
+    {
+      "id": "dict-006",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «معرفة» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "معرفة",
+        "knowledge",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة معرفة",
+        "معنى كلمة معرفة بالإنجليزي",
+        "what is معرفة in english",
+        "كيف أقول معرفة بالإنجليزية؟"
+      ],
+      "a": [
+        "«معرفة» بالإنجليزية: knowledge. بالفرنسية: connaissance."
+      ]
+    },
+    {
+      "id": "dict-007",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «ذكاء» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "ذكاء",
+        "intelligence",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة ذكاء",
+        "معنى كلمة ذكاء بالإنجليزي",
+        "what is ذكاء in english",
+        "كيف أقول ذكاء بالإنجليزية؟"
+      ],
+      "a": [
+        "«ذكاء» بالإنجليزية: intelligence. بالفرنسية: intelligence."
+      ]
+    },
+    {
+      "id": "dict-008",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «حاسوب» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "حاسوب",
+        "computer",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة حاسوب",
+        "معنى كلمة حاسوب بالإنجليزي",
+        "what is حاسوب in english",
+        "كيف أقول حاسوب بالإنجليزية؟"
+      ],
+      "a": [
+        "«حاسوب» بالإنجليزية: computer. بالفرنسية: ordinateur."
+      ]
+    },
+    {
+      "id": "dict-009",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «هاتف» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "هاتف",
+        "phone",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة هاتف",
+        "معنى كلمة هاتف بالإنجليزي",
+        "what is هاتف in english",
+        "كيف أقول هاتف بالإنجليزية؟"
+      ],
+      "a": [
+        "«هاتف» بالإنجليزية: phone. بالفرنسية: téléphone."
+      ]
+    },
+    {
+      "id": "dict-010",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «بيت» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "بيت",
+        "house",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة بيت",
+        "معنى كلمة بيت بالإنجليزي",
+        "what is بيت in english",
+        "كيف أقول بيت بالإنجليزية؟"
+      ],
+      "a": [
+        "«بيت» بالإنجليزية: house. بالفرنسية: maison."
+      ]
+    },
+    {
+      "id": "dict-011",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «عمل» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "عمل",
+        "work",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة عمل",
+        "معنى كلمة عمل بالإنجليزي",
+        "what is عمل in english",
+        "كيف أقول عمل بالإنجليزية؟"
+      ],
+      "a": [
+        "«عمل» بالإنجليزية: work. بالفرنسية: travail."
+      ]
+    },
+    {
+      "id": "dict-012",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «وقت» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "وقت",
+        "time",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة وقت",
+        "معنى كلمة وقت بالإنجليزي",
+        "what is وقت in english",
+        "كيف أقول وقت بالإنجليزية؟"
+      ],
+      "a": [
+        "«وقت» بالإنجليزية: time. بالفرنسية: temps."
+      ]
+    },
+    {
+      "id": "dict-013",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «يوم» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "يوم",
+        "day",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة يوم",
+        "معنى كلمة يوم بالإنجليزي",
+        "what is يوم in english",
+        "كيف أقول يوم بالإنجليزية؟"
+      ],
+      "a": [
+        "«يوم» بالإنجليزية: day. بالفرنسية: jour."
+      ]
+    },
+    {
+      "id": "dict-014",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «سماء» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "سماء",
+        "sky",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة سماء",
+        "معنى كلمة سماء بالإنجليزي",
+        "what is سماء in english",
+        "كيف أقول سماء بالإنجليزية؟"
+      ],
+      "a": [
+        "«سماء» بالإنجليزية: sky. بالفرنسية: ciel."
+      ]
+    },
+    {
+      "id": "dict-015",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «شمس» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "شمس",
+        "sun",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة شمس",
+        "معنى كلمة شمس بالإنجليزي",
+        "what is شمس in english",
+        "كيف أقول شمس بالإنجليزية؟"
+      ],
+      "a": [
+        "«شمس» بالإنجليزية: sun. بالفرنسية: soleil."
+      ]
+    },
+    {
+      "id": "dict-016",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «قمر» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "قمر",
+        "moon",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة قمر",
+        "معنى كلمة قمر بالإنجليزي",
+        "what is قمر in english",
+        "كيف أقول قمر بالإنجليزية؟"
+      ],
+      "a": [
+        "«قمر» بالإنجليزية: moon. بالفرنسية: lune."
+      ]
+    },
+    {
+      "id": "dict-017",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «ماء» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "ماء",
+        "water",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة ماء",
+        "معنى كلمة ماء بالإنجليزي",
+        "what is ماء in english",
+        "كيف أقول ماء بالإنجليزية؟"
+      ],
+      "a": [
+        "«ماء» بالإنجليزية: water. بالفرنسية: eau."
+      ]
+    },
+    {
+      "id": "dict-018",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «طعام» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "طعام",
+        "food",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة طعام",
+        "معنى كلمة طعام بالإنجليزي",
+        "what is طعام in english",
+        "كيف أقول طعام بالإنجليزية؟"
+      ],
+      "a": [
+        "«طعام» بالإنجليزية: food. بالفرنسية: nourriture."
+      ]
+    },
+    {
+      "id": "dict-019",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «صديق» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "صديق",
+        "friend",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة صديق",
+        "معنى كلمة صديق بالإنجليزي",
+        "what is صديق in english",
+        "كيف أقول صديق بالإنجليزية؟"
+      ],
+      "a": [
+        "«صديق» بالإنجليزية: friend. بالفرنسية: ami."
+      ]
+    },
+    {
+      "id": "dict-020",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «طريق» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "طريق",
+        "way",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة طريق",
+        "معنى كلمة طريق بالإنجليزي",
+        "what is طريق in english",
+        "كيف أقول طريق بالإنجليزية؟"
+      ],
+      "a": [
+        "«طريق» بالإنجليزية: way. بالفرنسية: chemin."
+      ]
+    },
+    {
+      "id": "dict-021",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «سفر» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "سفر",
+        "travel",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة سفر",
+        "معنى كلمة سفر بالإنجليزي",
+        "what is سفر in english",
+        "كيف أقول سفر بالإنجليزية؟"
+      ],
+      "a": [
+        "«سفر» بالإنجليزية: travel. بالفرنسية: voyage."
+      ]
+    },
+    {
+      "id": "dict-022",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «مدينة» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "مدينة",
+        "city",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة مدينة",
+        "معنى كلمة مدينة بالإنجليزي",
+        "what is مدينة in english",
+        "كيف أقول مدينة بالإنجليزية؟"
+      ],
+      "a": [
+        "«مدينة» بالإنجليزية: city. بالفرنسية: ville."
+      ]
+    },
+    {
+      "id": "dict-023",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «أمن» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "أمن",
+        "security",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة أمن",
+        "معنى كلمة أمن بالإنجليزي",
+        "what is أمن in english",
+        "كيف أقول أمن بالإنجليزية؟"
+      ],
+      "a": [
+        "«أمن» بالإنجليزية: security. بالفرنسية: sécurité."
+      ]
+    },
+    {
+      "id": "dict-024",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «خصوصية» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "خصوصية",
+        "privacy",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة خصوصية",
+        "معنى كلمة خصوصية بالإنجليزي",
+        "what is خصوصية in english",
+        "كيف أقول خصوصية بالإنجليزية؟"
+      ],
+      "a": [
+        "«خصوصية» بالإنجليزية: privacy. بالفرنسية: confidentialité."
+      ]
+    },
+    {
+      "id": "dict-025",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «نظام» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "نظام",
+        "system",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة نظام",
+        "معنى كلمة نظام بالإنجليزي",
+        "what is نظام in english",
+        "كيف أقول نظام بالإنجليزية؟"
+      ],
+      "a": [
+        "«نظام» بالإنجليزية: system. بالفرنسية: système."
+      ]
+    },
+    {
+      "id": "dict-026",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «ذاكرة» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "ذاكرة",
+        "memory",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة ذاكرة",
+        "معنى كلمة ذاكرة بالإنجليزي",
+        "what is ذاكرة in english",
+        "كيف أقول ذاكرة بالإنجليزية؟"
+      ],
+      "a": [
+        "«ذاكرة» بالإنجليزية: memory. بالفرنسية: mémoire."
+      ]
+    },
+    {
+      "id": "dict-027",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «لغة» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "لغة",
+        "language",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة لغة",
+        "معنى كلمة لغة بالإنجليزي",
+        "what is لغة in english",
+        "كيف أقول لغة بالإنجليزية؟"
+      ],
+      "a": [
+        "«لغة» بالإنجليزية: language. بالفرنسية: langue."
+      ]
+    },
+    {
+      "id": "dict-028",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «قلب» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "قلب",
+        "heart",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة قلب",
+        "معنى كلمة قلب بالإنجليزي",
+        "what is قلب in english",
+        "كيف أقول قلب بالإنجليزية؟"
+      ],
+      "a": [
+        "«قلب» بالإنجليزية: heart. بالفرنسية: cœur."
+      ]
+    },
+    {
+      "id": "dict-029",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «روح» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "روح",
+        "soul",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة روح",
+        "معنى كلمة روح بالإنجليزي",
+        "what is روح in english",
+        "كيف أقول روح بالإنجليزية؟"
+      ],
+      "a": [
+        "«روح» بالإنجليزية: soul. بالفرنسية: âme."
+      ]
+    },
+    {
+      "id": "dict-030",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «صبر» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "صبر",
+        "patience",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة صبر",
+        "معنى كلمة صبر بالإنجليزي",
+        "what is صبر in english",
+        "كيف أقول صبر بالإنجليزية؟"
+      ],
+      "a": [
+        "«صبر» بالإنجليزية: patience. بالفرنسية: patience."
+      ]
+    },
+    {
+      "id": "dict-031",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «أمل» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "أمل",
+        "hope",
+        "ترجمة",
+        "noun"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة أمل",
+        "معنى كلمة أمل بالإنجليزي",
+        "what is أمل in english",
+        "كيف أقول أمل بالإنجليزية؟"
+      ],
+      "a": [
+        "«أمل» بالإنجليزية: hope. بالفرنسية: espoir."
+      ]
+    },
+    {
+      "id": "dict-032",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «جميل» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "جميل",
+        "beautiful",
+        "ترجمة",
+        "adjective"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة جميل",
+        "معنى كلمة جميل بالإنجليزي",
+        "what is جميل in english",
+        "كيف أقول جميل بالإنجليزية؟"
+      ],
+      "a": [
+        "«جميل» بالإنجليزية: beautiful. بالفرنسية: beau."
+      ]
+    },
+    {
+      "id": "dict-033",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «سريع» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "سريع",
+        "fast",
+        "ترجمة",
+        "adjective"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة سريع",
+        "معنى كلمة سريع بالإنجليزي",
+        "what is سريع in english",
+        "كيف أقول سريع بالإنجليزية؟"
+      ],
+      "a": [
+        "«سريع» بالإنجليزية: fast. بالفرنسية: rapide."
+      ]
+    },
+    {
+      "id": "dict-034",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «قوي» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "قوي",
+        "strong",
+        "ترجمة",
+        "adjective"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة قوي",
+        "معنى كلمة قوي بالإنجليزي",
+        "what is قوي in english",
+        "كيف أقول قوي بالإنجليزية؟"
+      ],
+      "a": [
+        "«قوي» بالإنجليزية: strong. بالفرنسية: fort."
+      ]
+    },
+    {
+      "id": "dict-035",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «جديد» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "جديد",
+        "new",
+        "ترجمة",
+        "adjective"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة جديد",
+        "معنى كلمة جديد بالإنجليزي",
+        "what is جديد in english",
+        "كيف أقول جديد بالإنجليزية؟"
+      ],
+      "a": [
+        "«جديد» بالإنجليزية: new. بالفرنسية: nouveau."
+      ]
+    },
+    {
+      "id": "dict-036",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «كبير» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "كبير",
+        "big",
+        "ترجمة",
+        "adjective"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة كبير",
+        "معنى كلمة كبير بالإنجليزي",
+        "what is كبير in english",
+        "كيف أقول كبير بالإنجليزية؟"
+      ],
+      "a": [
+        "«كبير» بالإنجليزية: big. بالفرنسية: grand."
+      ]
+    },
+    {
+      "id": "dict-037",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «صغير» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "صغير",
+        "small",
+        "ترجمة",
+        "adjective"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة صغير",
+        "معنى كلمة صغير بالإنجليزي",
+        "what is صغير in english",
+        "كيف أقول صغير بالإنجليزية؟"
+      ],
+      "a": [
+        "«صغير» بالإنجليزية: small. بالفرنسية: petit."
+      ]
+    },
+    {
+      "id": "dict-038",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «سهل» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "سهل",
+        "easy",
+        "ترجمة",
+        "adjective"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة سهل",
+        "معنى كلمة سهل بالإنجليزي",
+        "what is سهل in english",
+        "كيف أقول سهل بالإنجليزية؟"
+      ],
+      "a": [
+        "«سهل» بالإنجليزية: easy. بالفرنسية: facile."
+      ]
+    },
+    {
+      "id": "dict-039",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «صعب» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "صعب",
+        "difficult",
+        "ترجمة",
+        "adjective"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة صعب",
+        "معنى كلمة صعب بالإنجليزي",
+        "what is صعب in english",
+        "كيف أقول صعب بالإنجليزية؟"
+      ],
+      "a": [
+        "«صعب» بالإنجليزية: difficult. بالفرنسية: difficile."
+      ]
+    },
+    {
+      "id": "dict-040",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «يقوم» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "يقوم",
+        "does",
+        "ترجمة",
+        "verb"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة يقوم",
+        "معنى كلمة يقوم بالإنجليزي",
+        "what is يقوم in english",
+        "كيف أقول يقوم بالإنجليزية؟"
+      ],
+      "a": [
+        "«يقوم» بالإنجليزية: does. بالفرنسية: fait."
+      ]
+    },
+    {
+      "id": "dict-041",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «يقرأ» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "يقرأ",
+        "reads",
+        "ترجمة",
+        "verb"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة يقرأ",
+        "معنى كلمة يقرأ بالإنجليزي",
+        "what is يقرأ in english",
+        "كيف أقول يقرأ بالإنجليزية؟"
+      ],
+      "a": [
+        "«يقرأ» بالإنجليزية: reads. بالفرنسية: lit."
+      ]
+    },
+    {
+      "id": "dict-042",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «يكتب» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "يكتب",
+        "writes",
+        "ترجمة",
+        "verb"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة يكتب",
+        "معنى كلمة يكتب بالإنجليزي",
+        "what is يكتب in english",
+        "كيف أقول يكتب بالإنجليزية؟"
+      ],
+      "a": [
+        "«يكتب» بالإنجليزية: writes. بالفرنسية: écrit."
+      ]
+    },
+    {
+      "id": "dict-043",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «يفهم» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "يفهم",
+        "understands",
+        "ترجمة",
+        "verb"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة يفهم",
+        "معنى كلمة يفهم بالإنجليزي",
+        "what is يفهم in english",
+        "كيف أقول يفهم بالإنجليزية؟"
+      ],
+      "a": [
+        "«يفهم» بالإنجليزية: understands. بالفرنسية: comprend."
+      ]
+    },
+    {
+      "id": "dict-044",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «يتعلم» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "يتعلم",
+        "learns",
+        "ترجمة",
+        "verb"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة يتعلم",
+        "معنى كلمة يتعلم بالإنجليزي",
+        "what is يتعلم in english",
+        "كيف أقول يتعلم بالإنجليزية؟"
+      ],
+      "a": [
+        "«يتعلم» بالإنجليزية: learns. بالفرنسية: apprend."
+      ]
+    },
+    {
+      "id": "dict-045",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «يساعد» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "يساعد",
+        "helps",
+        "ترجمة",
+        "verb"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة يساعد",
+        "معنى كلمة يساعد بالإنجليزي",
+        "what is يساعد in english",
+        "كيف أقول يساعد بالإنجليزية؟"
+      ],
+      "a": [
+        "«يساعد» بالإنجليزية: helps. بالفرنسية: aide."
+      ]
+    },
+    {
+      "id": "dict-046",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «نعم» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "نعم",
+        "yes",
+        "ترجمة",
+        "adverb"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة نعم",
+        "معنى كلمة نعم بالإنجليزي",
+        "what is نعم in english",
+        "كيف أقول نعم بالإنجليزية؟"
+      ],
+      "a": [
+        "«نعم» بالإنجليزية: yes. بالفرنسية: oui."
+      ]
+    },
+    {
+      "id": "dict-047",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «لا» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "لا",
+        "no",
+        "ترجمة",
+        "adverb"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة لا",
+        "معنى كلمة لا بالإنجليزي",
+        "what is لا in english",
+        "كيف أقول لا بالإنجليزية؟"
+      ],
+      "a": [
+        "«لا» بالإنجليزية: no. بالفرنسية: non."
+      ]
+    },
+    {
+      "id": "dict-048",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «من فضلك» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "من فضلك",
+        "please",
+        "ترجمة",
+        "phrase"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة من فضلك",
+        "معنى كلمة من فضلك بالإنجليزي",
+        "what is من فضلك in english",
+        "كيف أقول من فضلك بالإنجليزية؟"
+      ],
+      "a": [
+        "«من فضلك» بالإنجليزية: please. بالفرنسية: s'il vous plaît."
+      ]
+    },
+    {
+      "id": "dict-049",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «مع السلامة» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "مع السلامة",
+        "goodbye",
+        "ترجمة",
+        "phrase"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة مع السلامة",
+        "معنى كلمة مع السلامة بالإنجليزي",
+        "what is مع السلامة in english",
+        "كيف أقول مع السلامة بالإنجليزية؟"
+      ],
+      "a": [
+        "«مع السلامة» بالإنجليزية: goodbye. بالفرنسية: au revoir."
+      ]
+    },
+    {
+      "id": "dict-050",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «صباح الخير» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "صباح الخير",
+        "good morning",
+        "ترجمة",
+        "phrase"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة صباح الخير",
+        "معنى كلمة صباح الخير بالإنجليزي",
+        "what is صباح الخير in english",
+        "كيف أقول صباح الخير بالإنجليزية؟"
+      ],
+      "a": [
+        "«صباح الخير» بالإنجليزية: good morning. بالفرنسية: bonjour."
+      ]
+    },
+    {
+      "id": "dict-051",
+      "pack": "seed-dictionary",
+      "title": "ترجمة «مساء الخير» إلى الإنجليزية",
+      "intent": "translate",
+      "tags": [
+        "مساء الخير",
+        "good evening",
+        "ترجمة",
+        "phrase"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "قاموس الترجمة الداخلي (translation_kb.json) — المرحلة 3",
+      "verifiedAt": "2026-10-29",
+      "safety": "none",
+      "weight": 0.9,
+      "q": [
+        "ترجمة مساء الخير",
+        "معنى كلمة مساء الخير بالإنجليزي",
+        "what is مساء الخير in english",
+        "كيف أقول مساء الخير بالإنجليزية؟"
+      ],
+      "a": [
+        "«مساء الخير» بالإنجليزية: good evening. بالفرنسية: bonsoir."
+      ]
+    }
+  ]
+}

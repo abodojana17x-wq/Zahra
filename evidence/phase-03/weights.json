@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "phase": 3,
+  "generatedAt": "2026-10-29T19:44:13Z",
+  "generator": "tools/phase03/tune_weights.py",
+  "featuresFrom": "tools/offline-typecheck/phase03/run.sh --dump-features (Kotlin production scoring)",
+  "trainSet": {
+    "path": "eval/phase03/paraphrase-100.jsonl",
+    "split": "train",
+    "queries": 67
+  },
+  "heldoutSet": {
+    "split": "heldout",
+    "queries": 33
+  },
+  "search": {
+    "space": "simplex step 0.05, each weight in [0.05, 0.85]",
+    "objective": "MRR@5 on train (tie-break: Top-1, then max-min weight, then L1 to the source-based prior)",
+    "prior": {
+      "bm25": 0.6,
+      "char": 0.24,
+      "tfidf": 0.16
+    },
+    "candidatesEvaluated": 162
+  },
+  "selected": {
+    "bm25": 0.4,
+    "char": 0.3,
+    "tfidf": 0.3
+  },
+  "train": {
+    "queries": 67,
+    "top1": 0.9104,
+    "answered": 0.8657,
+    "mrrAt5": 0.9303
+  },
+  "heldout": {
+    "queries": 33,
+    "top1": 0.9091,
+    "answered": 0.9091,
+    "mrrAt5": 0.9455
+  },
+  "byKind": {
+    "en": {
+      "queries": 20,
+      "top1": 0.95,
+      "answered": 1.0,
+      "mrrAt5": 0.975
+    },
+    "franco": {
+      "queries": 25,
+      "top1": 1.0,
+      "answered": 0.92,
+      "mrrAt5": 1.0
+    },
+    "fusha": {
+      "queries": 20,
+      "top1": 0.85,
+      "answered": 0.8,
+      "mrrAt5": 0.9017
+    },
+    "masri": {
+      "queries": 15,
+      "top1": 0.9333,
+      "answered": 0.8,
+      "mrrAt5": 0.9333
+    },
+    "typo": {
+      "queries": 20,
+      "top1": 0.8,
+      "answered": 0.85,
+      "mrrAt5": 0.85
+    }
+  },
+  "caveats": [
+    "المجموعة مؤلَّفة داخل المستودع (100 استعلام، 5 أنواع) وليست عيّنة عشوائية من مستخدمين حقيقيين.",
+    "لا يوجد رقم قبول مستهدف (D20)؛ هذه قياسات وصفية قابلة لإعادة التوليد فقط.",
+    "الأرضية المستخدمة في حساب «مُجاب» هي عتبة البوابة القديمة غير المعايَرة (D4).",
+    "المرجع النهائي للأرقام هو تشغيل Kotlin (`tools/offline-typecheck/phase03/run.sh`)؛ قد يختلف هنا في خانة عشرية بسبب ترتيب التعادل."
+  ]
+}
