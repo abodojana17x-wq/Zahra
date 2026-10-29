@@ -7,7 +7,7 @@
 | المدخلات | الكود الحالي، [`reference/raqim-2.0-eval-report.md`](../reference/raqim-2.0-eval-report.md)، [`reference/raqim-2.0.html`](../reference/raqim-2.0.html) (قسم `selfTest`)، [`reference/raqim-2.0-plan.md`](../reference/raqim-2.0-plan.md) (قسم «المرحلة 0») |
 | المخرجات | `eval/`, `evidence/phase-00/`, `.github/workflows/ci.yml`, `README.md` محدّث |
 | يعتمد عليها | كل المراحل 1…6 |
-| الحالة | 🟨 **جارية بإثبات جزئي** — الأداة والمجموعة والهارنس والبوابة منفّذة ومُختبرة محليًا؛ تشغيل 452 اختبارًا + APK + خط الأساس الرقمي **لم يحدث بعد** (لا JDK/SDK في بيئة الوكيل، و`.github/workflows` يحتاج صلاحية `workflows`). الدليل الصادق: [`evidence/phase-00/README.md`](../evidence/phase-00/README.md) |
+| الحالة | 🟨 **جارية بإثبات جزئي** — الأداة والمجموعة والهارنس والبوابة منفّذة ومُختبرة محليًا، وأُنقذ تنفيذ PR #5 فوق `main` (بعد PR #6 الشكلي) وبُني `.github/workflows/ci.yml` (تفعيله بأمر واحد من المالك — رفض GitHub لتاريخ 2026-10-29 دفع الوكيل لافتقاده صلاحية `workflows`)؛ تشغيل 452 اختبارًا + APK + خط الأساس الرقمي **لم يحدث بعد** وينتظر أول تشغيل CI (بيئة الوكيل بلا JDK/SDK). الأدلة: [`evidence/phase-00/README.md`](../evidence/phase-00/README.md) + [`RESCUE-2026-10-29.md`](../evidence/phase-00/RESCUE-2026-10-29.md) |
 
 ---
 

@@ -115,7 +115,11 @@ jobs:
   # ---------------------------------------------------------------------------------
   eval:
     name: eval harness (AC-0.3 / AC-0.4)
-    needs: unit
+    # إنقاذ 2026-10-29: كانت `needs: unit` — فأي فشل في اختبارات الوحدة القديمة
+    # كان يمنع القياس من التشغيل أصلًا فلا يخرج أي رقم خط أساس أبدًا. القياس الآن
+    # يعتمد على preflight فقط فيتوازى مع unit وينتج دليله في كل الأحوال،
+    # ويبقى الـ workflow أحمر لو أي وظيفة فشلت (لا إخفاء للفشل).
+    needs: preflight
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
@@ -173,7 +177,11 @@ jobs:
   # ---------------------------------------------------------------------------------
   apk:
     name: debug apk (AC-0.5)
+    # إنقاذ 2026-10-29: ينتظر انتهاء eval (لأخذ artifact النتائج) لكنه يعمل حتى لو
+    # فشلت eval — الهدف دليل APK في كل الأحوال؛ بدون نتائج يُبنى الـ APK بلا
+    # eval_summary.json ويُظهر زر «تشخيص» ذلك صراحةً. بشرط نجاح preflight.
     needs: [preflight, eval]
+    if: ${{ always() && needs.preflight.result == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -196,7 +204,9 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
+      # قد لا يوجد artifact لو أُلغيت وظيفة eval قبل رفع أي مخرجات — لا تُفشل الـ APK
       - uses: actions/download-artifact@v4
+        continue-on-error: true
         with:
           name: eval-report
           path: build/reports/zahra-eval
@@ -207,7 +217,11 @@ jobs:
 
       - name: تضمين آخر نتيجة قياس داخل الـ APK (زر «تشخيص»)
         run: |
-          RESULTS=$(find build/reports/zahra-eval -name results.json | head -1)
+          RESULTS=$(find build/reports/zahra-eval -name results.json 2>/dev/null | head -1)
+          if [ -z "$RESULTS" ]; then
+            echo "لا يوجد results.json (وظيفة eval لم تُنتج نتائج) — يُبنى الـ APK بلا نتيجة مضمّنة"
+            RESULTS="build/reports/zahra-eval/results.json"
+          fi
           echo "results=$RESULTS"
           python3 scripts/export_eval_summary.py "$RESULTS" app/src/main/assets/eval_summary.json
 
