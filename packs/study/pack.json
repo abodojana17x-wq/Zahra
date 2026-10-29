@@ -1,0 +1,171 @@
+{
+  "pack": "study",
+  "version": "1.0.0",
+  "license": "CC-BY-SA-4.0",
+  "generatedBy": "Zahra AI / Arena",
+  "reviewStatus": "owner-waived-no-human-review",
+  "authors": [
+    "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية"
+  ],
+  "sources": [],
+  "generatedAt": "2026-10-29",
+  "note": "مفاهيم دراسية عملية قصيرة؛ لا تعِد بنتيجة دراسية أو نفسية. المحتوى مولّد آليًا؛ لا توجد مراجعة بشرية. نصوص المصادر الخارجية غير منقولة؛ ترخيصها لا يُستنتج من الاستشهاد.",
+  "units": [
+    {
+      "id": "study-start-small",
+      "pack": "study",
+      "title": "بدء المذاكرة بخطوة قصيرة",
+      "intent": "query_knowledge",
+      "q": [
+        "مش قادر أبدأ أذاكر",
+        "كيف أبدأ المذاكرة عندما أشعر بالتشتت؟",
+        "How can I start studying when I feel stuck?",
+        "mesh 3aref abda2 azaker"
+      ],
+      "a": [
+        "اختار مهمة صغيرة جدًا: افتح صفحة واحدة، اكتب سؤالًا عنها، وحاول الإجابة خمس دقائق. بعدها خذ استراحة قصيرة أو أكمل إن كان ذلك مناسبًا.",
+        "هذه طريقة تنظيم عملية وليست علاجًا للتعب أو القلق؛ لو الصعوبة مستمرة، استعن بشخص تثق به أو مختص."
+      ],
+      "tags": [
+        "مذاكرة",
+        "بدء",
+        "تركيز"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0
+    },
+    {
+      "id": "study-active-recall",
+      "pack": "study",
+      "title": "الاستدعاء النشط للمراجعة",
+      "intent": "define_word",
+      "q": [
+        "يعني إيه استدعاء نشط؟",
+        "ما المقصود بالاستدعاء النشط؟",
+        "What is active recall?",
+        "ya3ny eh active recall"
+      ],
+      "a": [
+        "الاستدعاء النشط أن تحاول تذكّر الفكرة أو شرحها من الذاكرة قبل الرجوع إلى الكتاب.",
+        "مثال: اقرأ مقطعًا قصيرًا، أغلقه، واكتب ثلاث نقاط تتذكرها، ثم قارنها بالمصدر وصحح ما فاتك. لا تعتمد على عدد ثابت يناسب الجميع."
+      ],
+      "tags": [
+        "مذاكرة",
+        "استدعاء",
+        "تعلم"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "source": {
+        "name": "Dunlosky et al., Psychological Science in the Public Interest",
+        "location": "2013, 14(1), practice testing",
+        "license": "reference-only; no text reproduced; third-party rights not asserted",
+        "url": "https://doi.org/10.1111/j.1539-6053.2013.01044.x"
+      }
+    },
+    {
+      "id": "study-spaced-review",
+      "pack": "study",
+      "title": "المراجعة المتباعدة",
+      "intent": "define_word",
+      "q": [
+        "إزاي أراجع على فترات؟",
+        "ما معنى المراجعة المتباعدة؟",
+        "What is spaced practice?",
+        "ezay arage3 3ala fatrat"
+      ],
+      "a": [
+        "المراجعة المتباعدة توزيع جلسات التذكر على أوقات مختلفة بدل وضعها كلها في جلسة واحدة.",
+        "عمليًا: سجّل موعد المراجعة التالية بعد أن تختبر نفسك، وعدّل الفاصل بحسب صعوبة المادة والوقت المتاح؛ لا يوجد جدول واحد يناسب الجميع."
+      ],
+      "tags": [
+        "مذاكرة",
+        "مراجعة",
+        "تكرار"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0
+    },
+    {
+      "id": "study-exam-plan",
+      "pack": "study",
+      "title": "تقسيم الاستعداد للامتحان",
+      "intent": "query_knowledge",
+      "q": [
+        "أقسم مذاكرتي للامتحان إزاي؟",
+        "كيف أضع خطة مراجعة للامتحان؟",
+        "How do I plan exam revision?",
+        "a2asem moraga3ty ezay"
+      ],
+      "a": [
+        "اكتب المواد والموعد، ثم قسّم كل مادة إلى جلسات صغيرة مع وقت للمراجعة وحل الأسئلة والراحة.",
+        "ابدأ بالأقرب موعدًا أو بالأجزاء التي تحتاج تدريبًا، واترك هامشًا للتأخير. الخطة أداة قابلة للتعديل وليست ضمانًا لنتيجة امتحان."
+      ],
+      "tags": [
+        "امتحان",
+        "خطة",
+        "دراسة"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0
+    },
+    {
+      "id": "study-breaks",
+      "pack": "study",
+      "title": "تنظيم استراحات المذاكرة",
+      "intent": "query_knowledge",
+      "q": [
+        "أرتاح قد إيه بين جلسات المذاكرة؟",
+        "ما فائدة الاستراحات أثناء الدراسة؟",
+        "How should I take study breaks?",
+        "arata7 ad eh ben el sessions"
+      ],
+      "a": [
+        "خذ استراحة قصيرة عند انتهاء جزء محدد أو عندما يقل تركيزك، وابتعد خلالها عن المهمة قليلًا ثم ارجع بخطوة واضحة.",
+        "مدة الاستراحة المناسبة تختلف بين الأشخاص والمهام؛ لا تعتبر مؤقتًا أو نظامًا واحدًا قاعدة علمية عامة."
+      ],
+      "tags": [
+        "مذاكرة",
+        "استراحة",
+        "تركيز"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0
+    }
+  ]
+}

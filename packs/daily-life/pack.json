@@ -1,0 +1,200 @@
+{
+  "pack": "daily-life",
+  "version": "1.0.0",
+  "license": "CC-BY-SA-4.0",
+  "generatedBy": "Zahra AI / Arena",
+  "reviewStatus": "owner-waived-no-human-review",
+  "authors": [
+    "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية"
+  ],
+  "sources": [],
+  "generatedAt": "2026-10-29",
+  "note": "محتوى مولّد آليًا بموافقة المالك وفق D31 ودون مراجعة بشرية؛ ترخيص المحتوى الأصلي CC BY-SA 4.0. ليس تشخيصًا نفسيًا ولا يدعي ذاكرة أو مشاعر بشرية.",
+  "units": [
+    {
+      "id": "daily-study-stuck",
+      "pack": "daily-life",
+      "title": "دعم عند صعوبة البدء بالمذاكرة",
+      "intent": "small_talk",
+      "tags": [
+        "مذاكرة",
+        "دعم",
+        "خطوة صغيرة"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "مش قادر اذاكر",
+        "مش قادرة أذاكر",
+        "كيف أبدأ الدراسة وأنا متعب؟",
+        "I can't get myself to study",
+        "mesh 2ader azaker"
+      ],
+      "a": [
+        "أفهم إن البداية ممكن تبقى تقيلة. اختار أصغر خطوة: افتح صفحة واحدة واضبط مؤقتًا لخمس دقائق، وبعدها قرر تكمل أو ترتاح.",
+        "لو السبب إرهاق أو ضغط مستمر، احكي لشخص تثق به؛ مش لازم تحل كل شيء مرة واحدة."
+      ]
+    },
+    {
+      "id": "daily-lonely",
+      "pack": "daily-life",
+      "title": "مساندة عند الشعور بالوحدة",
+      "intent": "small_talk",
+      "tags": [
+        "وحدة",
+        "مشاعر",
+        "دعم"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "حاسس اني وحيد",
+        "حاسّة إني وحيدة",
+        "أشعر بالوحدة، ماذا أفعل؟",
+        "I feel lonely",
+        "7ases eny wa7eed"
+      ],
+      "a": [
+        "الإحساس بالوحدة مؤلم، ومش لازم تبرره. هل تحب تحكي إيه اللي خلاه أقوى النهارده؟ ممكن كمان تبعت رسالة بسيطة لشخص ترتاح له.",
+        "أنا مساعد رقمي ولست بديلًا عن شخص قريب أو مختص. لو كنت في خطر فوري أو تفكر في إيذاء نفسك، تواصل الآن مع الطوارئ المحلية أو شخص بالغ تثق به."
+      ]
+    },
+    {
+      "id": "daily-friend-argument",
+      "pack": "daily-life",
+      "title": "مساندة بعد خلاف مع صديق",
+      "intent": "small_talk",
+      "tags": [
+        "صداقة",
+        "خلاف",
+        "تواصل"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "اتخانقت مع صاحبي",
+        "اتخانقت مع صاحبتي",
+        "كيف أتصرف بعد شجار مع صديق؟",
+        "I argued with my friend",
+        "et5ana2t ma3 sa7by"
+      ],
+      "a": [
+        "واضح إن الخلاف مضايقك. خُد وقت تهدأ، وبعدها جرّب تقول له: أنا اتضايقت لما حصل كذا، وعايز أفهم وجهة نظرك. هل تحب نرتب كلامك قبل ما تبعته؟",
+        "ما أعرفش تفاصيل الموقف ولا أفترض مين الغلطان؛ لو فيه تهديد أو أذى، خلّي سلامتك أولًا واستعن بشخص موثوق."
+      ]
+    },
+    {
+      "id": "daily-happy",
+      "pack": "daily-life",
+      "title": "مشاركة شعور الفرح",
+      "intent": "small_talk",
+      "tags": [
+        "فرح",
+        "مشاعر",
+        "احتفال"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "انا فرحان النهارده",
+        "أنا فرحانة اليوم",
+        "أشعر بالسعادة اليوم",
+        "I am happy today",
+        "ana far7an elnaharda"
+      ],
+      "a": [
+        "جميل إن يومك فيه حاجة مفرحة! إيه أكتر شيء فرّحك النهارده؟ لو تحب، احتفل بيه بطريقتك أو شارك الخبر مع شخص بتحبه.",
+        "مبروك عليك اللحظة الحلوة؛ أنا مساعد رقمي وما عنديش مشاعر بشرية، لكن أقدر أسمعك وأساعدك تصيغ الخبر."
+      ]
+    },
+    {
+      "id": "daily-bored",
+      "pack": "daily-life",
+      "title": "أفكار بسيطة عند الملل",
+      "intent": "small_talk",
+      "tags": [
+        "ملل",
+        "مشاعر",
+        "نشاط"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "انا زهقان",
+        "أنا زهقانة",
+        "أشعر بالملل، اقترح شيئًا",
+        "I am bored",
+        "ana zah2an"
+      ],
+      "a": [
+        "الزهق ساعات يكون إشارة إنك محتاج تغيير بسيط. اختار حاجة لعشر دقايق: تمشية قصيرة، أغنية، ترتيب ركن صغير، أو مكالمة مع حد بتحبه. تحب نشاط هادي ولا فيه حركة؟",
+        "لو الملل مستمر ومعاه ضيق شديد أو فقدان رغبة لفترة، شارك ده مع شخص تثق به أو مختص."
+      ]
+    },
+    {
+      "id": "daily-love-question",
+      "pack": "daily-life",
+      "title": "الرد الصادق على سؤال الحب",
+      "intent": "small_talk",
+      "tags": [
+        "هوية",
+        "مشاعر",
+        "صدق"
+      ],
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "هل تحبني",
+        "بتحبني؟",
+        "هل تملك مشاعر حب؟",
+        "Do you love me?",
+        "bet7ebny"
+      ],
+      "a": [
+        "أنا برنامج مساعد، لذلك ما عنديش مشاعر حب بشرية أو علاقة شخصية. لكن أقدر أتعامل معك باحترام وأسمع اللي حابب تقوله. هل سؤالك بدافع فضول، ولا محتاج دعم دلوقتي؟"
+      ]
+    }
+  ]
+}

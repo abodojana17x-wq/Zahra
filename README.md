@@ -24,10 +24,10 @@
 | مجموعة القياس | **223 حالة + 50 held-out** مجمّدة بهاش | `eval/MANIFEST.sha256` · `eval/CHANGELOG.md` |
 | أدوات القياس المُختبرة فعليًا | بوابة R0 + تحقق المجموعة + إحصاءات (Wilson/bootstrap/McNemar) تعمل وتنجح الآن | `python3 scripts/validate_eval.py --phase 00` · `python3 scripts/test_stats.py` |
 | الإطلاق | لا يوجد APK منشور بعد؛ مسار البناء جاهز في CI (artifact باسم `zahra-debug-apk`) | بعد تفعيل CI |
-| المحتوى | `general_kb.json` ≈ 3.6KB، `religion_kb.json` ≈ 11.9KB، `translation_kb.json` ≈ 5.8KB، و`intent_corpus.json` فيه 25 نية فقط | `app/src/main/assets/` |
+| المحتوى | **المرحلة 5 (2026-10-29):** 181 وحدة معرفة في 11 حزمة + مدقق وتقرير تراخيص. المحتوى الجديد مولّد آليًا بموافقة المالك و**دون مراجعة بشرية** (D31)، وموسوم بذلك؛ بعض تراخيص المحتوى الموروث غير محسومة. | `packs/` · [`evidence/phase-05`](evidence/phase-05/README.md) |
 | الحساب والوحدات | **المرحلة 2 (2026-10-29):** محلّل كامل (27 دالة + أسماء عربية + شجرة عمليات) ونظام وحدات عام (9 تصنيفات، فدان/قيراط) و9 قوالب مسائل كلامية؛ `MathEngine` صار Adapter متوافقًا | [`evidence/phase-02/README.md`](evidence/phase-02/README.md) |
 | الوقت والبيانات | **المرحلة 2:** أدوات وقت/تاريخ بساعة قابلة للحقن + هجري أم القرى (ICU + جدول مدمج) + طبقة مصادر Opt-in (Open-Meteo/ويكيبيديا/ويكي‌داتا) بالرخصة والكاش | [`plans/02-tools.md`](plans/02-tools.md) |
-| الفهم | **المرحلة 3 (2026-10-29):** وحدات معرفة (109 وحدة، 4 حزم) + فهرس زمن البناء `knowledge_index.json` + مسترجع هجين **BM25+ / بصمات حروف 3-gram / TF-IDF cosine** بمخرج مفسَّر لكل نتيجة + بوابة `ANSWER/CLARIFY/ABSTAIN`؛ **لا embeddings** (المستوى B مؤجَّل بقرار D2/D26) | [`evidence/phase-03/README.md`](evidence/phase-03/README.md) |
+| الفهم | **المرحلة 3 + تحديث المحتوى 5:** فهرس البناء الحالي يضم 181 وحدة في 11 حزمة؛ مسترجع **BM25+ / بصمات 3-gram / TF-IDF cosine** وبوابة `ANSWER/CLARIFY/ABSTAIN`. لا embeddings (D2/D26). | [`evidence/phase-03/README.md`](evidence/phase-03/README.md) · [`evidence/phase-05/README.md`](evidence/phase-05/README.md) |
 
 **الخلاصة الاستراتيجية:** زهرة عمارة أكبر من منافسها المباشر (رقيم 2.0)، لكنها «غير مُثبتة». المرحلة 0 بَنَت **أداة الإثبات** (مجموعة أسئلة مجمّدة + هارنس 223×8 + إحصاءات عيّنة صغيرة + بوابة CI + زر تشخيص داخل التطبيق)، ولم تُثبت بعد تشغيل الـ 452 اختبارًا. لا يُنشر رقم قبل تشغيل حقيقي — التفصيل الصادق (المنفَّذ مقابل المنتظر) في [`evidence/phase-00/README.md`](evidence/phase-00/README.md).
 

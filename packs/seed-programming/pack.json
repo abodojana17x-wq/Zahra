@@ -1,8 +1,9 @@
 {
   "pack": "seed-programming",
-  "version": "1.0.0",
-  "license": "mixed-see-unit-sources",
+  "version": "1.1.0",
+  "license": "mixed-see-unit-sources-and-contentLicense",
   "authors": [
+    "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
     "زهرة — المرحلة 3 (بذور البرمجة، تُوسَّع في المرحلة 5)"
   ],
   "sources": [
@@ -28,7 +29,7 @@
     }
   ],
   "generatedAt": "2026-10-29",
-  "note": "كل وحدة: تعريف قصير + مثال كود بين `…` + خطأ شائع. الأسئلة بصياغات مصرية/فصحى/إنجليزية/فرانكو. الرخص تحتاج تدقيق المرحلة 5.",
+  "note": "محتوى المرحلة 5 يتضمن صياغات وأمثلة مولّدة آليًا وفق D31؛ لا توجد مراجعة بشرية. راجع contentLicense ومصدر كل وحدة. الشيفرات أمثلة تعليمية ساكنة وليست معزولة للتنفيذ داخل التطبيق.",
   "units": [
     {
       "id": "prog-closure",
@@ -64,7 +65,18 @@
         "الـ Closure هي دالة «بتفتكر» المتغيرات اللي كانت موجودة في النطاق (scope) اللي اتولدت فيه، حتى لو الدالة الخارجية خلصت وخرجت من التنفيذ.",
         "مثال:\n`function makeCounter() {\n  let count = 0;\n  return function () { return ++count; };\n}\nconst next = makeCounter();\nnext(); // 1\nnext(); // 2`",
         "خطأ شائع: استخدام `var` داخل حلقة `for` مع دوال مؤجلة — كل الدوال بتشوف آخر قيمة. الحل: `let` أو إنشاء نطاق جديد لكل دورة."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "javascript",
+          "code": "const make = () => { let n = 0; return () => ++n; };\nconst next = make();\nconsole.log(next(), next());",
+          "expected": "1 2",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-var-let-const",
@@ -94,13 +106,25 @@
         "إيه الفرق بين let و const في جافاسكربت",
         "difference between var let and const",
         "2eh el far2 bein var w let",
-        "امتى استخدم const بدل let"
+        "امتى استخدم const بدل let",
+        "إيه الفرق بين المتغير والثابت؟"
       ],
       "a": [
         "`var` نطاقه الدالة (function scope) ويُرفع للأعلى (hoisting) ويسمح بإعادة التعريف. `let` و`const` نطاقهما الكتلة `{}` ولا يُعاد تعريفهما في نفس النطاق.",
         "مثال:\n`let x = 1;\nx = 2;      // مسموح\nconst y = 1;\n// y = 2;   // TypeError`",
         "خطأ شائع: الظن أن `const` تجعل الكائن غير قابل للتغيير — هي تمنع إعادة الإسناد فقط: `const a = []; a.push(1); // مسموح`."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "javascript",
+          "code": "const name = 'Zahra';\nlet count = 1;\ncount += 1;\nconsole.log(name, count);",
+          "expected": "Zahra 2",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-api",
@@ -129,13 +153,28 @@
         "ما معنى API؟",
         "what is an api",
         "3ayez a3raf el api",
-        "اشرحلي الـ API ببساطة"
+        "اشرحلي الـ API ببساطة",
+        "ما هو الـ API؟",
+        "ما معنى واجهة برمجة التطبيقات؟",
+        "what is an API",
+        "API ya3ni eh"
       ],
       "a": [
         "API اختصار Application Programming Interface: عقد أو مجموعة قواعد بتخلّي برنامجين يتكلموا مع بعض من غير ما يعرفوا تفاصيل تنفيذ بعض.",
         "عتبرها «قائمة طلبات» في مطعم: أنت بتطلب باسم الصنف، ومش محتاج تعرف المطبخ بيعمل إيه.\n`fetch(\"https://api.example.com/users\").then(r => r.json())`",
         "خطأ شائع: الخلط بين API والـ endpoint — الـ endpoint عنوان واحد، والـ API هو العقد كله (مسارات + مدخلات + مخرجات + أخطاء)."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "http",
+          "code": "GET /users/7",
+          "expected": "ردّ توضيحي: بيانات المستخدم 7 (شكل الاستجابة يعتمد على API)",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-rest",
@@ -171,7 +210,18 @@
         "REST نمط لتصميم واجهات الويب: كل «مصدر» له مسار (URL)، والتعامل معه بأفعال HTTP (`GET` للقراءة، `POST` للإنشاء، `PUT/PATCH` للتعديل، `DELETE` للحذف)، والرد عادة JSON بلا حالة محفوظة على السيرفر.",
         "مثال:\n`GET    /users/42\nPOST   /users\nPATCH  /users/42\nDELETE /users/42`",
         "خطأ شائع: تسمية المسارات بأفعال (`/getUser`) — الأصح اسم المصدر (`/users/42`) والفعل في HTTP method."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "http",
+          "code": "GET /users/7",
+          "expected": "200 OK (مثال توضيحي؛ يتوقف على الخادم)",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-git",
@@ -200,13 +250,27 @@
         "ما هو Git؟",
         "what is git",
         "3ayez a3raf git",
-        "ليه أستخدم git بدل نسخ الملفات"
+        "ليه أستخدم git بدل نسخ الملفات",
+        "يعني إيه Git؟",
+        "ما هو git",
+        "git ya3ni eh"
       ],
       "a": [
         "Git نظام تحكم إصدارات موزّع: بيسجل تاريخ التغييرات في «كوميتات»، ويسمح بفروع (branches) ودمج، وكل نسخة عند المطوّر فيها التاريخ كامل.",
         "أساسيات:\n`git init\ngit add .\ngit commit -m \"first commit\"\ngit branch feature\ngit checkout feature`",
         "خطأ شائع: `git add .` أعمى قبل مراجعة `git status` — ممكن تدخل ملفات أسرار أو مخرجات بناء."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "shell",
+          "code": "git status --short",
+          "expected": "يعرض الملفات المعدّلة (إن وُجدت)",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-git-commit-push",
@@ -241,7 +305,18 @@
         "`git commit` يسجّل تغييراتك **محليًا** في تاريخ المستودع على جهازك. `git push` يرفع الكوميتات المسجلة إلى مستودع بعيد (GitHub مثلًا).",
         "التسلسل:\n`git add file.kt\ngit commit -m \"fix: guard null\"\ngit push origin main`",
         "خطأ شائع: الظن أن commit «انحفظ أونلاين» — لو الجهاز ضاع قبل push، الكوميتات المحلية تضيع."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "shell",
+          "code": "git add app.py && git commit -m 'fix'",
+          "expected": "إنشاء commit محلي؛ لا يرفع إلى remote",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-sql-nosql",
@@ -271,13 +346,28 @@
         "إيه الفرق بين قواعد البيانات العلائقية و NoSQL",
         "difference between sql and nosql",
         "sql wla nosql",
-        "امتى أختار NoSQL"
+        "امتى أختار NoSQL",
+        "إيه هو SQL؟",
+        "ايه الفرق بين SQL و NoSQL",
+        "إيه الفرق بين SQL و NoSQL؟"
       ],
       "a": [
         "قواعد SQL (علائقية) بتمثّل البيانات جداول بعلاقات ومخطط ثابت، وتستخدم لغة SQL، وممتازة في المعاملات (transactions) والاستعلامات المركّبة.",
         "NoSQL عائلة أوسع: مستندات (MongoDB)، أزواج مفتاح/قيمة (Redis)، أعمدة، رسم بياني. مرنة المخطط وأسهل في التوسّع الأفقي، لكن ضمانات المعاملات تختلف بين منتج وآخر.",
-        "خطأ شائع: اختيار NoSQL «لأنها أسرع» بلا قياس — لو بياناتك علائقية بحتة، SQL غالبًا أبسط وأصح."
-      ]
+        "خطأ شائع: اختيار NoSQL «لأنها أسرع» بلا قياس — لو بياناتك علائقية بحتة، SQL غالبًا أبسط وأصح.",
+        "مثال SQL:\n`SELECT name FROM users WHERE active = 1;` — يسترجع أسماء الصفوف المطابقة."
+      ],
+      "examples": [
+        {
+          "lang": "sql",
+          "code": "SELECT name FROM users WHERE active = 1;",
+          "expected": "أسماء المستخدمين النشطين (بحسب البيانات)",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-sql-index",
@@ -312,7 +402,18 @@
         "الفهرس بنية مساعدة (غالبًا شجرة B) بترتّب عمودًا أو أكثر، فتقلّل قراءة الصفحات عند البحث بدل مسح الجدول كله.",
         "مثال:\n`CREATE INDEX idx_users_email ON users(email);\nSELECT * FROM users WHERE email = 'a@b.c';`",
         "خطأ شائع: فهرسة كل شيء — كل فهرس يبطئ الإدخال/التحديث ويزيد الحجم. كمان لو الشرط دالة على العمود (`WHERE lower(email)=…`) الفهرس العادي مش هيُستخدم."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "sql",
+          "code": "CREATE INDEX idx_users_email ON users(email);",
+          "expected": "إنشاء فهرس على email",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-primary-key",
@@ -341,13 +442,25 @@
         "ما هو المفتاح الأساسي في قاعدة البيانات؟",
         "what is a primary key",
         "el primary key eh",
-        "الفرق بين primary key و foreign key"
+        "الفرق بين primary key و foreign key",
+        "إيه معنى المفتاح الأساسي؟"
       ],
       "a": [
         "المفتاح الأساسي عمود (أو مجموعة أعمدة) يميّز كل صف تمييزًا فريدًا، ولا يقبل NULL، ولا يتكرر.",
         "مثال:\n`CREATE TABLE users (\n  id INTEGER PRIMARY KEY,\n  email TEXT UNIQUE NOT NULL\n);`",
         "خطأ شائع: استخدام قيمة قابلة للتغيّر كمفتاح (رقم هاتف/بريد) — الأفضل مفتاح اصطناعي ثابت، وتغيير البريد في عمود منفصل."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "sql",
+          "code": "CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT);",
+          "expected": "جدول users مع id فريد",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-http-status",
@@ -376,13 +489,25 @@
         "ما معنى أكواد حالة HTTP؟",
         "what do http status codes mean",
         "el status code fel api",
-        "امتى أرجّع 401 وامتى 403"
+        "امتى أرجّع 401 وامتى 403",
+        "إيه الفرق بين HTTP وHTTPS؟"
       ],
       "a": [
         "أكواد الحالة ثلاث خانات: `2xx` نجاح، `3xx` تحويل، `4xx` خطأ من العميل، `5xx` خطأ من السيرفر.",
         "أهمها:\n`200 OK` نجاح · `201 Created` أُنشئ مصدر · `204 No Content` نجاح بلا محتوى · `400 Bad Request` مدخلات خاطئة · `401 Unauthorized` لا إثبات هوية · `403 Forbidden` هوية موجودة بلا صلاحية · `404 Not Found` غير موجود · `409 Conflict` تعارض حالة · `429 Too Many Requests` تجاوز الحد · `500 Internal Server Error` عطل داخلي · `503 Service Unavailable` خدمة غير متاحة",
         "خطأ شائع: إرجاع `200` مع `{\"error\": ...}` — يجعل المراقبة وSDK تفهم الخطأ كنجاح."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "http",
+          "code": "HTTP/1.1 200 OK",
+          "expected": "200 OK",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-css-center",
@@ -412,13 +537,27 @@
         "كيف أوسّط عنصرًا أفقيًا ورأسيًا في CSS؟",
         "how to center a div in css",
         "ezay awasset div fel css",
-        "توسيط العناصر بـ flexbox"
+        "توسيط العناصر بـ flexbox",
+        "ازاي اوسّط div في CSS",
+        "how to center a div in CSS",
+        "awsat div ezay"
       ],
       "a": [
         "أسهل طريقة حديثة: Flexbox على الأب بثلاث خصائص: `display: flex; justify-content: center; align-items: center;`.",
         "مثال:\n`.parent { display: flex; justify-content: center; align-items: center; height: 100vh; }\n.child { width: 200px; }`\nبديل: `.parent { display: grid; place-items: center; }`",
         "خطأ شائع: نسيان أن الأب لازم يكون له ارتفاع محدد (أو `min-height`) — بدونه مفيش مساحة رأسية أصلًا."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "css",
+          "code": ".parent { display: flex; justify-content: center; align-items: center; min-height: 100vh; }",
+          "expected": "عنصر الابن يتوسط حاوية Flex على المحورين",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-debounce",
@@ -447,13 +586,28 @@
         "ما هي دالة debounce وكيف أكتبها؟",
         "how to write a debounce function",
         "debonce fel javascript",
-        "ازاي أقلل استدعاءات البحث أثناء الكتابة"
+        "ازاي أقلل استدعاءات البحث أثناء الكتابة",
+        "اكتبلي دالة debounce",
+        "ما هي دالة debounce؟",
+        "write a debounce function",
+        "debounce function ezay"
       ],
       "a": [
         "الـ debounce يمنع تنفيذ دالة قبل مرور مدة هدوء من آخر حدث — مفيدة في البحث أثناء الكتابة.",
         "مثال:\n`function debounce(fn, ms) {\n  let t;\n  return (...args) => {\n    clearTimeout(t);\n    t = setTimeout(() => fn(...args), ms);\n  };\n}\nconst onSearch = debounce(q => console.log(q), 300);`",
         "خطأ شائع: الخلط بين `debounce` و`throttle` — الأول ينفّذ مرة بعد التوقف، والثاني ينفّذ بحد أقصى مرة كل فترة أثناء الحدث."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "javascript",
+          "code": "let timer;\nfunction debounce(fn, ms) { return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), ms); }; }",
+          "expected": "تُنفذ fn مرة بعد ms من آخر استدعاء",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-async-await",
@@ -488,7 +642,18 @@
         "`Promise` كائن يمثّل نتيجة ستأتي لاحقًا (نجاح/فشل). `async/await` صياغة أوضح فوقها: الدالة `async` ترجع Promise دائمًا، و`await` ينتظر نتيجته داخل `try/catch`.",
         "مثال:\n`async function load() {\n  try {\n    const res = await fetch(\"/api/users\");\n    const data = await res.json();\n    return data;\n  } catch (e) {\n    console.error(e);\n  }\n}`",
         "خطأ شائع: `await` داخل `forEach` — لن ينتظر فعليًا. استخدم `for…of` أو `Promise.all(arr.map(...))`."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "javascript",
+          "code": "async function value() { return 3; }\nvalue().then(console.log);",
+          "expected": "3",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-map-filter",
@@ -524,7 +689,18 @@
         "`map` يحوّل كل عنصر ويعيد مصفوفة بنفس الطول. `filter` يعيد مصفوفة بالعناصر المطابقة فقط. `reduce` يجمّع كل العناصر في قيمة واحدة.",
         "مثال:\n`const nums = [1,2,3,4];\nconst doubled = nums.map(n => n * 2);      // [2,4,6,8]\nconst evens = nums.filter(n => n % 2 === 0); // [2,4]\nconst sum = nums.reduce((a, n) => a + n, 0); // 10`",
         "خطأ شائع: استخدام `map` لإحداث أثر جانبي (`forEach` أنسب)، أو استخدام `push` داخل `map` بدل `reduce`."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "javascript",
+          "code": "const xs = [1, 2, 3];\nconsole.log(xs.map(x => x * 2));\nconsole.log(xs.filter(x => x > 1));",
+          "expected": "[2, 4, 6]\n[2, 3]",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-oop-class",
@@ -554,13 +730,25 @@
         "ما الفرق بين الفئة والكائن في البرمجة؟",
         "what is a class and an object",
         "class w object fel oop",
-        "اشرح البرمجة الكائنية ببساطة"
+        "اشرح البرمجة الكائنية ببساطة",
+        "إيه معنى البرمجة الكائنية OOP؟"
       ],
       "a": [
         "الفئة (`class`) قالب يحدد بيانات (خصائص) وسلوكًا (دوال). الكائن (`object`) نسخة مُنشأة من هذا القالب بقيم محددة.",
         "مثال:\n`class User {\n  constructor(name) { this.name = name; }\n  greet() { return `hi ${this.name}`; }\n}\nconst u = new User(\"Sara\");`",
         "خطأ شائع: الخلط بين المفهوم والوراثة — الوراثة أداة واحدة فقط، و«التركيب» (composition) غالبًا أبسط."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "python",
+          "code": "class Box:\n    pass\n\nitem = Box()\nprint(type(item).__name__)",
+          "expected": "Box",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-python-list-tuple",
@@ -589,13 +777,25 @@
         "إيه الفرق بين list و tuple؟",
         "difference between list and tuple in python",
         "list w tuple fel python",
-        "امتى أستخدم tuple"
+        "امتى أستخدم tuple",
+        "إيه معنى mutable وimmutable؟"
       ],
       "a": [
         "`list` قابلة للتعديل (`append`, `remove`)، و`tuple` ثابتة بعد الإنشاء — أخف قليلًا وصالحة كمفتاح قاموس إذا كانت عناصرها غير قابلة للتعديل.",
         "مثال:\n`nums = [1, 2, 3]\nnums.append(4)      # مسموح\npoint = (10, 20)\n# point[0] = 11      # TypeError`",
         "خطأ شائع: استخدام `tuple` لمجموعة عناصر متشابهة تتغيّر — الـ tuple تُعبّر عن بنية ثابتة (إحداثيات، سجل ثابت) لا قائمة قابلة للنمو."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "python",
+          "code": "items = [1, 2]\nitems.append(3)\npoint = (4, 5)\nprint(items, point)",
+          "expected": "[1, 2, 3] (4, 5)",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-python-venv",
@@ -630,7 +830,18 @@
         "البيئة الافتراضية مجلد فيه مترجم بايثون مستقل ومكتباته، فتفصل اعتماديات كل مشروع بدل ما تتصادم عالميًا.",
         "مثال:\n`python3 -m venv .venv\nsource .venv/bin/activate   # على ويندوز: .venv\\Scripts\\activate\npip install requests\npip freeze > requirements.txt`",
         "خطأ شائع: عدم إضافة `.venv/` إلى `.gitignore` — فيُرفع مئات الميجابايت من المكتبات للمستودع."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "shell",
+          "code": "python -m venv .venv",
+          "expected": "ينشئ مجلد البيئة .venv (تفعيلها يختلف حسب نظام التشغيل)",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-debug",
@@ -659,13 +870,30 @@
         "كيف أبدأ في تصحيح الأخطاء البرمجية؟",
         "how to debug code",
         "debugging ezay",
-        "الكود بيرمي error ومش عارف السبب"
+        "الكود بيرمي error ومش عارف السبب",
+        "ازاي اصلح bug",
+        "ما سبب SyntaxError في Python؟",
+        "for i in range(10) print(i) — ليه مش شغال؟",
+        "if x = 5: في بايثون — إيه الغلط؟",
+        "طلع لي IndexError: list index out of range — إيه السبب؟",
+        "طلع لي NameError: name 'x' is not defined — إيه الحل؟"
       ],
       "a": [
         "اتبع التسلسل: اقرأ رسالة الخطأ كاملة (نوعه + رقم السطر) ← أعد إنتاج الخطأ بأصغر مثال ← ضيّق المكان (طباعة/نقاط توقف) ← افحص آخر تغيير ← اكتب اختبارًا يفشل قبل الإصلاح.",
         "أدوات:\n`print(repr(x))` أو `console.log({x})` · نقاط توقف في IDE · `git bisect` لتحديد الكوميت الذي أدخل العطل.",
         "خطأ شائع: تغيير عدة أسطر دفعة واحدة بلا فهم — يصبح من المستحيل معرفة أي تغيير أصلح أو أفشل."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "python",
+          "code": "x = 2\nprint(x)",
+          "expected": "2",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-html-css-js",
@@ -695,13 +923,27 @@
         "ما دور كل من HTML و CSS و JS؟",
         "difference between html css and javascript",
         "html css js eh",
-        "أبدأ تعلم تطوير الويب من فين"
+        "أبدأ تعلم تطوير الويب من فين",
+        "اشرح الجافاسكريبت",
+        "ايه هو HTML",
+        "ما هو HTML؟"
       ],
       "a": [
         "`HTML` بنية المحتوى (عناصر ودلالة)، `CSS` الشكل والتنسيق، `JavaScript` السلوك والتفاعل.",
         "تشبيه عملي:\n`<button class=\"cta\">اشترِ</button>` ← HTML\n`.cta { background: #0a7; color: white; }` ← CSS\n`document.querySelector(\".cta\").addEventListener(\"click\", buy)` ← JS",
         "خطأ شائع: تعلم أطر العمل (frameworks) قبل الأساسيات — الأخطاء تبقى غامضة لأنك لا تعرف ما تفعله الأداة بدلًا عنك."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "html",
+          "code": "<button id=\"go\">ابدأ</button>\n<script>document.querySelector('#go').onclick = () => alert('مرحبًا');</script>",
+          "expected": "زر يعرض تنبيه مرحبًا عند النقر",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-frontend-backend",
@@ -736,7 +978,18 @@
         "`Frontend` ما يجرى في المتصفح/التطبيق: العرض والتفاعل. `Backend` ما يجرى على السيرفر: منطق العمل، قاعدة البيانات، المصادقة، والتكامل مع خدمات أخرى.",
         "الحد بينهما غالبًا API:\n`fetch(\"/api/orders\").then(r => r.json())` ← الواجهة تطلب\n`app.get(\"/api/orders\", handler)` ← الخادم يرد",
         "خطأ شائع: اعتبار الواجهة «غير آمنة» فتوضع فيها قواعد الصلاحيات — الصلاحيات تُفرض على الخادم دائمًا."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "http",
+          "code": "browser --request--> server --query--> database",
+          "expected": "المتصفح يطلب؛ الخادم يعالج ويقرأ البيانات",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-database",
@@ -765,13 +1018,25 @@
         "ما هي قاعدة البيانات؟",
         "what is a database",
         "قاعدة بيانات يعني ايه",
-        "ليه أحتاج قاعدة بيانات بدل ملف"
+        "ليه أحتاج قاعدة بيانات بدل ملف",
+        "ايه هي قاعدة البيانات"
       ],
       "a": [
         "قاعدة البيانات نظام منظّم لتخزين واسترجاع البيانات، يوفّر استعلامات، فهارس، معاملات (transactions)، وتحمّل قراءة/كتابة متزامنة.",
         "فرق عملي:\n`SELECT name FROM users WHERE age > 20;` بدل قراءة ملف كامل وتصفية يدوية في الذاكرة.",
         "خطأ شائع: استخدام ملف JSON/CSV لتخزين بيانات يتزامن عليها أكثر من كاتب — تفقد الذرّية وتفسد البيانات."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "sql",
+          "code": "CREATE TABLE notes (id INTEGER PRIMARY KEY, body TEXT);",
+          "expected": "جدول notes بعمودين",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-recursion",
@@ -800,13 +1065,25 @@
         "ما هي الدالة العودية؟",
         "what is recursion",
         "recursion fel programming",
-        "امتى أستخدم العودية وامتى loop"
+        "امتى أستخدم العودية وامتى loop",
+        "إيه هو الاستدعاء الذاتي recursion؟"
       ],
       "a": [
         "العودية أن تستدعي الدالة نفسها على مسألة أصغر حتى تصل إلى حالة توقّف (base case).",
         "مثال:\n`def fact(n):\n    if n <= 1:      # شرط التوقف\n        return 1\n    return n * fact(n - 1)\nprint(fact(5))      # 120`",
         "خطأ شائع: نسيان شرط التوقف ⇒ `RecursionError`/`stack overflow`. وللمسائل الطويلة جدًا، استخدم حلقة أو memoization."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "python",
+          "code": "def countdown(n):\n    if n == 0: return\n    print(n)\n    countdown(n - 1)\ncountdown(3)",
+          "expected": "3\n2\n1",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-big-o",
@@ -841,7 +1118,18 @@
         "`Big-O` تصف كيف ينمو زمن التنفيذ/الذاكرة مع حجم المدخلات، مع إهمال الثوابت والحدود الدنيا.",
         "أمثلة:\n`O(1)`       وصول بالمعجم/الفهرس\n`O(log n)`  بحث ثنائي\n`O(n)`       مرور واحد على القائمة\n`O(n log n)` ترتيب فعّال (merge sort)\n`O(n²)`      حلقتان متداخلتان",
         "خطأ شائع: اعتبار Big-O «سرعة» مطلقة — لمدخلات صغيرة قد يكون O(n²) أسرع فعليًا من O(n log n) بسبب الثوابت."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "python",
+          "code": "for item in items:  # n عناصر\n    process(item)",
+          "expected": "زمن خطي O(n)",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-json",
@@ -876,7 +1164,18 @@
         "JSON صيغة نصية لتبادل البيانات: كائنات `{}` ومصفوفات `[]` ونصوص وأرقام وقيم `true/false/null` — مقروءة ومحلّلة في كل اللغات.",
         "مثال:\n`{ \"id\": 1, \"name\": \"زهرة\", \"tags\": [\"offline\", \"kotlin\"], \"active\": true }`",
         "خطأ شائع: وضع تعليقات أو فاصلة زائدة في JSON — غير مسموح في الصيغة القياسية؛ بعض المحلّلات المتساهلة تخفي الخطأ حتى يصل لعميل صارم."
-      ]
+      ],
+      "examples": [
+        {
+          "lang": "json",
+          "code": "{\"name\": \"Mona\", \"active\": true}",
+          "expected": "كائن JSON يحوي name وactive",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
     },
     {
       "id": "prog-git-branch",
@@ -911,7 +1210,1047 @@
         "الفرع مؤشر متحرك على كوميت؛ يسمح بتطوير ميزة بمعزل عن `main` ثم دمجها.",
         "مثال:\n`git switch -c feature/login\ngit commit -m \"add login\"\ngit switch main\ngit merge feature/login`",
         "خطأ شائع: الدمج بلا تحديث `main` أولًا أو بلا اختبار — فتظهر تعارضات متأخرة أو عطل في الفرع الرئيسي."
+      ],
+      "examples": [
+        {
+          "lang": "shell",
+          "code": "git switch -c feature/login",
+          "expected": "إنشاء فرع feature/login والانتقال إليه",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ],
+      "examplesGeneratedBy": "Zahra AI / Arena",
+      "examplesReviewStatus": "owner-waived-no-human-review"
+    },
+    {
+      "id": "prog-loop",
+      "pack": "seed-programming",
+      "title": "ما هي الحلقة التكرارية (Loop)؟",
+      "intent": "define_word",
+      "tags": [
+        "loop",
+        "for",
+        "حلقة",
+        "تكرار"
+      ],
+      "source": {
+        "name": "Python Documentation — reference only",
+        "url": "https://docs.python.org/3/tutorial/controlflow.html#for-statements",
+        "license": "PSF-2.0; reference only, no text copied",
+        "location": "Official documentation; generated explanation is not copied"
+      },
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "إيه هي الحلقة التكرارية (loop)؟",
+        "اكتب حلقة بايثون تطبع الأرقام من ١ إلى ١٠",
+        "اشرح ما هي الحلقة التكرارية (Loop)",
+        "ما المقصود بـ ما هي الحلقة التكرارية (Loop)؟",
+        "what is loop",
+        "eih loop ya3ni"
+      ],
+      "a": [
+        "الحلقة تكرر كتلة أوامر وفق عدد مرات أو شرط، وتوقفها نقطة خروج واضحة.",
+        "مثال Python يطبع من 1 إلى 10:\n```python\nfor i in range(1, 11):\n    print(i)\n```",
+        "الناتج: الأعداد 1 إلى 10 كل رقم بسطر. خطأ شائع: استخدام range(1, 10) وتوقع ظهور 10؛ النهاية غير مشمولة."
+      ],
+      "examples": [
+        {
+          "lang": "python",
+          "code": "for i in range(1, 11):\n    print(i)",
+          "expected": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "prog-python-dict",
+      "pack": "seed-programming",
+      "title": "ما هو القاموس (dict) في Python؟",
+      "intent": "define_word",
+      "tags": [
+        "python",
+        "dict",
+        "قاموس",
+        "key",
+        "value"
+      ],
+      "source": {
+        "name": "Python Documentation — reference only",
+        "url": "https://docs.python.org/3/",
+        "license": "PSF-2.0; reference only, no text copied",
+        "location": "Official documentation; generated explanation is not copied"
+      },
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "إيه هو الديكشنري في بايثون؟",
+        "اشرح ما هو القاموس (dict) في Python",
+        "ما المقصود بـ ما هو القاموس (dict) في Python؟",
+        "what is python",
+        "eih python ya3ni"
+      ],
+      "a": [
+        "القاموس بنية تخزن أزواج مفتاح وقيمة؛ الوصول يكون بالمفتاح لا برقم الموضع.",
+        "مثال:\n```python\nuser = {\"name\": \"Mona\", \"age\": 20}\nprint(user[\"name\"])\n```",
+        "الناتج: Mona. خطأ شائع: طلب مفتاح غير موجود مباشرة؛ استخدم get أو تحقق من وجود المفتاح."
+      ],
+      "examples": [
+        {
+          "lang": "python",
+          "code": "user = {\"name\": \"Mona\", \"age\": 20}\nprint(user[\"name\"])",
+          "expected": "Mona",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "prog-exception",
+      "pack": "seed-programming",
+      "title": "ما هو الاستثناء (Exception)؟",
+      "intent": "define_word",
+      "tags": [
+        "python",
+        "exception",
+        "استثناء",
+        "خطأ"
+      ],
+      "source": {
+        "name": "Python Documentation — reference only",
+        "url": "https://docs.python.org/3/",
+        "license": "PSF-2.0; reference only, no text copied",
+        "location": "Official documentation; generated explanation is not copied"
+      },
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "إيه هو الاستثناء Exception؟",
+        "اشرح ما هو الاستثناء (Exception)",
+        "ما المقصود بـ ما هو الاستثناء (Exception)؟",
+        "what is python",
+        "eih python ya3ni"
+      ],
+      "a": [
+        "الاستثناء إشارة وقت التشغيل إلى أن العملية لم تكتمل بالطريقة المعتادة؛ يمكن التعامل مع نوع متوقع منه.",
+        "مثال:\n```python\ntry:\n    value = int(\"x\")\nexcept ValueError:\n    print(\"قيمة غير رقمية\")\n```",
+        "الناتج: قيمة غير رقمية. خطأ شائع: except عام يخفي أخطاء غير متوقعة بدل معالجة الاستثناء المحدد."
+      ],
+      "examples": [
+        {
+          "lang": "python",
+          "code": "try:\n    value = int(\"x\")\nexcept ValueError:\n    print(\"قيمة غير رقمية\")",
+          "expected": "قيمة غير رقمية",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "prog-http-https",
+      "pack": "seed-programming",
+      "title": "ما الفرق بين HTTP وHTTPS؟",
+      "intent": "define_word",
+      "tags": [
+        "http",
+        "https",
+        "TLS",
+        "شبكة"
+      ],
+      "source": {
+        "name": "MDN Web Docs — reference only",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview",
+        "license": "CC-BY-SA-2.5-or-later; reference only, no text copied",
+        "location": "Official documentation; generated explanation is not copied"
+      },
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "ايه الفرق بين HTTP وHTTPS",
+        "ما الفرق بين HTTP وHTTPS؟",
+        "what is the difference between HTTP and HTTPS",
+        "eh el far2 been http w https",
+        "اشرح ما الفرق بين HTTP وHTTPS",
+        "ما المقصود بـ ما الفرق بين HTTP وHTTPS؟",
+        "what is http",
+        "eih http ya3ni"
+      ],
+      "a": [
+        "HTTP بروتوكول طلب واستجابة للويب. HTTPS هو HTTP فوق اتصال TLS، فيحمي النقل ويتيح التحقق من هوية الخادم بالشهادة.",
+        "مثال عنوان:\n```text\nhttps://example.com/\n```",
+        "المتصفح يتفاوض على TLS قبل تبادل طلب HTTP. وجود HTTPS لا يثبت أن محتوى الموقع صادق أو آمن من كل تهديد."
+      ],
+      "examples": [
+        {
+          "lang": "text",
+          "code": "https://example.com/",
+          "expected": "HTTPS scheme",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "prog-binary-search",
+      "pack": "seed-programming",
+      "title": "كيف يعمل البحث الثنائي؟",
+      "intent": "define_word",
+      "tags": [
+        "binary search",
+        "بحث ثنائي",
+        "خوارزمية",
+        "ترتيب"
+      ],
+      "source": {
+        "name": "Python Documentation — reference only",
+        "url": "https://docs.python.org/3/",
+        "license": "PSF-2.0; reference only, no text copied",
+        "location": "Official documentation; generated explanation is not copied"
+      },
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "إزاي بيشتغل البحث الثنائي binary search؟",
+        "اشرح كيف يعمل البحث الثنائي",
+        "ما المقصود بـ كيف يعمل البحث الثنائي؟",
+        "what is binary search",
+        "eih binary search ya3ni"
+      ],
+      "a": [
+        "البحث الثنائي يجد قيمة في قائمة مرتبة بتقسيم مجال البحث إلى النصف كل مرة؛ زمنه O(log n).",
+        "مثال Python:\n```python\ndef binary_search(a, target):\n    lo, hi = 0, len(a) - 1\n    while lo <= hi:\n        mid = (lo + hi) // 2\n        if a[mid] == target: return mid\n        if a[mid] < target: lo = mid + 1\n        else: hi = mid - 1\n    return -1\nprint(binary_search([1, 4, 7, 9], 7))\n```",
+        "الناتج: 2. خطأ شائع: تشغيله على بيانات غير مرتبة أو تحديث الحد إلى mid بدل mid±1."
+      ],
+      "examples": [
+        {
+          "lang": "python",
+          "code": "def binary_search(a, target):\n    lo, hi = 0, len(a) - 1\n    while lo <= hi:\n        mid = (lo + hi) // 2\n        if a[mid] == target: return mid\n        if a[mid] < target: lo = mid + 1\n        else: hi = mid - 1\n    return -1\nprint(binary_search([1, 4, 7, 9], 7))",
+          "expected": "2",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "prog-stack-queue",
+      "pack": "seed-programming",
+      "title": "ما الفرق بين Stack وQueue؟",
+      "intent": "define_word",
+      "tags": [
+        "stack",
+        "queue",
+        "LIFO",
+        "FIFO",
+        "مكدس",
+        "طابور"
+      ],
+      "source": {
+        "name": "Python Documentation — reference only",
+        "url": "https://docs.python.org/3/",
+        "license": "PSF-2.0; reference only, no text copied",
+        "location": "Official documentation; generated explanation is not copied"
+      },
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "إيه الفرق بين Stack وQueue؟",
+        "اشرح ما الفرق بين Stack وQueue",
+        "ما المقصود بـ ما الفرق بين Stack وQueue؟",
+        "what is stack",
+        "eih stack ya3ni"
+      ],
+      "a": [
+        "Stack يعمل بمبدأ آخر داخل أول خارج (LIFO)، أما Queue فيعمل بأول داخل أول خارج (FIFO).",
+        "مثال Python:\n```python\nstack = [1, 2]; stack.append(3); print(stack.pop())\nfrom collections import deque\nq = deque([1, 2]); q.append(3); print(q.popleft())\n```",
+        "الناتج: 3 ثم 1. خطأ شائع: الخلط بين pop من نهاية القائمة وpopleft من بداية الطابور."
+      ],
+      "examples": [
+        {
+          "lang": "python",
+          "code": "stack = [1, 2]\nstack.append(3)\nprint(stack.pop())\nfrom collections import deque\nq = deque([1, 2])\nq.append(3)\nprint(q.popleft())",
+          "expected": "3\n1",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "prog-compiler-interpreter",
+      "pack": "seed-programming",
+      "title": "ما الفرق بين Compiler وInterpreter؟",
+      "intent": "define_word",
+      "tags": [
+        "compiler",
+        "interpreter",
+        "مترجم",
+        "مفسر"
+      ],
+      "source": {
+        "name": "MDN Web Docs — reference only",
+        "url": "https://developer.mozilla.org/",
+        "license": "CC-BY-SA-2.5-or-later; reference only, no text copied",
+        "location": "Official documentation; generated explanation is not copied"
+      },
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "إيه الفرق بين compiler وinterpreter؟",
+        "اشرح ما الفرق بين Compiler وInterpreter",
+        "ما المقصود بـ ما الفرق بين Compiler وInterpreter؟",
+        "what is compiler",
+        "eih compiler ya3ni"
+      ],
+      "a": [
+        "الـ compiler يحول البرنامج أو أجزاء منه قبل تشغيلها إلى صيغة أخرى؛ والـ interpreter ينفذ التعليمات عبر بيئة تشغيل.",
+        "مثال توضيحي:\n```text\nsource code → compiler → executable\nsource code → interpreter → execution\n```",
+        "الواقع قد يجمع ترجمة مسبقة ووقت تشغيل افتراضيًا (مثل JVM)، لذلك لا ينطبق الفصل الثنائي على كل لغة."
+      ],
+      "examples": [
+        {
+          "lang": "text",
+          "code": "source code -> compiler -> executable\nsource code -> interpreter -> execution",
+          "expected": "مساران توضيحيان؛ التنفيذ يختلف باختلاف اللغة",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "prog-python-len",
+      "pack": "seed-programming",
+      "title": "ماذا تفعل الدالة len في Python؟",
+      "intent": "define_word",
+      "tags": [
+        "python",
+        "len",
+        "طول",
+        "قائمة",
+        "نص"
+      ],
+      "source": {
+        "name": "Python Documentation — reference only",
+        "url": "https://docs.python.org/3/",
+        "license": "PSF-2.0; reference only, no text copied",
+        "location": "Official documentation; generated explanation is not copied"
+      },
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "دالة len في بايثون بتعمل إيه؟",
+        "اشرح ماذا تفعل الدالة len في Python",
+        "ما المقصود بـ ماذا تفعل الدالة len في Python؟",
+        "what is python",
+        "eih python ya3ni"
+      ],
+      "a": [
+        "len(x) تعيد عدد عناصر كائن له طول، مثل عناصر قائمة أو عدد محارف النص وفق وحدات Unicode في Python.",
+        "مثال:\n```python\nprint(len([4, 5, 6]))\nprint(len(\"cat\"))\n```",
+        "الناتج: 3 ثم 3. خطأ شائع: توقع عدد البايتات؛ للنص المرمز استخدم len(text.encode('utf-8'))."
+      ],
+      "examples": [
+        {
+          "lang": "python",
+          "code": "print(len([4, 5, 6]))\nprint(len(\"cat\"))",
+          "expected": "3\n3",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "prog-python-add",
+      "pack": "seed-programming",
+      "title": "دالة Python لجمع رقمين",
+      "intent": "request_code",
+      "tags": [
+        "python",
+        "جمع",
+        "دالة",
+        "function",
+        "addition"
+      ],
+      "source": {
+        "name": "Python Documentation — reference only",
+        "url": "https://docs.python.org/3/",
+        "license": "PSF-2.0; reference only, no text copied",
+        "location": "Official documentation; generated explanation is not copied"
+      },
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "اكتبلي دالة تجمع رقمين",
+        "اكتب دالة بايثون تجمع رقمين",
+        "write a Python function to add two numbers",
+        "e3mel function tegma3 ra2meen",
+        "اشرح دالة Python لجمع رقمين",
+        "ما المقصود بـ دالة Python لجمع رقمين؟",
+        "what is python",
+        "eih python ya3ni"
+      ],
+      "a": [
+        "الدالة تستقبل قيمتين وتعيد مجموعهما؛ لا تطبع النتيجة بدل إرجاعها إذا كان المطلوب إعادة قيمة.",
+        "```python\ndef add(a, b):\n    return a + b\nprint(add(2, 3))\n```",
+        "الناتج: 5. خطأ شائع: استخدام نصوص بدل أرقام؛ حوّل المدخلات إلى int أو float عند الحاجة."
+      ],
+      "examples": [
+        {
+          "lang": "python",
+          "code": "def add(a, b):\n    return a + b\nprint(add(2, 3))",
+          "expected": "5",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "prog-python-even",
+      "pack": "seed-programming",
+      "title": "التحقق من زوجية عدد في Python",
+      "intent": "request_code",
+      "tags": [
+        "python",
+        "زوجي",
+        "even",
+        "modulo"
+      ],
+      "source": {
+        "name": "Python Documentation — reference only",
+        "url": "https://docs.python.org/3/",
+        "license": "PSF-2.0; reference only, no text copied",
+        "location": "Official documentation; generated explanation is not copied"
+      },
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "اكتب دالة تتحقق إذا كان الرقم زوجيًا",
+        "اشرح التحقق من زوجية عدد في Python",
+        "ما المقصود بـ التحقق من زوجية عدد في Python؟",
+        "what is python",
+        "eih python ya3ni"
+      ],
+      "a": [
+        "العدد زوجي إذا كان باقي قسمته على 2 يساوي صفرًا؛ ويعمل العامل % مع الأعداد الصحيحة.",
+        "```python\ndef is_even(n):\n    return n % 2 == 0\nprint(is_even(8))\n```",
+        "الناتج: True. خطأ شائع: اختبار القسمة العشرية بدل باقي القسمة."
+      ],
+      "examples": [
+        {
+          "lang": "python",
+          "code": "def is_even(n):\n    return n % 2 == 0\nprint(is_even(8))",
+          "expected": "True",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "prog-python-read-file",
+      "pack": "seed-programming",
+      "title": "قراءة ملف نصي في Python",
+      "intent": "request_code",
+      "tags": [
+        "python",
+        "قراءة",
+        "ملف",
+        "read text file"
+      ],
+      "source": {
+        "name": "Python Documentation — reference only",
+        "url": "https://docs.python.org/3/",
+        "license": "PSF-2.0; reference only, no text copied",
+        "location": "Official documentation; generated explanation is not copied"
+      },
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "اكتبلي كود بايثون يقرأ ملف",
+        "اكتب كود بايثون يقرأ ملفًا نصيًا",
+        "اكتب كود بايثون يقرأ محتوى ملف نصي",
+        "read a text file in Python",
+        "اقرأ فايل ببايثون",
+        "اشرح قراءة ملف نصي في Python",
+        "ما المقصود بـ قراءة ملف نصي في Python؟",
+        "what is python",
+        "eih python ya3ni"
+      ],
+      "a": [
+        "افتح الملف داخل with لتضمن إغلاقه بعد القراءة؛ حدد الترميز إذا كان الملف نصًا عربيًا.",
+        "```python\nfrom pathlib import Path\ntext = Path(\"notes.txt\").read_text(encoding=\"utf-8\")\nprint(text)\n```",
+        "الناتج هو محتوى notes.txt سطرًا بسطر؛ يلزم وجود الملف. خطأ شائع: افتراض المسار الحالي أو ترميز النظام."
+      ],
+      "examples": [
+        {
+          "lang": "python",
+          "code": "from pathlib import Path\ntext = Path(\"notes.txt\").read_text(encoding=\"utf-8\")\nprint(text)",
+          "expected": "محتوى الملف notes.txt (إذا كان موجودًا)",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "prog-sql-select",
+      "pack": "seed-programming",
+      "title": "استعلام SQL لجلب كل المستخدمين",
+      "intent": "request_code",
+      "tags": [
+        "sql",
+        "SELECT",
+        "users",
+        "استعلام"
+      ],
+      "source": {
+        "name": "MDN Web Docs — reference only",
+        "url": "https://developer.mozilla.org/",
+        "license": "CC-BY-SA-2.5-or-later; reference only, no text copied",
+        "location": "Official documentation; generated explanation is not copied"
+      },
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "اكتب استعلام SQL يجيب كل المستخدمين من جدول users",
+        "اشرح استعلام SQL لجلب كل المستخدمين",
+        "ما المقصود بـ استعلام SQL لجلب كل المستخدمين؟",
+        "what is sql",
+        "eih sql ya3ni"
+      ],
+      "a": [
+        "SELECT * يطلب كل الأعمدة من الصفوف المحددة؛ لا يستخدم إلا إذا كنت تحتاج فعلًا كل الأعمدة.",
+        "```sql\nSELECT * FROM users;\n```",
+        "يعيد كل صفوف جدول users. خطأ شائع: نسيان شرط WHERE عندما تريد مجموعة فرعية."
+      ],
+      "examples": [
+        {
+          "lang": "sql",
+          "code": "SELECT * FROM users;",
+          "expected": "كل صفوف جدول users (حسب بيانات قاعدة البيانات)",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "prog-python-reverse",
+      "pack": "seed-programming",
+      "title": "عكس نص في Python",
+      "intent": "request_code",
+      "tags": [
+        "python",
+        "عكس",
+        "نص",
+        "reverse string"
+      ],
+      "source": {
+        "name": "Python Documentation — reference only",
+        "url": "https://docs.python.org/3/",
+        "license": "PSF-2.0; reference only, no text copied",
+        "location": "Official documentation; generated explanation is not copied"
+      },
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "اكتب دالة تعكس نصًا في بايثون",
+        "اشرح عكس نص في Python",
+        "ما المقصود بـ عكس نص في Python؟",
+        "what is python",
+        "eih python ya3ni"
+      ],
+      "a": [
+        "التقطيع text[::-1] يعيد نسخة معكوسة من النص من منظور ترتيب نقاط Unicode في Python.",
+        "```python\nprint(\"zahra\"[::-1])\n```",
+        "الناتج: arhaz. قد لا يعكس هذا الحروف المركبة/الرموز التعبيرية كوحدات مرئية كاملة."
+      ],
+      "examples": [
+        {
+          "lang": "python",
+          "code": "print(\"zahra\"[::-1])",
+          "expected": "arhaz",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "prog-python-except",
+      "pack": "seed-programming",
+      "title": "معالجة القسمة على صفر في Python",
+      "intent": "request_code",
+      "tags": [
+        "python",
+        "try",
+        "except",
+        "قسمة",
+        "خطأ"
+      ],
+      "source": {
+        "name": "Python Documentation — reference only",
+        "url": "https://docs.python.org/3/",
+        "license": "PSF-2.0; reference only, no text copied",
+        "location": "Official documentation; generated explanation is not copied"
+      },
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "اكتب try/except للتعامل مع خطأ القسمة على صفر",
+        "اشرح معالجة القسمة على صفر في Python",
+        "ما المقصود بـ معالجة القسمة على صفر في Python؟",
+        "what is python",
+        "eih python ya3ni"
+      ],
+      "a": [
+        "التقط ZeroDivisionError حول العملية المحتمل فشلها، وأعد رسالة مفهومة بدل تجاهل الخطأ.",
+        "```python\ntry:\n    print(10 / 0)\nexcept ZeroDivisionError:\n    print(\"لا يمكن القسمة على صفر\")\n```",
+        "الناتج: لا يمكن القسمة على صفر. خطأ شائع: except: بلا نوع أو إخفاء الخطأ بصمت."
+      ],
+      "examples": [
+        {
+          "lang": "python",
+          "code": "try:\n    print(10 / 0)\nexcept ZeroDivisionError:\n    print(\"لا يمكن القسمة على صفر\")",
+          "expected": "لا يمكن القسمة على صفر",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "prog-python-car",
+      "pack": "seed-programming",
+      "title": "إنشاء Class باسم Car في Python",
+      "intent": "request_code",
+      "tags": [
+        "python",
+        "class",
+        "Car",
+        "كائن",
+        "فئة"
+      ],
+      "source": {
+        "name": "Python Documentation — reference only",
+        "url": "https://docs.python.org/3/",
+        "license": "PSF-2.0; reference only, no text copied",
+        "location": "Official documentation; generated explanation is not copied"
+      },
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "اكتب كلاس بسيط في بايثون باسم Car",
+        "اشرح إنشاء Class باسم Car في Python",
+        "ما المقصود بـ إنشاء Class باسم Car في Python؟",
+        "what is python",
+        "eih python ya3ni"
+      ],
+      "a": [
+        "class يعرّف نوعًا؛ __init__ يهيّئ خصائص كل نسخة، وself تشير للنسخة الحالية.",
+        "```python\nclass Car:\n    def __init__(self, brand):\n        self.brand = brand\ncar = Car(\"Nile\")\nprint(car.brand)\n```",
+        "الناتج: Nile. خطأ شائع: حذف self من تعريف method عادية."
+      ],
+      "examples": [
+        {
+          "lang": "python",
+          "code": "class Car:\n    def __init__(self, brand):\n        self.brand = brand\ncar = Car(\"Nile\")\nprint(car.brand)",
+          "expected": "Nile",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "prog-python-factorial",
+      "pack": "seed-programming",
+      "title": "حساب المضروب (factorial) في Python",
+      "intent": "request_code",
+      "tags": [
+        "python",
+        "factorial",
+        "مضروب",
+        "loop"
+      ],
+      "source": {
+        "name": "Python Documentation — reference only",
+        "url": "https://docs.python.org/3/",
+        "license": "PSF-2.0; reference only, no text copied",
+        "location": "Official documentation; generated explanation is not copied"
+      },
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "اكتب دالة تحسب مضروب عدد (factorial)",
+        "اشرح حساب المضروب (factorial) في Python",
+        "ما المقصود بـ حساب المضروب (factorial) في Python؟",
+        "what is python",
+        "eih python ya3ni"
+      ],
+      "a": [
+        "مضروب n هو حاصل ضرب الأعداد الصحيحة من 1 إلى n، وتعريف 0! يساوي 1.",
+        "```python\ndef factorial(n):\n    if n < 0: raise ValueError(\"n must be non-negative\")\n    result = 1\n    for k in range(2, n + 1): result *= k\n    return result\nprint(factorial(5))\n```",
+        "الناتج: 120. خطأ شائع: نسيان حالة الصفر أو قبول عدد سالب."
+      ],
+      "examples": [
+        {
+          "lang": "python",
+          "code": "def factorial(n):\n    if n < 0: raise ValueError(\"n must be non-negative\")\n    result = 1\n    for k in range(2, n + 1): result *= k\n    return result\nprint(factorial(5))",
+          "expected": "120",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "prog-python-json",
+      "pack": "seed-programming",
+      "title": "قراءة JSON في Python",
+      "intent": "request_code",
+      "tags": [
+        "python",
+        "json",
+        "قراءة",
+        "parse"
+      ],
+      "source": {
+        "name": "Python Documentation — reference only",
+        "url": "https://docs.python.org/3/",
+        "license": "PSF-2.0; reference only, no text copied",
+        "location": "Official documentation; generated explanation is not copied"
+      },
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "إزاي تقرأ JSON في بايثون؟",
+        "اشرح قراءة JSON في Python",
+        "ما المقصود بـ قراءة JSON في Python؟",
+        "what is python",
+        "eih python ya3ni"
+      ],
+      "a": [
+        "مكتبة json القياسية تحوّل JSON إلى أنواع Python؛ json.loads للنص وjson.load لملف مفتوح.",
+        "```python\nimport json\nobj = json.loads('{\"name\": \"Mona\"}')\nprint(obj[\"name\"])\n```",
+        "الناتج: Mona. خطأ شائع: استخدام eval بدل json.loads على مدخل غير موثوق."
+      ],
+      "examples": [
+        {
+          "lang": "python",
+          "code": "import json\nobj = json.loads('{\"name\": \"Mona\"}')\nprint(obj[\"name\"])",
+          "expected": "Mona",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "prog-python-syntax",
+      "pack": "seed-programming",
+      "title": "تشخيص خطأ SyntaxError في Python",
+      "intent": "request_code",
+      "tags": [
+        "python",
+        "SyntaxError",
+        "syntax",
+        "قوس",
+        "debug"
+      ],
+      "source": {
+        "name": "Python Documentation — reference only",
+        "url": "https://docs.python.org/3/",
+        "license": "PSF-2.0; reference only, no text copied",
+        "location": "Official documentation; generated explanation is not copied"
+      },
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "الكود ده بيطلع خطأ SyntaxError: print('hi' — إيه المشكلة؟",
+        "اشرح تشخيص خطأ SyntaxError في Python",
+        "ما المقصود بـ تشخيص خطأ SyntaxError في Python؟",
+        "what is python",
+        "eih python ya3ni"
+      ],
+      "a": [
+        "SyntaxError يعني أن صياغة الشيفرة لا تطابق قواعد Python؛ افحص موضع المؤشر والأسطر القريبة.",
+        "```python\nprint('hi')\n```",
+        "الناتج: hi. في `print('hi'` ينقص قوس الإغلاق `)`؛ لا يكفي التخمين دون قراءة رسالة المفسر."
+      ],
+      "examples": [
+        {
+          "lang": "python",
+          "code": "print('hi')",
+          "expected": "hi",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "prog-react",
+      "pack": "seed-programming",
+      "title": "ما هي React؟",
+      "intent": "define_word",
+      "tags": [
+        "react",
+        "javascript",
+        "واجهة",
+        "component",
+        "مكوّن"
+      ],
+      "source": {
+        "name": "MDN Web Docs — reference only",
+        "url": "https://developer.mozilla.org/",
+        "license": "CC-BY-SA-2.5-or-later; reference only, no text copied",
+        "location": "Official documentation; generated explanation is not copied"
+      },
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "اشرح لي React",
+        "ما هي React؟",
+        "what is React",
+        "react ya3ni eh",
+        "اشرح ما هي React",
+        "ما المقصود بـ ما هي React؟",
+        "what is react",
+        "eih react ya3ni"
+      ],
+      "a": [
+        "React مكتبة JavaScript لبناء واجهات المستخدم من مكونات؛ يصف المطور الواجهة انطلاقًا من الحالة والخصائص.",
+        "مثال مكوّن:\n```jsx\nfunction Greeting({ name }) {\n  return <h1>Hello, {name}</h1>;\n}\n```",
+        "الاستخدام: تقسيم صفحة إلى مكونات قابلة لإعادة الاستخدام. خطأ شائع: تعديل state مباشرة بدل setter المخصص مثل useState."
+      ],
+      "examples": [
+        {
+          "lang": "jsx",
+          "code": "function Greeting({ name }) { return <h1>Hello, {name}</h1>; }",
+          "expected": "المكوّن يعرض Hello, Mona عند تمرير name=\"Mona\"",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "prog-ai-learning",
+      "pack": "seed-programming",
+      "title": "مسار عملي لتعلم الذكاء الاصطناعي",
+      "intent": "query_knowledge",
+      "tags": [
+        "ذكاء اصطناعي",
+        "تعلم",
+        "Python",
+        "machine learning"
+      ],
+      "source": null,
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "ازاي اتعلم الذكاء الاصطناعي",
+        "اشرح مسار عملي لتعلم الذكاء الاصطناعي",
+        "ما المقصود بـ مسار عملي لتعلم الذكاء الاصطناعي؟",
+        "what is ذكاء اصطناعي",
+        "eih ذكاء اصطناعي ya3ni"
+      ],
+      "a": [
+        "ابدأ بأساسيات Python والاحتمالات والجبر الخطي، ثم تعلم معالجة البيانات وتقييم نموذج بسيط قبل الانتقال إلى الشبكات العصبية.",
+        "خطة مشروع صغير:\n```text\n1) حمّل بيانات عامة مرخصة\n2) افصل train/test\n3) درّب baseline\n4) قِس على test لم يُستخدم في الضبط\n```",
+        "مثال أول: مصنف يفرز رسائلًا إلى فئتين باستخدام بيانات تعليمية مرخصة. لا تبدأ بنسخ بيانات أشخاص أو نشر نموذج قبل فهم الترخيص والخصوصية."
+      ],
+      "examples": [
+        {
+          "lang": "text",
+          "code": "train -> baseline -> held-out evaluation",
+          "expected": "تقييم مستقل بعد ضبط النموذج",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
+      ]
+    },
+    {
+      "id": "prog-site-roadmap",
+      "pack": "seed-programming",
+      "title": "كيف أبدأ إنشاء موقع ويب؟",
+      "intent": "query_knowledge",
+      "tags": [
+        "html",
+        "css",
+        "javascript",
+        "موقع",
+        "ويب"
+      ],
+      "source": {
+        "name": "MDN Web Docs — reference only",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development",
+        "license": "CC-BY-SA-2.5-or-later; reference only, no text copied",
+        "location": "Official documentation; generated explanation is not copied"
+      },
+      "authored": true,
+      "author": "Zahra AI — مولّد بموافقة مالك المشروع وفق D31؛ دون مراجعة بشرية",
+      "generatedBy": "Zahra AI / Arena",
+      "reviewStatus": "owner-waived-no-human-review",
+      "contentLicense": "CC-BY-SA-4.0",
+      "verifiedAt": "2026-10-29",
+      "verifiedBy": "automatic schema/content-shape date only; facts not checked",
+      "safety": "none",
+      "weight": 1.0,
+      "q": [
+        "ازاي اعمل موقع",
+        "اشرح كيف أبدأ إنشاء موقع ويب",
+        "ما المقصود بـ كيف أبدأ إنشاء موقع ويب؟",
+        "what is html",
+        "eih html ya3ni"
+      ],
+      "a": [
+        "ابنِ صفحة صغيرة: HTML للمحتوى، CSS للتنسيق، JavaScript للتفاعل؛ ثم اختبرها في المتصفح وأضف احتياجات الخادم عند الحاجة.",
+        "ملف HTML بسيط:\n```html\n<!doctype html>\n<html lang=\"ar\"><meta charset=\"utf-8\"><title>أول صفحة</title>\n<body><h1>مرحبًا</h1></body></html>\n```",
+        "افتح الملف في متصفح محلي. خطأ شائع: إدخال كلمات مرور أو مفاتيح سرية في JavaScript الذي يصل إلى المتصفح."
+      ],
+      "examples": [
+        {
+          "lang": "html",
+          "code": "<!doctype html>\n<html lang=\"ar\"><meta charset=\"utf-8\"><title>أول صفحة</title>\n<body><h1>مرحبًا</h1></body></html>",
+          "expected": "صفحة تعرض عنوان مرحبًا",
+          "generatedBy": "Zahra AI / Arena",
+          "reviewStatus": "owner-waived-no-human-review"
+        }
       ]
     }
-  ]
+  ],
+  "generatedBy": "Zahra AI / Arena",
+  "reviewStatus": "owner-waived-no-human-review"
 }

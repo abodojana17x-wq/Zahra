@@ -2,13 +2,49 @@
   "schemaVersion": 1,
   "builderVersion": "1.0.0",
   "builtAt": "2026-10-29",
-  "units": 109,
-  "contentHash": "0765dd313a4a6e06611b34e6774d28cffd98e84ac339e083e366a16aeda9df7d",
-  "assetSha256": "3add5aef0b725a25e9f7b4afffb6985db6863e2018a149ee56ac4c61c5afab2a",
-  "assetBytes": 179882,
-  "avgDocLength": 80.367,
-  "bm25ref": 15.519413,
+  "units": 181,
+  "contentHash": "e282543a5674abee8462fce26a6e48c25b35bbe902d372955ce772dfdfe2e2af",
+  "assetSha256": "9e65df52f50f82c2bfd0557024419bbef810b6cb78cdeeb597436a917c7c6b24",
+  "assetBytes": 330947,
+  "avgDocLength": 87.8564,
+  "bm25ref": 24.906494,
   "packs": [
+    {
+      "pack": "code-snippets",
+      "version": "1.0.0",
+      "units": 6,
+      "license": "CC-BY-SA-4.0"
+    },
+    {
+      "pack": "daily-life",
+      "version": "1.0.0",
+      "units": 6,
+      "license": "CC-BY-SA-4.0"
+    },
+    {
+      "pack": "facts",
+      "version": "1.0.0",
+      "units": 4,
+      "license": "CC-BY-SA-4.0"
+    },
+    {
+      "pack": "health",
+      "version": "1.0.0",
+      "units": 4,
+      "license": "CC-BY-SA-4.0"
+    },
+    {
+      "pack": "money",
+      "version": "1.0.0",
+      "units": 5,
+      "license": "CC-BY-SA-4.0"
+    },
+    {
+      "pack": "religion",
+      "version": "1.0.0",
+      "units": 21,
+      "license": "CC-BY-SA-4.0"
+    },
     {
       "pack": "seed-dictionary",
       "version": "1.0.0",
@@ -29,9 +65,15 @@
     },
     {
       "pack": "seed-programming",
+      "version": "1.1.0",
+      "units": 46,
+      "license": "mixed-see-unit-sources-and-contentLicense"
+    },
+    {
+      "pack": "study",
       "version": "1.0.0",
-      "units": 25,
-      "license": "mixed-see-unit-sources"
+      "units": 5,
+      "license": "CC-BY-SA-4.0"
     }
   ],
   "howToRebuild": "python3 tools/build_index.py --build"
