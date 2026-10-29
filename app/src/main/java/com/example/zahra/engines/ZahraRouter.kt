@@ -16,6 +16,14 @@ import com.example.zahra.reasoning.*
 import com.example.zahra.understanding.*
 import com.example.zahra.intelligence.classifier.CalibratedClassifier
 import com.example.zahra.intelligence.execution.PlanExecutor
+import com.example.zahra.routing.DefaultRouter
+import com.example.zahra.routing.GateOutcome
+import com.example.zahra.routing.Intent
+import com.example.zahra.routing.KnowledgeState
+import com.example.zahra.routing.RoutingDecision
+import com.example.zahra.routing.RoutingEvidence
+import com.example.zahra.routing.Router
+import com.example.zahra.routing.ToolVerdict
 import com.example.zahra.intelligence.planner.StructuredTaskPlanner
 import com.example.zahra.intelligence.planner.StepExecutionStatus
 import org.json.JSONObject
@@ -41,6 +49,9 @@ import com.example.zahra.islamic.IslamicKnowledgeBase
 class ZahraRouter(private val context: Context) {
   val nbClassifier = NaiveBayesClassifier()
   val calibratedClassifier = CalibratedClassifier()
+
+  // Phase 1: طبقة التوجيه الموحّدة — تفصل قرار التوجيه عن التنفيذ.
+  val router: Router = DefaultRouter()
   val translationEngine = TranslationEngine(context)
   val religionEngine = ReligionEngine(context)
   val taskEngine = TaskEngine(context)
@@ -451,13 +462,14 @@ class ZahraRouter(private val context: Context) {
     val regexMatch = RegexMatcher.match(normalized)
     val intent: String
     var confidence: Double
+    var calibratedScore: CalibratedClassification? = null
 
     if (regexMatch != null) {
       intent = regexMatch.intent
       confidence = regexMatch.confidence
     } else {
       // 2. Naive Bayes Classifier (Priority 2) & Phase 5 Calibrated Classifier
-      val calibratedScore = calibratedClassifier.classify(clean)
+      calibratedScore = calibratedClassifier.classify(clean)
       val nbScore = nbClassifier.classify(normalized)
       if (calibratedScore.topProbability >= 0.50 && !calibratedScore.isAbstentionRecommended) {
         intent = calibratedScore.topIntent
@@ -551,9 +563,61 @@ class ZahraRouter(private val context: Context) {
       return ambigRes
     }
 
-    // Confidence gating: Below 0.35 triggers honest fallback
-    if (confidence < 0.35 && finalIntent == "unknown") {
-      return generateFallback(rawInput)
+    // Phase 1: قرار التوجيه الموحد — يُفصل عن التنفيذ ويُدمج في المسار الفعلي.
+    val classifierScores: Map<String, Double> =
+      (calibratedScore?.rankedProbabilities ?: calibratedClassifier.classify(clean).rankedProbabilities).toMap()
+
+    val knowledgeState: KnowledgeState? = when {
+      finalIntent == Intent.QUERY_KNOWLEDGE || finalIntent == Intent.DEFINE_WORD -> {
+        val searchTarget = if (adapted.coreQuery.isNotBlank() && (adapted.detectedDialect == "english" || adapted.detectedDialect == "egyptian_colloquial")) {
+          adapted.coreQuery
+        } else {
+          rawInput
+        }
+        val kRes = knowledgeEngine.query(searchTarget)
+        when (kRes.state) {
+          KnowledgeRetrievalState.VERIFIED_MATCH -> KnowledgeState.VERIFIED
+          KnowledgeRetrievalState.TRACEABLE_CANDIDATE -> KnowledgeState.CANDIDATE
+          KnowledgeRetrievalState.CONFLICTING_EVIDENCE -> KnowledgeState.CONFLICT
+          else -> KnowledgeState.INSUFFICIENT
+        }
+      }
+      else -> null
+    }
+
+    val routingEvidence = RoutingEvidence(
+      raw = rawInput,
+      normalized = normalized,
+      lang = langInfo,
+      intentLabel = finalIntent,
+      classifierConfidence = confidence,
+      scores = classifierScores,
+      knowledgeState = knowledgeState,
+      // الطلبات المحرومة تنتهي قبل هذه النقطة (انظر checkImpermissibleRequest أعلاه)
+      isImpermissible = false,
+      ambiguity = ambiguityCheck,
+      isSystemCommand = isSystemIntent(finalIntent)
+    )
+    val routingDecision = router.route(routingEvidence)
+
+    when (routingDecision.gate) {
+      GateOutcome.ABSTAIN -> {
+        val fallback = generateFallback(rawInput)
+        return fallback.copy(
+          evidenceTrace = fallback.evidenceTrace?.copy(
+            extractedEntities = mapOf("query" to clean, "traceId" to routingDecision.traceId)
+          )
+        )
+      }
+      GateOutcome.CLARIFY -> {
+        // يُستخدم فقط حين بقي كاشف الغموض الصامت (Clear) وقرّر الموجه التوضيح
+        if (ambiguityCheck is AmbiguityCheckResult.Clear) {
+          return buildRoutingClarification(rawInput, finalIntent, routingDecision)
+        }
+      }
+      GateOutcome.ANSWER -> {
+        // يستمر إلى تنفيذ الفروع أدناه حسب finalIntent
+      }
     }
 
     var responseText = ""
@@ -1309,7 +1373,7 @@ class ZahraRouter(private val context: Context) {
     val trace = EpistemicGroundingPipeline.buildTrace(
       rawRequest = rawInput,
       intent = finalIntent,
-      entities = mapOf("query" to clean),
+      entities = mapOf("query" to clean, "traceId" to routingDecision.traceId),
       appliedRules = listOf("rule_$finalIntent"),
       facts = groundedFacts,
       uncertainty = if (outcomeState != OutcomeState.SUPPORTED) listOf("درجة الثقة: ${(confidence * 100).toInt()}%") else emptyList(),
@@ -1375,6 +1439,70 @@ class ZahraRouter(private val context: Context) {
       // Safety fallback: if mood adaptation fails, return original response unchanged
       response
     }
+  }
+
+  /**
+   * Phase 1: رد توضيحي من قرار الموجه عندما تكون البوابة [GateOutcome.CLARIFY].
+   * البدائل مأخوذة من أعلى النيات الفعلية في قرار التوجيه، لا من كلمات عشوائية في السؤال.
+   */
+  private fun buildRoutingClarification(
+    rawInput: String,
+    finalIntent: String,
+    decision: RoutingDecision
+  ): ZahraResponse {
+    val options = decision.clarifyOptions.take(3)
+    val question = if (options.isNotEmpty()) {
+      "لم أستطع تحديد قصدك بدقة. تقصد واحدًا من التالي؟\n• " + options.joinToString("\n• ")
+    } else {
+      "مقصدك غير واضح، ولا توجد بدائل واضحة للاختيار من بينها. أعِد صياغة السؤال بطلب محدد (مثل: \"احسب 25 * 4\" أو \"مواقيت الصلاة اليوم\")."
+    }
+    val trace = EpistemicGroundingPipeline.buildTrace(
+      rawRequest = rawInput,
+      intent = finalIntent,
+      entities = mapOf("query" to normalizedAt(rawInput), "traceId" to decision.traceId),
+      appliedRules = listOf("rule_routing_clarify"),
+      facts = emptyList(),
+      uncertainty = listOf("نية غير واضحة: $finalIntent (الثقة ${(decision.confidence * 100).toInt()}%)"),
+      outcomeState = OutcomeState.AMBIGUOUS,
+      sourceDesc = "موجه زهرة الموحد — بوابة التوضيح"
+    )
+    val clar = com.example.zahra.model.ClarificationPayload(
+      question = question,
+      options = options.mapIndexed { i, opt ->
+        com.example.zahra.model.ClarificationOption(id = "clarify_$i", labelAr = opt, associatedQuery = opt)
+      },
+      originalQuery = rawInput,
+      reason = "نية غير واضحة أو عدة نيات محتملة (بوابة التوجيه: CLARIFY)"
+    )
+    val res = ZahraResponse(
+      text = question,
+      intent = finalIntent,
+      confidence = decision.confidence,
+      confidenceTier = ConfidenceTier.QUALIFIED,
+      outcomeState = OutcomeState.AMBIGUOUS,
+      source = "موجه زهرة الموحد (توثيق النية)",
+      followups = options,
+      clarification = clar,
+      evidenceTrace = trace
+    )
+    contextTracker.recordTurn(rawInput, res)
+    return applyMoodAdaptation(rawInput, res)
+  }
+
+  /** هل النية من أوامر النظام التي تُعالج بتنفيذ مباشر (مهام/ملاحظات/جدولة/ذاكرة/شخصية/تراجع). */
+  private fun isSystemIntent(intent: String): Boolean {
+    return listOf(
+      Intent.CREATE_TASK, Intent.LIST_TASKS, Intent.COMPLETE_TASK,
+      Intent.REMEMBER_NOTE, Intent.LIST_NOTES, Intent.DELETE_NOTE,
+      Intent.CREATE_SCHEDULE, Intent.LIST_SCHEDULES, Intent.CANCEL_SCHEDULE,
+      Intent.QUERY_MEMORY, Intent.FORGET_FACT, Intent.REMEMBER_FACT,
+      Intent.UPDATE_FACT, Intent.UNDO_ACTION, Intent.CHANGE_PERSONALITY,
+      Intent.COMPOUND_PLAN
+    ).contains(intent)
+  }
+
+  private fun normalizedAt(input: String): String {
+    return ZahraNormalizer.normalize(input)
   }
 
   private fun generateFallback(input: String): ZahraResponse {

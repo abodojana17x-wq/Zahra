@@ -17,6 +17,16 @@ class ResponseValidator {
     companion object {
         // Minimum response length
         private const val MIN_RESPONSE_LENGTH = 5
+
+        // أنماط ادعاء ذاكرة سابقة بدون turn حقيقي —階段 4 سيكمل المنع، وهذه الطبقة الأولى
+        private val FABRICATED_MEMORY_PATTERNS = listOf(
+            "ما زال في ذاكرتي",
+            "كما ذكرت سابقًا",
+            "كما أخبرتني",
+            "رقمي",
+            "هاتفي",
+            "عناوائي"
+        )
         
         // Maximum response length
         private const val MAX_RESPONSE_LENGTH = 2000
@@ -215,6 +225,17 @@ class ResponseValidator {
         return true
     }
     
+    /**
+     * حاجز ضد ادعاءات الذاكرة السابقة بدون turn حقيقي.
+     * يُعاد true إذا كان الرد آمنًا (لا ادعاءات ذاكرة مزيفة، أو أن هناك turn حقيقي يدعمها).
+     * المرحلة 4 ستكمل الربط بسجل turn الفعلي.
+     */
+    fun hasNoFabricatedMemoryClaims(response: com.example.zahra.model.ZahraResponse, hasRealTurn: Boolean): Boolean {
+        if (hasRealTurn) return true
+        val text = response.text.lowercase()
+        return !FABRICATED_MEMORY_PATTERNS.any { text.contains(it) }
+    }
+
     /**
      * Check if response is complete
      */

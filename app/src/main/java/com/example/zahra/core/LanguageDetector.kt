@@ -21,6 +21,15 @@ object LanguageDetector {
   private val FRENCH_ACCENTS = Regex("[éèêëàâçîïôûùüœæ]", RegexOption.IGNORE_CASE)
   private val FRENCH_STOPWORDS = Regex("\\b(le|la|les|un|une|des|du|de|et|est|en|que|qui|dans)\\b", RegexOption.IGNORE_CASE)
 
+  /**
+   * كشف لغة النص مع درجة ثقة موثقة المصدر، لا قرار Boolean فقط.
+   *
+   * مصادر الدرجات:
+   * - نسبة الحروف لكل خليط → المدى [0.7, 1.0] (نفس منطق الإصدار الحالي).
+   * - فرانكو: أنماط الأرقام-الحروف (2=ء, 3=ع, 5=خ, 7=ح, 8=غ, 9=ق) ومطابقات قاموس الفرانكو
+   *   (`ZahraNormalizer.FRANCO_LEXICON` / `FRANCO_PHRASES`، راجع `evidence/phase-01/research.md` المصدر 5).
+   *   الدرجة ترتفع مع عدد المطابقات حتى سقف 0.97؛ لا تُدعى الاحتمالية معايَرة.
+   */
   fun detect(text: String?): LangResult {
     if (text.isNullOrBlank()) {
       return LangResult(DetectedLang.UNKNOWN, "None", 0.0)
@@ -37,17 +46,20 @@ object LanguageDetector {
     val arRatio = arCount.toDouble() / total
     val latinRatio = latinCount.toDouble() / total
 
+    //schrift عربية غالبة
     if (arRatio > 0.75) {
       return LangResult(DetectedLang.AR, "Arabic", (0.7 + arRatio * 0.3).coerceAtMost(1.0))
     }
 
+    //schrift لاتينية غالبة
     if (latinRatio > 0.75) {
-      val francoKeywords = listOf("3amel", "ezayak", "shokran", "habibi", "enta", "ana", "saba7", "tamam", "keda", "khalas", "inshallah", "fakkarni", "jadwel", "mesh", "leh", "koll")
-      val hasFrancoDigits = Regex("""[a-zA-Z]+[235789]|[235789]+[a-zA-Z]+""").containsMatchIn(text)
-      val hasFrancoWords = francoKeywords.any { text.lowercase().contains(it) }
-
-      if (hasFrancoDigits || hasFrancoWords) {
-        return LangResult(DetectedLang.FRANCO, "Franco-Arabic", 0.92)
+      val signals = ZahraNormalizer.francoSignals(text)
+      if (signals.isFranco) {
+        return LangResult(
+          DetectedLang.FRANCO,
+          "Franco-Arabic",
+          signals.confidence.coerceAtMost(1.0)
+        )
       }
 
       val isFrench = FRENCH_ACCENTS.containsMatchIn(text) || FRENCH_STOPWORDS.containsMatchIn(text)
@@ -58,6 +70,13 @@ object LanguageDetector {
       )
     }
 
-    return LangResult(DetectedLang.MIXED, "Mixed", 0.6)
+    // خليط عربي + لاتيني
+    val signals = ZahraNormalizer.francoSignals(text)
+    val francoBoost = if (signals.isFranco) 0.1 else 0.0
+    return LangResult(
+      DetectedLang.MIXED,
+      "Mixed",
+      (0.6 + francoBoost).coerceAtMost(0.85)
+    )
   }
 }
