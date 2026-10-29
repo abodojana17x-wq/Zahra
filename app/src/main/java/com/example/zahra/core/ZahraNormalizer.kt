@@ -80,7 +80,15 @@ object ZahraNormalizer {
     // --- استفهام ---
     "ezay" to "ازاي", "ezzay" to "ازاي", "izzay" to "ازاي", "azay" to "ازاي",
     "ezayak" to "ازيك", "ezayek" to "ازيك", "akhbarak" to "اخبارك", "akhbarek" to "اخبارك",
-    "leh" to "ليه", "fein" to "فين", "fen" to "فين", "emta" to "متى", "emteh" to "متى",
+    "leh" to "ليه", "leeh" to "ليه", "fein" to "فين", "fen" to "فين", "emta" to "متى", "emteh" to "متى",
+    "ma3na" to "معنى", "ma3nah" to "معناه", "ma3naha" to "معناها",
+    // --- أدوات ربط وملء شائعة في الفرانكو (كانت تُترك لاتينية فتُشوّش المطابقة) ---
+    // ⚠️ لا نضيف كلمات إنجليزية شائعة (we/bel…) إلى القاموس: أي مطابقة واحدة تجعل النص «فرانكو»
+    // فتُستبدل كلمات إنجليزية سليمة. أُبقيت الأفعال والأدوات التي لا تلتبس بالإنجليزية.
+    "fel" to "في", "zabt" to "ضبط", "2awy" to "قوي", "2awya" to "قوية",
+    // --- أفعال ومفردات شائعة كانت ناقصة ---
+    "aktb" to "اكتب", "ara2eb" to "ارتب", "awlawyate" to "اولوياتي", "mizaneya" to "ميزانية",
+    "shahreya" to "شهرية", "ast3ed" to "استعد", "shoghl" to "شغل", "shoghlk" to "شغلك",
     "eh" to "ايه", "eih" to "ايه",
     // --- رغبة وحاجة ---
     "aez" to "عايز", "ayez" to "عايز", "ayeza" to "عايزه", "ayzeen" to "عايزين",
@@ -193,7 +201,7 @@ object ZahraNormalizer {
     FRANCO_PHRASES
       .sortedByDescending { it.first.length }
       .map { (from, to) ->
-        Regex("""\\b""" + Regex.escape(from) + """\\b""", RegexOption.IGNORE_CASE) to to
+        Regex("""\b""" + Regex.escape(from) + """\b""", RegexOption.IGNORE_CASE) to to
       }
   }
 
@@ -201,7 +209,7 @@ object ZahraNormalizer {
     FRANCO_LEXICON.entries
       .sortedByDescending { it.key.length }
       .map { entry ->
-        Regex("""\\b""" + Regex.escape(entry.key) + """\\b""", RegexOption.IGNORE_CASE) to entry.value
+        Regex("""\b""" + Regex.escape(entry.key) + """\b""", RegexOption.IGNORE_CASE) to entry.value
       }
   }
 

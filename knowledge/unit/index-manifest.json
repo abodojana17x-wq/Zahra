@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "builderVersion": "1.0.0",
+  "builtAt": "2026-10-29",
+  "units": 109,
+  "contentHash": "0765dd313a4a6e06611b34e6774d28cffd98e84ac339e083e366a16aeda9df7d",
+  "assetSha256": "3add5aef0b725a25e9f7b4afffb6985db6863e2018a149ee56ac4c61c5afab2a",
+  "assetBytes": 179882,
+  "avgDocLength": 80.367,
+  "bm25ref": 15.519413,
+  "packs": [
+    {
+      "pack": "seed-dictionary",
+      "version": "1.0.0",
+      "units": 51,
+      "license": "mixed-see-unit-sources"
+    },
+    {
+      "pack": "seed-legacy",
+      "version": "1.0.0",
+      "units": 21,
+      "license": "mixed-see-unit-sources"
+    },
+    {
+      "pack": "seed-practical",
+      "version": "1.0.0",
+      "units": 12,
+      "license": "mixed-see-unit-sources"
+    },
+    {
+      "pack": "seed-programming",
+      "version": "1.0.0",
+      "units": 25,
+      "license": "mixed-see-unit-sources"
+    }
+  ],
+  "howToRebuild": "python3 tools/build_index.py --build"
+}

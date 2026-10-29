@@ -1,0 +1,18 @@
+# الحالة السلبية — كلمات متشابهة ومعانٍ مختلفة.
+# forbidden: وحدات لا يجوز أن تكون أعلى نتيجة. strict=true: يُفحص الترتيب (top-1).
+# strict=false: تصادم معجمي حقيقي لا يحلّه بحث لفظي (D2 — المستوى A)؛ يُفحص عنده ألا تُقدَّم
+# الوحدة الممنوعة كإجابة (answered) بل يجب الامتناع. التفاصيل في evidence/phase-03/README.md.
+{"query": "python snake facts in the nile", "forbidden": ["prog-python-list-tuple", "prog-python-venv"], "strict": false, "note": "كلمة python نفسها لكن المقصود الحيوان لا لغة بايثون؛ يجب ألا يُقدَّم أي منهما كإجابة."}
+{"query": "java island population and volcanoes", "forbidden": ["prog-var-let-const", "prog-oop-class"], "strict": true, "note": "java هنا جزيرة إندونيسية لا لغة برمجة."}
+{"query": "أين أجد فهرس الكتاب في نهاية المجلد", "forbidden": ["prog-sql-index"], "strict": false, "note": "فهرس الكتاب لا فهرس قاعدة البيانات."}
+{"query": "ما معنى الصلاة على النبي", "forbidden": ["legacy-fiqh-3"], "strict": true, "note": "الصلاة على النبي لا مواقيت الصلوات الخمس."}
+{"query": "الشمس تشرق من الشرق كل صباح", "forbidden": ["dict-015"], "strict": true, "note": "جملة وصفية لا طلب ترجمة كلمة شمس."}
+{"query": "ما هو الكود الأخلاقي للمهندسين", "forbidden": ["prog-debug", "prog-html-css-js", "prog-var-let-const"], "strict": false, "note": "كود بمعنى مدونة سلوك لا شيفرة برمجية."}
+{"query": "مقام الرست في الموسيقى العربية", "forbidden": ["prog-rest"], "strict": true, "note": "الرست مقام موسيقي لا معمارية REST."}
+{"query": "المصادقة على العقد أمام المحكمة", "forbidden": ["prac-2fa"], "strict": false, "note": "مصادقة قانونية على عقد لا مصادقة ثنائية."}
+{"query": "الصيد الجائر يهدد الأسماك في البحر الأحمر", "forbidden": ["prac-phishing"], "strict": true, "note": "صيد الأسماك لا تصيد بيانات."}
+{"query": "فرع البنك القريب من البيت", "forbidden": ["prog-git-branch"], "strict": false, "note": "فرع مصرفي لا فرع Git."}
+{"query": "فلتر الكاميرا يغير ألوان الصورة", "forbidden": ["prog-map-filter"], "strict": true, "note": "فلتر بصري لا دالة filter."}
+{"query": "كيف أعالج ألم الأسنان في المنزل", "forbidden": ["prog-debug"], "strict": true, "note": "معالجة ألم جسدي لا تصحيح خطأ برمجي."}
+{"query": "كم عدد سور القرآن الكريم", "forbidden": ["legacy-quran-1-1", "legacy-quran-112-1", "legacy-quran-2-255"], "strict": true, "note": "سؤال عن العدد لا عن آية محددة."}
+{"query": "ما هي درجة غليان الماء على قمة إفرست", "forbidden": ["legacy-geo-01"], "strict": true, "note": "السؤال عن غليان الماء لا عن ارتفاع القمة."}

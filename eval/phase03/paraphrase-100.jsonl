@@ -1,0 +1,103 @@
+# مجموعة الصياغة — 100 استعلام × 5 أنواع (masri/fusha/franco/en/typo)
+# الحقول: query, expected (unit id), split (train|heldout), kind
+# القاعدة: train فقط يُستخدم لضبط الأوزان؛ heldout لا يُلمس في tools/phase03/tune_weights.py
+{"query": "3ayez a3raf eh el closure fel javascript", "expected": "prog-closure", "split": "train", "kind": "franco"}
+{"query": "ezay a-center el div bel css", "expected": "prog-css-center", "split": "train", "kind": "franco"}
+{"query": "eh el far2 bein var w let w const", "expected": "prog-var-let-const", "split": "heldout", "kind": "franco"}
+{"query": "ma3na el API eh", "expected": "prog-api", "split": "train", "kind": "franco"}
+{"query": "ezay a3mel password 2awy", "expected": "prac-strong-password", "split": "train", "kind": "franco"}
+{"query": "eh 2FA we leeh mohem", "expected": "prac-2fa", "split": "heldout", "kind": "franco"}
+{"query": "ezay a3raf resala phishing", "expected": "prac-phishing", "split": "train", "kind": "franco"}
+{"query": "3ayez a3mel backup lel malafat", "expected": "prac-backup-321", "split": "train", "kind": "franco"}
+{"query": "eh el branch fel git", "expected": "prog-git-branch", "split": "train", "kind": "franco"}
+{"query": "ezay ara2eb awlawyate fel youm", "expected": "prac-time-eisenhower", "split": "heldout", "kind": "franco"}
+{"query": "eh el index fel database", "expected": "prog-sql-index", "split": "train", "kind": "franco"}
+{"query": "el far2 bein sql w nosql eh", "expected": "prog-sql-nosql", "split": "heldout", "kind": "franco"}
+{"query": "ezay asta5dem pomodoro", "expected": "prac-pomodoro", "split": "train", "kind": "franco"}
+{"query": "eh ma3na debounce", "expected": "prog-debounce", "split": "train", "kind": "franco"}
+{"query": "el far2 bein map w filter w reduce", "expected": "prog-map-filter", "split": "heldout", "kind": "franco"}
+{"query": "3ayez anam kwayes ezay", "expected": "prac-sleep-hygiene", "split": "train", "kind": "franco"}
+{"query": "eh el mafhoom beta3 recursion", "expected": "prog-recursion", "split": "train", "kind": "franco"}
+{"query": "ezay aktb CV kwayes", "expected": "prac-cv", "split": "train", "kind": "franco"}
+{"query": "eh el virtualenv fel python", "expected": "prog-python-venv", "split": "heldout", "kind": "franco"}
+{"query": "el far2 bein commit w push", "expected": "prog-git-commit-push", "split": "train", "kind": "franco"}
+{"query": "eh ma3na big o", "expected": "prog-big-o", "split": "train", "kind": "franco"}
+{"query": "ezay a3mel mizaneya shahreya", "expected": "prac-budget-503020", "split": "heldout", "kind": "franco"}
+{"query": "eh el JSON bel zabt", "expected": "prog-json", "split": "train", "kind": "franco"}
+{"query": "el far2 bein frontend w backend", "expected": "prog-frontend-backend", "split": "train", "kind": "franco"}
+{"query": "ezay ast3ed le interview shoghl", "expected": "prac-interview", "split": "heldout", "kind": "franco"}
+{"query": "ازي اوسط ديف في css", "expected": "prog-css-center", "split": "train", "kind": "typo"}
+{"query": "ما معني ال closure", "expected": "prog-closure", "split": "train", "kind": "typo"}
+{"query": "الفرق بين list و tupel في بايثون", "expected": "prog-python-list-tuple", "split": "heldout", "kind": "typo"}
+{"query": "ازي اعمل باسورد قوى", "expected": "prac-strong-password", "split": "heldout", "kind": "typo"}
+{"query": "ما هو الاندكس في قاعده البيانات", "expected": "prog-sql-index", "split": "train", "kind": "typo"}
+{"query": "الفرق بين سيكوال و نوسيكوال", "expected": "prog-sql-nosql", "split": "train", "kind": "typo"}
+{"query": "ازاي اذاكر بفاعليه", "expected": "prac-active-recall", "split": "train", "kind": "typo"}
+{"query": "الحفض المتباعد يعني ايه", "expected": "prac-spaced-repetition", "split": "train", "kind": "typo"}
+{"query": "ما معني المفتاح الاساسي", "expected": "prog-primary-key", "split": "heldout", "kind": "typo"}
+{"query": "ايه هو الجيت", "expected": "prog-git", "split": "train", "kind": "typo"}
+{"query": "اكواد حالت اتش تي تي بي المهمه", "expected": "prog-http-status", "split": "heldout", "kind": "typo"}
+{"query": "كيف اعالج خطا برمجي", "expected": "prog-debug", "split": "train", "kind": "typo"}
+{"query": "قاعده 50 30 20 للميزانيه", "expected": "prac-budget-503020", "split": "train", "kind": "typo"}
+{"query": "طريقه كتابه السيره الذاتيه", "expected": "prac-cv", "split": "heldout", "kind": "typo"}
+{"query": "عادات النوم الصحيه", "expected": "prac-sleep-hygiene", "split": "train", "kind": "typo"}
+{"query": "ازي استعد لمقابله عمل", "expected": "prac-interview", "split": "train", "kind": "typo"}
+{"query": "ما هي المصادقة الثنائيه", "expected": "prac-2fa", "split": "train", "kind": "typo"}
+{"query": "كيف اتعرف على رساله تصيد", "expected": "prac-phishing", "split": "heldout", "kind": "typo"}
+{"query": "ما هو الداتا بيس", "expected": "prog-database", "split": "train", "kind": "typo"}
+{"query": "كيف اوسط عنصر في ال ccs", "expected": "prog-css-center", "split": "heldout", "kind": "typo"}
+{"query": "what is a closure in javascript", "expected": "prog-closure", "split": "train", "kind": "en"}
+{"query": "difference between let and const", "expected": "prog-var-let-const", "split": "train", "kind": "en"}
+{"query": "what does API mean", "expected": "prog-api", "split": "heldout", "kind": "en"}
+{"query": "what is REST", "expected": "prog-rest", "split": "train", "kind": "en"}
+{"query": "what is git", "expected": "prog-git", "split": "train", "kind": "en"}
+{"query": "difference between commit and push", "expected": "prog-git-commit-push", "split": "heldout", "kind": "en"}
+{"query": "how to center a div with css", "expected": "prog-css-center", "split": "train", "kind": "en"}
+{"query": "what is debouncing", "expected": "prog-debounce", "split": "train", "kind": "en"}
+{"query": "async await vs promises", "expected": "prog-async-await", "split": "heldout", "kind": "en"}
+{"query": "map filter reduce difference", "expected": "prog-map-filter", "split": "train", "kind": "en"}
+{"query": "class vs object in programming", "expected": "prog-oop-class", "split": "train", "kind": "en"}
+{"query": "python list vs tuple", "expected": "prog-python-list-tuple", "split": "train", "kind": "en"}
+{"query": "what is a python virtual environment", "expected": "prog-python-venv", "split": "heldout", "kind": "en"}
+{"query": "how to debug my code", "expected": "prog-debug", "split": "train", "kind": "en"}
+{"query": "frontend vs backend", "expected": "prog-frontend-backend", "split": "train", "kind": "en"}
+{"query": "what is big o notation", "expected": "prog-big-o", "split": "heldout", "kind": "en"}
+{"query": "what is json", "expected": "prog-json", "split": "train", "kind": "en"}
+{"query": "how to make a strong password", "expected": "prac-strong-password", "split": "train", "kind": "en"}
+{"query": "what is two factor authentication", "expected": "prac-2fa", "split": "train", "kind": "en"}
+{"query": "how to prepare for a job interview", "expected": "prac-interview", "split": "heldout", "kind": "en"}
+{"query": "ما هو مفهوم الإغلاق في جافاسكربت", "expected": "prog-closure", "split": "train", "kind": "fusha"}
+{"query": "ما الفرق بين المتغيرات var و let و const", "expected": "prog-var-let-const", "split": "heldout", "kind": "fusha"}
+{"query": "ما المقصود بواجهة برمجة التطبيقات", "expected": "prog-api", "split": "train", "kind": "fusha"}
+{"query": "ما هي معمارية REST", "expected": "prog-rest", "split": "heldout", "kind": "fusha"}
+{"query": "ما هو نظام التحكم في الإصدارات git", "expected": "prog-git", "split": "train", "kind": "fusha"}
+{"query": "ما الفرق بين حفظ التغييرات محليًا ودفعها إلى الخادم", "expected": "prog-git-commit-push", "split": "heldout", "kind": "fusha"}
+{"query": "ما هو الفهرس في قواعد البيانات", "expected": "prog-sql-index", "split": "train", "kind": "fusha"}
+{"query": "ما هي الحالة 404 و 500 في HTTP", "expected": "prog-http-status", "split": "train", "kind": "fusha"}
+{"query": "كيف يتم توسيط عنصر في CSS", "expected": "prog-css-center", "split": "train", "kind": "fusha"}
+{"query": "ما هي تقنية تأخير الاستدعاء debounce", "expected": "prog-debounce", "split": "heldout", "kind": "fusha"}
+{"query": "ما الفرق بين async await والوعود", "expected": "prog-async-await", "split": "train", "kind": "fusha"}
+{"query": "ما وظيفة دوال map و filter و reduce", "expected": "prog-map-filter", "split": "train", "kind": "fusha"}
+{"query": "ما معنى الصنف والكائن", "expected": "prog-oop-class", "split": "heldout", "kind": "fusha"}
+{"query": "ما الفرق بين القائمة والصف في بايثون", "expected": "prog-python-list-tuple", "split": "train", "kind": "fusha"}
+{"query": "ما فائدة البيئة الافتراضية في بايثون", "expected": "prog-python-venv", "split": "train", "kind": "fusha"}
+{"query": "كيف أكتشف الخطأ في الشيفرة وأصلحه", "expected": "prog-debug", "split": "heldout", "kind": "fusha"}
+{"query": "ما هو تعقيد الخوارزمية Big-O", "expected": "prog-big-o", "split": "train", "kind": "fusha"}
+{"query": "ما هي المصادقة الثنائية", "expected": "prac-2fa", "split": "train", "kind": "fusha"}
+{"query": "كيف أستعد لمقابلة العمل", "expected": "prac-interview", "split": "train", "kind": "fusha"}
+{"query": "ما هي عادات النوم الصحية", "expected": "prac-sleep-hygiene", "split": "heldout", "kind": "fusha"}
+{"query": "يعني ايه الدالة اللي بتفتكر المتغيرات بعد ما تخلص", "expected": "prog-closure", "split": "train", "kind": "masri"}
+{"query": "ازاي اوسط الديف في النص", "expected": "prog-css-center", "split": "heldout", "kind": "masri"}
+{"query": "ايه الفرق بين var و let و const", "expected": "prog-var-let-const", "split": "train", "kind": "masri"}
+{"query": "ايه معنى API يعني", "expected": "prog-api", "split": "train", "kind": "masri"}
+{"query": "ازاي اعمل باسورد صعب", "expected": "prac-strong-password", "split": "heldout", "kind": "masri"}
+{"query": "ازاي اذاكر من غير ما انسى", "expected": "prac-active-recall", "split": "train", "kind": "masri"}
+{"query": "ايه فايدة الاندكس في الداتابيز", "expected": "prog-sql-index", "split": "train", "kind": "masri"}
+{"query": "ازاي اظبط ميزانية الشهر", "expected": "prac-budget-503020", "split": "train", "kind": "masri"}
+{"query": "ايه الفرق بين الكوميت والبوش", "expected": "prog-git-commit-push", "split": "heldout", "kind": "masri"}
+{"query": "ازاي اعرف ان الرسالة دي نصب", "expected": "prac-phishing", "split": "train", "kind": "masri"}
+{"query": "ازاي اعمل باك اب لملفاتي", "expected": "prac-backup-321", "split": "heldout", "kind": "masri"}
+{"query": "ازاي اكتب سي في", "expected": "prac-cv", "split": "train", "kind": "masri"}
+{"query": "ازاي استخدم تقنية البومودورو", "expected": "prac-pomodoro", "split": "heldout", "kind": "masri"}
+{"query": "ايه معنى big o", "expected": "prog-big-o", "split": "train", "kind": "masri"}
+{"query": "ازاي انام بسرعة وبعمق", "expected": "prac-sleep-hygiene", "split": "train", "kind": "masri"}
