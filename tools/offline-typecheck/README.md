@@ -30,3 +30,16 @@ pct = 86.0% interval=75.0%–85.4%           # 180/223
 numbers = [56.0, 1.5, 1.536, 1536.0]       # تطبيع أرقام عربية-هندية + علامة آلاف
 norm = اهلا وسهلا                          # إزالة التشكيل + توحيد الهمزات
 ```
+
+## المرحلة 3 — `phase03/`
+
+```bash
+./tools/offline-typecheck/phase03/run.sh                     # SelfCheck: 93 فحصًا لمنطق الاسترجاع والبوابة
+./tools/offline-typecheck/phase03/run.sh --emit-fixtures     # توائم التقطيع من Kotlin → knowledge/unit/tokenizer-fixtures.json
+./tools/offline-typecheck/phase03/run.sh --emit-lexicon      # قاموس الفرانكو من Kotlin → knowledge/unit/franco-lexicon.json
+./tools/offline-typecheck/phase03/run.sh --dump-features     # سمات كل مرشح (يستهلكها tools/phase03/tune_weights.py)
+./tools/offline-typecheck/phase03/run.sh --probe "سؤال" …    # تشخيص: المرشحون + تفسير الدرجات + قرار البوابة
+```
+
+`phase03` لا يستخدم `stubs/`: كود الاسترجاع والبوابة **نقيّ** (لا أندرويد ولا `org.json`)، فيُترجم ويُشغَّل
+كما هو. التفاصيل والأرقام في [`evidence/phase-03/README.md`](../../evidence/phase-03/README.md).
