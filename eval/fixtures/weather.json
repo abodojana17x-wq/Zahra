@@ -1,0 +1,11 @@
+{
+  "_comment": "لقطات طقس أوفلاين للقياس العادل (D18). القيم مأخوذة من حقول fixture في eval/cases.jsonl (weather-005..008) كما هي، بلا تعديل.",
+  "_source": "fixture:open-meteo-snapshot",
+  "_fetched_at": "2026-10-27",
+  "snapshots": [
+    { "city": "القاهرة", "date": "2026-10-27", "temp_c": 31, "condition": "مشمس", "weather_code": 0, "cases": ["weather-005"] },
+    { "city": "الإسكندرية", "date": "2026-10-27", "temp_c": 27, "condition": "غائم جزئيًا", "weather_code": 2, "cases": ["weather-006"] },
+    { "city": "أسوان", "date": "2026-10-27", "temp_c": 36, "condition": "صافٍ", "weather_code": 0, "cases": ["weather-007"] },
+    { "city": "الرياض", "date": "2026-10-27", "temp_c": 34, "condition": "مشمس", "weather_code": 0, "cases": ["weather-008"] }
+  ]
+}

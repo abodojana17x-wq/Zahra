@@ -45,8 +45,38 @@ import com.example.zahra.wisdom.WisdomBank
 import com.example.zahra.voice.VoiceEngine
 import com.example.zahra.vision.VisionEngine
 import com.example.zahra.islamic.IslamicKnowledgeBase
+import com.example.zahra.tools.Cities
+import com.example.zahra.tools.DataToolResult
+import com.example.zahra.tools.HttpTransport
+import com.example.zahra.tools.HttpUrlConnectionTransport
+import com.example.zahra.tools.NetworkDecision
+import com.example.zahra.tools.NetworkPolicy
+import com.example.zahra.tools.NetworkRequirement
+import com.example.zahra.tools.OpenMeteoClient
+import com.example.zahra.tools.SourceCache
+import com.example.zahra.math.UnitRequestParseResult
+import com.example.zahra.math.UnitRequestParser
+import com.example.zahra.math.WordProblems
+import com.example.zahra.tools.TimeTools
+import com.example.zahra.tools.android.AndroidHijriCalculator
+import java.util.Locale
 
-class ZahraRouter(private val context: Context) {
+/**
+ * الموجّه الرئيسي.
+ *
+ * @param networkPolicy سياسة الشبكة (D1). الافتراضي `OFFLINE_ONLY`: لا طلب شبكة إطلاقًا.
+ * @param weatherTransport ناقل HTTP قابل للحقن لاختبار مسار الطقس بلا شبكة.
+ */
+class ZahraRouter(
+  private val context: Context,
+  private val networkPolicy: NetworkPolicy = NetworkPolicy(),
+  private val weatherTransport: HttpTransport = HttpUrlConnectionTransport(connectTimeoutMs = 5_000, readTimeoutMs = 5_000)
+) {
+  // ——— المرحلة 2: أدوات حتمية ———
+  private val androidHijriCalculator = AndroidHijriCalculator()
+  private val sourceCache = SourceCache()
+  private val weatherClient by lazy { OpenMeteoClient(weatherTransport, networkPolicy, sourceCache) }
+
   val nbClassifier = NaiveBayesClassifier()
   val calibratedClassifier = CalibratedClassifier()
 
@@ -226,6 +256,16 @@ class ZahraRouter(private val context: Context) {
       contextTracker.recordTurn(rawInput, res)
       // Phase 6.5: Mood-adaptive wrapping for religious responses
       return applyMoodAdaptation(rawInput, res)
+    }
+
+    // ——— المرحلة 2: باب الأدوات والبيانات ———
+    // أدوات حتمية (وقت/تاريخ هجري/وحدات/مسائل كلامية/طقس بمصدر) تُجاب قبل التصنيف،
+    // لأن ثقتها 1.0 ومصدرها معلن، وليس لأنها تتجاوز بوابة الأمانة: الجمل غير الواضحة
+    // تُعاد `null` وتكمل مسارها الطبيعي عبر الموجّه.
+    deterministicToolResponse(rawInput)?.let { toolResponse ->
+      contextManager.recordTurn(rawInput, toolResponse)
+      contextTracker.recordTurn(rawInput, toolResponse)
+      return applyMoodAdaptation(rawInput, toolResponse)
     }
 
     // Phase 4: Context and user corrections detection
@@ -726,7 +766,8 @@ class ZahraRouter(private val context: Context) {
 
       "calculate" -> {
         val mathExpr = regexMatch?.extractedCommand ?: normalized.replace(Regex("^(?:احسب|calc)\\s+"), "")
-        val res = MathEngine.evaluate(mathExpr)
+        // المسائل الكلامية أولًا: قالب حتمي له خطوات، وإلا التعبير الرياضي المباشر
+        val res = MathEngine.solveWordProblem(rawInput) ?: MathEngine.evaluate(mathExpr)
         responseText = res.formattedText
         source = res.source
         confidence = res.confidence
@@ -739,6 +780,22 @@ class ZahraRouter(private val context: Context) {
       }
 
       "convert_unit" -> {
+        // المسار الجديد: نظام وحدات عام (9 تصنيفات + وحدات مصرية) بدل عشرة أزواج مثبتة
+        val converted = MathEngine.convertFromText(normalized) ?: MathEngine.convertFromText(rawInput)
+        if (converted != null) {
+          responseText = converted.formattedText
+          source = converted.source
+          outcomeState = converted.outcomeState
+          confidence = converted.confidence
+          toolPayload = ZahraToolPayload.MathPayload(
+            expression = normalized,
+            result = converted.formattedText,
+            calculationType = "تحويل وحدات بجدول عوامل عام"
+          )
+          if (converted.outcomeState == OutcomeState.SUPPORTED) {
+            followups = listOf("حوّل 3 فدان إلى متر مربع", "حوّل 72 فهرنهايت إلى مئوية", "احسب 25 * 4")
+          }
+        } else {
         val parsed = EntityExtractor.parseUnitRequest(normalized)
         if (parsed != null && parsed.toUnit.isNotBlank()) {
           val res = MathEngine.convertUnit(parsed.value, parsed.fromUnit, parsed.toUnit)
@@ -756,6 +813,44 @@ class ZahraRouter(private val context: Context) {
           source = "محول الوحدات الفيزيائية"
           outcomeState = OutcomeState.AMBIGUOUS
           confidence = 0.50
+        }
+        }
+      }
+
+      "ask_date", "ask_time" -> {
+        val answer = TimeTools.answer(
+          rawInput = rawInput,
+          hijri = androidHijriCalculator,
+          hijriIsDeviceAccurate = androidHijriCalculator.isDeviceCalendarUsable()
+        )
+        if (answer != null) {
+          responseText = answer.text
+          source = answer.source
+          confidence = answer.confidence
+          outcomeState = answer.outcomeState
+          followups = answer.followups
+        } else {
+          responseText = "مش قادر أحدد التاريخ المطلوب بدقة. اكتب سؤالك بصيغة أوضح " +
+            "(مثال: \"النهاردة كام؟\" أو \"الساعة كام دلوقتي؟\" أو \"إيه التاريخ الهجري؟\")."
+          source = "أدوات الوقت والتاريخ المحلية"
+          outcomeState = OutcomeState.AMBIGUOUS
+          confidence = 0.5
+        }
+      }
+
+      "weather" -> {
+        val weatherResponse = weatherToolResponse(rawInput, ZahraNormalizer.normalize(rawInput).lowercase(Locale.ROOT))
+        if (weatherResponse != null) {
+          responseText = weatherResponse.text
+          source = weatherResponse.source
+          confidence = weatherResponse.confidence
+          outcomeState = weatherResponse.outcomeState
+          followups = weatherResponse.followups
+        } else {
+          responseText = "حدّد المدينة المطلوبة عشان أجيب قراءة حقيقية من مصدرها (مثال: القاهرة، الإسكندرية، أسوان)."
+          source = "أداة الطقس — تحتاج مدينة محددة"
+          outcomeState = OutcomeState.AMBIGUOUS
+          confidence = 0.5
         }
       }
 
@@ -1490,6 +1585,196 @@ class ZahraRouter(private val context: Context) {
   }
 
   /** هل النية من أوامر النظام التي تُعالج بتنفيذ مباشر (مهام/ملاحظات/جدولة/ذاكرة/شخصية/تراجع). */
+
+  // ——————————————————————————————————————————————————————————————
+  // المرحلة 2 — أدوات حتمية (وقت/هجري/وحدات/مسائل كلامية/طقس بمصدر)
+  // ——————————————————————————————————————————————————————————————
+
+  private val scheduleGuardWords = listOf(
+    "فكرني", "ذكرني", "نبهني", "جدول", "موعد", "تذكير", "منبه", "schedule", "منبهني"
+  )
+
+  private val devotionalTimeGuardWords = listOf(
+    "مواقيت", "الصلاة", "الصلاه", "اذان", "أذان", "الفجر", "المغرب", "العشاء", "الظهر", "العصر"
+  )
+
+  /**
+   * يحاول الإجابة بأداة حتمية. يعيد `null` حين لا تنطبق أداة، فيكمل الطلب مساره
+   * الطبيعي عبر التصنيف والموجّه — لا استيلاء على نوايا أخرى.
+   */
+  private fun deterministicToolResponse(rawInput: String): ZahraResponse? {
+    val normalized = ZahraNormalizer.normalize(rawInput)
+    val compact = normalized.lowercase(Locale.ROOT)
+
+    // أوامر الجدولة وأوقات العبادات تُترك لمحرّكاتها
+    if (scheduleGuardWords.any { compact.contains(it) }) return null
+    if (devotionalTimeGuardWords.any { compact.contains(it) }) return null
+
+    // 1) الوقت والتاريخ الهجري
+    val timeAnswer = TimeTools.answer(
+      rawInput = rawInput,
+      hijri = androidHijriCalculator,
+      hijriIsDeviceAccurate = androidHijriCalculator.isDeviceCalendarUsable()
+    )
+    if (timeAnswer != null) {
+      return toolResponse(
+        rawInput = rawInput,
+        intent = timeAnswer.intent,
+        text = timeAnswer.text,
+        sourceLabel = timeAnswer.source,
+        confidence = timeAnswer.confidence,
+        outcomeState = timeAnswer.outcomeState,
+        followups = timeAnswer.followups
+      )
+    }
+
+    // 2) الطقس — مصدر حقيقي أو رفض صريح (لا رقم مخترع)
+    weatherToolResponse(rawInput, compact)?.let { return it }
+
+    // 3) تحويل الوحدات (أي زوج داخل التصنيف)
+    if (looksLikeUnitConversion(compact)) {
+      val unitResult = MathEngine.convertFromText(rawInput)
+      if (unitResult != null) {
+        return mathToolResponse(rawInput, "convert_unit", unitResult, "تحويل وحدات حتمي بجدول عوامل (لا شبكة)")
+      }
+    }
+
+    // 4) المسائل الكلامية المصرية
+    if (WordProblems.looksLikeWordProblem(rawInput)) {
+      MathEngine.solveWordProblem(rawInput)?.let { solved ->
+        return mathToolResponse(rawInput, "calculate", solved, "قالب مسألة كلامية حتمي مع خطوات الحل")
+      }
+    }
+
+    return null
+  }
+
+  private fun looksLikeUnitConversion(text: String): Boolean {
+    val hasDigit = text.any { it.isDigit() }
+    val hasQuantityWord = text.contains("كام") || text.contains("كم")
+    if (!hasDigit && !hasQuantityWord) return false
+    return when (val parsed = UnitRequestParser.parse(text)) {
+      is UnitRequestParseResult.Parsed -> true
+      is UnitRequestParseResult.UnknownUnit -> hasDigit
+      else -> false
+    }
+  }
+
+  private fun weatherToolResponse(rawInput: String, compact: String): ZahraResponse? {
+    val mentionsWeather = listOf("طقس", "الجو", "حراره", "حرارة", "مطر", "امطار", "أمطار", "درجة الحراره").any {
+      compact.contains(it)
+    }
+    if (!mentionsWeather) return null
+
+    val city = Cities.find(compact)
+    if (city == null) {
+      return toolResponse(
+        rawInput = rawInput,
+        intent = "weather",
+        text = "أي مدينة تقصد؟ حدّد المدينة (مثال: القاهرة أو الإسكندرية) عشان أجيب قراءة حقيقية من مصدرها، " +
+          "ومش هأخترع لك درجة حرارة من غير مصدر.",
+        sourceLabel = "أداة الطقس — تحتاج مدينة محددة",
+        confidence = 0.5,
+        outcomeState = OutcomeState.AMBIGUOUS,
+        followups = listOf("الطقس في القاهرة إيه؟", "الجو في الإسكندرية بكرة؟", "كام درجة الحرارة في أسوان؟")
+      )
+    }
+
+    return when (val result = weatherClient.fetch(city)) {
+      is DataToolResult.Answer -> toolResponse(
+        rawInput = rawInput,
+        intent = "weather",
+        text = result.envelope.text,
+        sourceLabel = result.envelope.chipText(),
+        confidence = result.envelope.confidence,
+        outcomeState = OutcomeState.SUPPORTED,
+        followups = listOf("الطقس في مدينة تانية؟", "إيه تاريخ النهاردة؟")
+      )
+      is DataToolResult.Failure -> toolResponse(
+        rawInput = rawInput,
+        intent = "weather",
+        text = result.message,
+        sourceLabel = "أداة الطقس — سياسة الشبكة (D1)",
+        confidence = 0.9,
+        outcomeState = result.outcomeState,
+        followups = listOf("فعّل الوضع المتصل من الإعدادات", "إيه تاريخ النهاردة؟")
+      )
+    }
+  }
+
+  private fun mathToolResponse(rawInput: String, intent: String, result: MathResult, ruleLabel: String): ZahraResponse {
+    val trace = EpistemicGroundingPipeline.buildTrace(
+      rawRequest = rawInput,
+      intent = intent,
+      entities = mapOf("expression" to (result.operationTree ?: rawInput.take(80))),
+      appliedRules = listOf("rule_deterministic_$intent"),
+      facts = listOf(
+        GroundedFact(
+          claim = result.formattedText.take(120),
+          evidenceType = EvidenceType.DEDUCTION,
+          source = result.source,
+          confidence = result.confidence
+        )
+      ),
+      uncertainty = if (result.outcomeState != OutcomeState.SUPPORTED) listOf(ruleLabel) else emptyList(),
+      outcomeState = result.outcomeState,
+      sourceDesc = result.source
+    )
+    return ZahraResponse(
+      text = result.formattedText,
+      intent = intent,
+      confidence = result.confidence,
+      confidenceTier = if (result.confidence >= 0.9) ConfidenceTier.DIRECT else ConfidenceTier.QUALIFIED,
+      outcomeState = result.outcomeState,
+      source = result.source,
+      followups = listOf("حوّل 10 كيلومتر إلى ميل", "احسب 25 * 4", "كام يوم للجمعة؟"),
+      toolPayload = ZahraToolPayload.MathPayload(
+        expression = rawInput,
+        result = result.formattedText,
+        calculationType = ruleLabel
+      ),
+      evidenceTrace = trace
+    )
+  }
+
+  private fun toolResponse(
+    rawInput: String,
+    intent: String,
+    text: String,
+    sourceLabel: String,
+    confidence: Double,
+    outcomeState: OutcomeState,
+    followups: List<String>
+  ): ZahraResponse {
+    val trace = EpistemicGroundingPipeline.buildTrace(
+      rawRequest = rawInput,
+      intent = intent,
+      entities = mapOf("tool" to intent),
+      appliedRules = listOf("rule_deterministic_$intent"),
+      facts = listOf(
+        GroundedFact(
+          claim = text.take(140),
+          evidenceType = EvidenceType.VERIFIED,
+          source = sourceLabel,
+          confidence = confidence
+        )
+      ),
+      uncertainty = if (outcomeState != OutcomeState.SUPPORTED) listOf("الأداة لم تُنتج إجابة مؤكدة") else emptyList(),
+      outcomeState = outcomeState,
+      sourceDesc = sourceLabel
+    )
+    return ZahraResponse(
+      text = text,
+      intent = intent,
+      confidence = confidence,
+      confidenceTier = if (confidence >= 0.9) ConfidenceTier.DIRECT else ConfidenceTier.QUALIFIED,
+      outcomeState = outcomeState,
+      source = sourceLabel,
+      followups = followups,
+      evidenceTrace = trace
+    )
+  }
+
   private fun isSystemIntent(intent: String): Boolean {
     return listOf(
       Intent.CREATE_TASK, Intent.LIST_TASKS, Intent.COMPLETE_TASK,

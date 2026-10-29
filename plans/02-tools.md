@@ -10,7 +10,7 @@
 | الفكرة | محلّل رياضي كامل + نظام وحدات عام + تاريخ هجري + مسائل كلامية + بيانات حيّة بمصدر (Opt-in) — كلها أدوات حقيقية لا قوالب |
 | المدخلات | `MathEngine.kt` (10 أزواج وحدات فقط), `ScheduleEngine.kt`, `EntityExtractor.kt`, [`reference/raqim-2.0.html`](../reference/raqim-2.0.html) (الجزء 2 + 3 + 7), [`reference/raqim-2.0-plan.md`](../reference/raqim-2.0-plan.md) (المرحلة 2 + الوحدات والأدوات) |
 | المخرجات | `math/` (lexer+parser+units), `tools/` (time, weather, wiki, cache), `evidence/phase-02/` |
-| الحالة | لم يُعَد تقييم حالة التنفيذ بهذا التعديل؛ لا يُدّعى نجاح تشغيل |
+| الحالة | ✅ **منفّذ (2026-10-29)**: الكود والاختبارات مكتوبة، والمنطق الحتمي تحقّق تنفيذيًا بـ JDK/kotlinc (145/145). لم تُشغَّل اختبارات Gradle/Robolectric ولا بناء APK. الدليل: [`evidence/phase-02/README.md`](../evidence/phase-02/README.md) |
 
 ---
 
@@ -115,3 +115,17 @@
 ## اكتمال التنفيذ
 
 تُراجع المخرجات الوظيفية المذكورة في مسارات العمل وتُوثّق القيود المعروفة. لا توجد بوابة إثبات تشغيل أو حد رقمي لاعتبار التنفيذ مكتملًا. لا تُوسم الاختبارات أو الدقة أو الأداء بالنجاح دون تشغيل فعلي.
+
+---
+
+## ملخص ما نُفِّذ (2026-10-29)
+
+- **المسار A:** `math/MathLexer.kt` + `math/MathParser.kt` (Pratt) + `math/MathFunctions.kt` (27 دالة، 4 ثوابت، أسماء عربية) + `math/MathAst.kt` (شجرة عمليات + تنسيق). `MathEngine` صار Adapter يحفظ التوقيعات القديمة.
+- **المسار B:** `math/UnitSystem.kt` (9 تصنيفات، تحويل أفيني للحرارة، فدان/قيراط/سهم، بايتات 1024، رفض العملات) + `math/UnitRequestParser.kt` (5 صيغ عربية).
+- **المسار C:** `math/WordProblems.kt` (9 قوالب + حالات سلبية).
+- **المسار D:** `tools/TimeTools.kt` + `tools/HijriCalculators.kt` (جدول أم القرى المدمج 1440–1500هـ) + `tools/android/AndroidHijriCalculator.kt` (`android.icu` بنوع `ISLAMIC_UMALQURA` صريح).
+- **المسار E:** `tools/NetworkPolicy.kt` + `tools/SourceEnvelope.kt` + `tools/SourceCache.kt` + `tools/HttpTransport.kt` + `tools/MiniJson.kt` + `tools/DataTools.kt` (Open-Meteo/ويكيبيديا/ويكي‌داتا) + `tools/CodeSnippets.kt` (D3) + `eval/fixtures/weather.json`.
+- **التكامل:** حاجز أدوات حتمية في `ZahraRouter.process()` ينسحب أمام الجدولة والعبادات، وفرع `convert_unit` يستخدم النظام العام، وفرع `calculate` يجرّب المسائل الكلامية.
+- **القرارات:** D21 (الهجري)، D22 (حدود التدخل الحتمي)، D23 (بلا اعتمادية جديدة).
+
+**ما لم يُنفَّذ:** جلب شبكي حقيقي من الواجهة (يحتاج خيطًا خلفيًا وربطًا بإعداد «الوضع المتصل»)، وربط الكاش بالتفضيلات المشفّرة — مذكورة كقيود في سجل المرحلة.
