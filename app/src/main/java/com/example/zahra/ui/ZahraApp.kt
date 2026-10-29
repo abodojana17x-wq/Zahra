@@ -104,7 +104,8 @@ fun ZahraApp(
                 onBackToChat = { viewModel.navigateToScreen(ZahraScreen.CHAT) },
                 isGlassmorphismEnabled = uiState.isGlassmorphismEnabled,
                 onToggleGlassmorphism = { viewModel.toggleGlassmorphism() },
-                onNavigateToSchedule = { viewModel.navigateToScreen(ZahraScreen.SCHEDULE) }
+                onNavigateToSchedule = { viewModel.navigateToScreen(ZahraScreen.SCHEDULE) },
+                memoryWarning = uiState.memoryWarning
               )
             }
 

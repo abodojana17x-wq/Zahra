@@ -220,18 +220,24 @@ class TopicMemory {
     }
 
     /**
-     * Load from JSON string
+     * تحميل المواضيع من JSON. يُبنى في قائمة مؤقتة ثم يُستبدل، فلا تبقى حالة
+     * نصف محمّلة عند بيانات تالفة. @return false إذا كانت البيانات غير قابلة للقراءة.
      */
-    fun loadFromJson(jsonString: String) {
-        try {
+    fun loadFromJson(jsonString: String): Boolean {
+        return try {
             val root = JSONObject(jsonString)
-            val array = root.optJSONArray("topics") ?: return
-            topics.clear()
-            for (i in 0 until array.length()) {
-                topics.add(TopicEntry.fromJson(array.getJSONObject(i)))
+            val array = root.optJSONArray("topics")
+            val parsed = mutableListOf<TopicEntry>()
+            if (array != null) {
+                for (i in 0 until array.length()) parsed.add(TopicEntry.fromJson(array.getJSONObject(i)))
             }
+            topics.clear()
+            topics.addAll(parsed)
+            true
         } catch (e: Exception) {
-            // Silently fail on corrupted data
+            // لا نُبقي مزيجًا من قديم وجديد، ونُعيد فشلًا صريحًا للمستدعي ليُبلّغ الواجهة.
+            topics.clear()
+            false
         }
     }
 

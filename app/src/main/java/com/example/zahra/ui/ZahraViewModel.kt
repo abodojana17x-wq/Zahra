@@ -58,7 +58,9 @@ data class ZahraUiState(
     "جدولة تذكير يومي للوكيل",
     "الكتابة أو التحرير"
   ),
-  val isOfflineVerified: Boolean = true
+  val isOfflineVerified: Boolean = true,
+  /** تحذير قراءة الذاكرة المحلية (تلف/فشل حفظ)؛ null يعني لا مشكلة معلومة. */
+  val memoryWarning: String? = null
 ) {
   val currentSession: ZahraSession?
     get() = sessions.find { it.id == activeSessionId } ?: sessions.firstOrNull()
@@ -105,7 +107,8 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
       tasks = router.taskEngine.getTasks(),
       notes = router.noteEngine.getNotes(),
       schedules = router.scheduleEngine.getSchedules(),
-      userFacts = storedFacts
+      userFacts = storedFacts,
+      memoryWarning = router.memoryHealth().summaryAr()
     )
 
     // Persist only durable archive changes, never every streaming animation frame.
@@ -485,11 +488,12 @@ class ZahraViewModel(application: Application) : AndroidViewModel(application) {
     val facts = router.memoryEngine.getFacts()
     _uiState.value = _uiState.value.copy(
       userFacts = facts,
-      userProfileName = facts.find { it.key.contains("الاسم") }?.value ?: "المستخدم"
+      userProfileName = facts.find { it.key.contains("الاسم") }?.value ?: "المستخدم",
+      memoryWarning = router.memoryHealth().summaryAr()
     )
     return if (result.success)
       "تم مسح ${result.facts} حقائق و${result.topics} مواضيع و${result.turns} دورات من سياق الجلسة والملف الشخصي. أرشيف الدردشة والملاحظات والمهام لم تُحذف."
-    else "تعذر مسح بعض البيانات المحفوظة؛ ربما تم مسح بعضها فقط. حاول مرة أخرى."
+    else "تعذر مسح: ${result.failures.joinToString("، ")}. ربما تم مسح بعض البيانات فقط؛ حاول مرة أخرى."
   }
 
   override fun onCleared() {

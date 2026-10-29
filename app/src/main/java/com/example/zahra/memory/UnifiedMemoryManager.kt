@@ -114,6 +114,21 @@ class UnifiedMemoryManager(private val context: Context? = null) {
     private val profileExtractor = UserProfileExtractor()
     var lastPersistenceError: String? = null
         private set
+
+    /**
+     * تقرير صحة القراءة: التلف أو الترحيل المنقطع لا يُخفى في صمت.
+     * فشل فك التشفير لا يُسجّل هنا لأنه يفشل مغلقًا برفع `SecurityException`.
+     */
+    data class LoadIssue(val area: String, val kind: String, val detail: String)
+
+    private val loadIssues = mutableListOf<LoadIssue>()
+    val lastLoadIssues: List<LoadIssue> get() = loadIssues.toList()
+
+    private fun noteIssue(area: String, kind: String, detail: String) {
+        loadIssues.add(LoadIssue(area, kind, detail.take(160)))
+    }
+
+    fun clearLoadIssues() = loadIssues.clear()
     var userProfile = UserProfile()
         private set
 
@@ -197,6 +212,7 @@ class UnifiedMemoryManager(private val context: Context? = null) {
      * Load all persistent memory from local storage
      */
     fun loadAll() {
+        loadIssues.clear()
         loadProfile()
         loadTopics()
     }
@@ -257,8 +273,12 @@ class UnifiedMemoryManager(private val context: Context? = null) {
                     UserProfile.RelationshipLevel.valueOf(json.optString("relationshipLevel", "NEW"))
                 } catch (e: Exception) { UserProfile.RelationshipLevel.NEW }
             )
+        } catch (e: SecurityException) {
+            // فشل فك التشفير/التحقق: يفشل مغلقًا ولا يُستبدل بنص واضح ولا يُبتلع.
+            throw e
         } catch (e: Exception) {
-            // Corrupted data, start fresh
+            // بيانات تالفة: نبدأ بحالة نظيفة، لكن نُبلّغ الواجهة بدل الكتمان.
+            noteIssue("الملف الشخصي", "تلف بيانات", e.message ?: e.javaClass.simpleName)
         }
     }
 
@@ -270,7 +290,8 @@ class UnifiedMemoryManager(private val context: Context? = null) {
     private fun loadTopics() {
         val prefs = prefs ?: return
         val topicsJson = readEncrypted("topics_v3") ?: return
-        topicMemory.loadFromJson(topicsJson)
+        if (!topicMemory.loadFromJson(topicsJson))
+            noteIssue("المواضيع", "تلف بيانات", "تعذر تحليل بيانات المواضيع المحفوظة")
     }
 
     private fun writeEncrypted(key: String, plain: String) {
@@ -320,6 +341,7 @@ class UnifiedMemoryManager(private val context: Context? = null) {
         topicMemory.clear()
         userProfile = UserProfile()
         lastPersistenceError = null
+        loadIssues.clear()
         return true
     }
 

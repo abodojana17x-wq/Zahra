@@ -52,6 +52,7 @@ fun SettingsScreen(
   isGlassmorphismEnabled: Boolean = false,
   onToggleGlassmorphism: () -> Unit = {},
   onNavigateToSchedule: () -> Unit = {},
+  memoryWarning: String? = null,
   modifier: Modifier = Modifier
 ) {
   val context = LocalContext.current
@@ -512,6 +513,36 @@ fun SettingsScreen(
         }
 
         Spacer(modifier = Modifier.height(12.dp))
+
+        // تلف/فشل قراءة الذاكرة لا يُكتم: نُظهر ما نعرفه وما لم نفعله.
+        if (memoryWarning != null) {
+          Column(
+            modifier = Modifier
+              .fillMaxWidth()
+              .clip(RoundedCornerShape(12.dp))
+              .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.5f))
+              .padding(12.dp)
+          ) {
+            Text(
+              text = "تنبيه بشأن الذاكرة المحلية",
+              fontWeight = FontWeight.Bold,
+              fontSize = 13.sp,
+              color = MaterialTheme.colorScheme.onErrorContainer
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+              text = memoryWarning,
+              fontSize = 12.sp,
+              color = MaterialTheme.colorScheme.onErrorContainer
+            )
+            Text(
+              text = "لم يُحذف أي شيء من وحدة التخزين تلقائيًا. المسح الكامل متاح بالزر أسفل القائمة.",
+              fontSize = 11.sp,
+              color = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.8f)
+            )
+          }
+          Spacer(modifier = Modifier.height(12.dp))
+        }
 
         if (userFacts.isEmpty()) {
           Text(
