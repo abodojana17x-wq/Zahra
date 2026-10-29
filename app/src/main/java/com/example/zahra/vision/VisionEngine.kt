@@ -119,7 +119,10 @@ class VisionEngine(private val context: Context) {
             }
             
             ocrInitialized
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
+            // D16: التهيئة اختيارية. فشل تحميل المكتبة الأصلية (UnsatisfiedLinkError)
+            // أو غياب ملفات traineddata يجب ألا يُسقط الراوتر كله — وإلا لا يعمل أي
+            // اختبار وحدة (AC-0.2) ولا يعمل التطبيق أصلًا على جهاز بلا OCR.
             ocrInitialized = false
             false
         }

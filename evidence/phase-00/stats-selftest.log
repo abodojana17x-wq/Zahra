@@ -1,0 +1,17 @@
+PASS · wilson 60/100 lower: got=0.502003 want=0.502000
+PASS · wilson 60/100 upper: got=0.690599 want=0.691000
+PASS · wilson 0/20 lower: got=0.000000 want=0.000000
+PASS · wilson 0/20 upper: got=0.161125 want=0.161000
+PASS · wilson 20/20 upper: got=1.000000 want=1.000000
+PASS · wilson 20/20 lower: got=0.838875 want=0.839000
+PASS · wilson symmetry: got=0.396778 want=0.396778
+PASS · wilson symmetry upper: got=0.892209 want=0.892209
+PASS · bootstrap deterministic: (0.21, 0.39) == (0.21, 0.39)
+PASS · bootstrap constant lower: got=0.000000 want=0.000000
+PASS · bootstrap constant upper: got=0.000000 want=0.000000
+PASS · mcnemar 0 vs 5: got=0.062500 want=0.062500
+PASS · mcnemar 3 vs 3: got=1.000000 want=1.000000
+PASS · mcnemar 0 vs 0: got=1.000000 want=1.000000
+PASS · mcnemar 1 vs 9: got=0.021484 want=0.021484
+
+كل اختبارات الإحصاء نجحت

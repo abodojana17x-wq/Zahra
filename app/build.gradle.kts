@@ -1,4 +1,5 @@
 import com.google.gms.googleservices.GoogleServicesPlugin.MissingGoogleServicesStrategy
+import org.gradle.api.tasks.testing.Test
 
 plugins {
   alias(libs.plugins.android.application)
@@ -147,4 +148,24 @@ dependencies {
   debugImplementation(libs.androidx.compose.ui.tooling)
   "ksp"(libs.androidx.room.compiler)
   "ksp"(libs.moshi.kotlin.codegen)
+}
+
+// ---------------------------------------------------------------------------------------
+// المرحلة 0 — هارنس القياس (AC-0.4/AC-0.6)
+// نمرّر المسارات كـ system properties حتى يعمل الهارنس من app/ أو من جذر المستودع،
+// ونمنع التخزين المؤقت لنتائج اختبار القياس حتى لا تُنشر أرقام قديمة.
+// ---------------------------------------------------------------------------------------
+tasks.withType<Test>().configureEach {
+  systemProperty("zahra.eval.dir", rootProject.file("eval").absolutePath)
+  systemProperty("zahra.eval.root", rootProject.projectDir.absolutePath)
+  systemProperty("zahra.eval.outDir", rootProject.layout.buildDirectory.dir("reports/zahra-eval").get().asFile.absolutePath)
+  systemProperty("zahra.eval.baseline", rootProject.file("eval/BASELINE.md").absolutePath)
+  systemProperty("zahra.eval.repeats", (project.findProperty("zahraEvalRepeats") ?: "8").toString())
+  systemProperty("zahra.eval.seed", (project.findProperty("zahraEvalSeed") ?: "20261026").toString())
+  maxHeapSize = "3g"
+  testLogging {
+    events("passed", "failed", "skipped")
+    exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    showStandardStreams = true
+  }
 }

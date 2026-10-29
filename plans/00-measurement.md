@@ -7,7 +7,7 @@
 | المدخلات | الكود الحالي، [`reference/raqim-2.0-eval-report.md`](../reference/raqim-2.0-eval-report.md)، [`reference/raqim-2.0.html`](../reference/raqim-2.0.html) (قسم `selfTest`)، [`reference/raqim-2.0-plan.md`](../reference/raqim-2.0-plan.md) (قسم «المرحلة 0») |
 | المخرجات | `eval/`, `evidence/phase-00/`, `.github/workflows/ci.yml`, `README.md` محدّث |
 | يعتمد عليها | كل المراحل 1…6 |
-| الحالة | ⬜ لم تبدأ |
+| الحالة | 🟨 **جارية بإثبات جزئي** — الأداة والمجموعة والهارنس والبوابة منفّذة ومُختبرة محليًا، وأُنقذ تنفيذ PR #5 فوق `main` (بعد PR #6 الشكلي) وبُني `.github/workflows/ci.yml` (تفعيله بأمر واحد من المالك — رفض GitHub لتاريخ 2026-10-29 دفع الوكيل لافتقاده صلاحية `workflows`)؛ تشغيل 452 اختبارًا + APK + خط الأساس الرقمي **لم يحدث بعد** وينتظر أول تشغيل CI (بيئة الوكيل بلا JDK/SDK). الأدلة: [`evidence/phase-00/README.md`](../evidence/phase-00/README.md) + [`RESCUE-2026-10-29.md`](../evidence/phase-00/RESCUE-2026-10-29.md) |
 
 ---
 
@@ -162,12 +162,17 @@ sha256sum eval/cases.jsonl > eval/MANIFEST.sha256
 
 ## 7. تعريف «تم» (DoD)
 
-- [ ] `eval/cases.jsonl` + `held-out.jsonl` + `MANIFEST.sha256` + `BASELINE.md` موجودة.
-- [ ] الهارنس يعمل محليًا وفي CI وينتج `results.json` و`SUMMARY.md`.
-- [ ] كل الاختبارات الموجودة إما خضراء أو محذوفة بقرار موثق (D6).
-- [ ] CI يرفع APK + تقارير، والـ README يعرض الحالة الحقيقية.
-- [ ] زر «تشخيص» داخل التطبيق يعرض نفس أرقام CI.
-- [ ] جدول الحالة في `plans/README.md` محدّث: المرحلة 0 = ✅ مكتملة بإثبات + رابط.
+- [x] `eval/cases.jsonl` (223) + `eval/held-out.jsonl` (50) + `MANIFEST.sha256` موجودة ومطابقة بهاش.
+- [x] الهارنس مكتوب (`EvalHarness`/`EvalScorer`/`EvalReport`) + إحصاءات عيّنة صغيرة مختبرة في تنفيذين (Kotlin/Python).
+- [ ] الهارنس **يعمل فعليًا** محليًا وفي CI وينتج `results.json` و`SUMMARY.md` — ينتظر تفعيل CI.
+- [ ] كل الاختبارات الموجودة إما خضراء أو محذوفة بقرار موثق (D6) — ينتظر أول تشغيل؛ سياسة التصنيف جاهزة في [`evidence/phase-00/failing-tests.md`](../evidence/phase-00/failing-tests.md).
+- [x] مسار CI جاهز (5 وظائف: preflight/unit/eval/apk/guard) + سكربت تثبيت بأمر واحد — **لم يُشغَّل بعد**.
+- [x] `eval/BASELINE.md` مكتوب آليًا بوضع `pending` عند أول تشغيل + حارس انحدار مزدوج (Kotlin + Python) — الرقم نفسه لم يُقَس بعد.
+- [x] زر «تشخيص» داخل التطبيق (`DiagnosticsEngine` + `DiagnosticsDialog`) يعرض فحوصات حقيقية على الجهاز + نتيجة آخر قياس من CI إن كانت مضمَّنة.
+- [x] جدول الحالة في `plans/README.md` محدّث بحالة صادقة (وليس «مكتملة»).
+- [x] بوابة R0: `evidence/phase-00/research.md` بـ 12 مصدرًا + جدول قرارات + توسيع، ويفحصها `preflight` آليًا.
+
+> 🚦 **لا تُعلَن المرحلة 0 «مكتملة بإثبات» إلا بعد بندين:** (1) تشغيل `testDebugUnitTest` أخضر أو بفاشلين مصنَّفين، (2) `eval/BASELINE.md` فيه رقم حقيقي بوضع `recorded`. أي جدول يقول غير ذلك مخالف للقاعدة 1.
 
 ## 8. بوابة العبور
 
