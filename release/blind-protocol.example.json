@@ -1,0 +1,104 @@
+{
+  "schema": 1,
+  "protocolId": "zahra-blind-heldout-v1",
+  "status": "template-not-run",
+  "preregisteredAt": null,
+  "preregisteredBy": null,
+  "preRegistrationNoteAr": "هذا قالب تسجيل مسبق غير موقّع وغير منفّذ. لا يُعدّ تسجيلًا ساريًا حتى يُملأ تاريخ التسجيل والمسؤول وتُجمّد نسخته قبل رؤية أي نتيجة.",
+  "dataset": {
+    "file": "eval/held-out.jsonl",
+    "sha256": "1a1b43349f859c98baa058800ae1f4208a6a3e7eff5307287eca9096ee7d255d",
+    "version": "v1",
+    "cases": 50,
+    "frozen": true,
+    "splitPolicy": "held-out لا يُستخدم في التطوير أو ضبط العتبات، ويُفتح مرة واحدة لكل مقارنة مسجلة."
+  },
+  "systems": [
+    {
+      "id": "zahra",
+      "labelAr": "زهرة",
+      "kind": "local-deterministic",
+      "network": "none"
+    },
+    {
+      "id": "baseline",
+      "labelAr": "خط أساس محلي",
+      "kind": "baseline",
+      "network": "none"
+    }
+  ],
+  "design": {
+    "task": "pairwise-preference",
+    "blind": true,
+    "labelAnonymization": "A/B فقط، بلا اسم نظام أو هوية عند عرض الإجابات على المحكّم",
+    "swapPositions": true,
+    "presentationsPerPair": 2,
+    "randomizationSeed": 20261029,
+    "judges": 3,
+    "judgeType": "human-independent",
+    "judgeTraining": "تعليمات مكتوبة قبل رؤية المخرجات + 3 أمثلة معيارية لا تنتمي إلى held-out",
+    "tiePolicy": "half-win",
+    "invalidPolicy": "تُستبعد من النسبة وتُعدّ مفقودة؛ تُنشر نسبتها",
+    "maxJudgmentsPerJudge": 300,
+    "evidenceRetention": "أصوات خام + جدول العروض + بذرة العشوائية، بلا حذف بعد التحليل"
+  },
+  "endpoints": {
+    "primary": "pairwise_preference_win_rate",
+    "secondary": [
+      "position_consistency",
+      "inter_judge_agreement",
+      "first_position_win_rate",
+      "bradley_terry_win_probability"
+    ],
+    "notPrimary": [
+      "elo",
+      "average_response_length",
+      "subjective_quality_comments"
+    ]
+  },
+  "analysis": {
+    "alpha": 0.05,
+    "confidenceLevel": 0.95,
+    "bootstrapIters": 10000,
+    "bootstrapUnit": "case",
+    "bootstrapSeed": 20261029,
+    "multipleComparisons": "holm-bonferroni",
+    "minimumJudgesForAgreement": 2,
+    "reportAllExclusions": true,
+    "reportPositionBias": true,
+    "reportInterJudgeAgreement": true,
+    "reportConfidenceIntervals": true,
+    "noPercentageWithoutCi": true
+  },
+  "stoppingRule": "حجم ثابت مسبقًا (كل حالات held-out، عرضان لكل حالة، كل المحكّمين). لا إيقاف اختياري ولا إضافة حالات بعد رؤية النتائج.",
+  "exclusions": [
+    "عرض بلا صوت صالح من محكّم = مفقود ويُنشر عدده",
+    "نظام فشل تقنيًا في عرض معين = خسارة في ذلك العرض مع ذكر سبب الفشل",
+    "المحكّم الذي يعرف هوية الأنظمة يُستبعد كاملًا ويُنشر استبعاده"
+  ],
+  "preregistrationChanges": [
+    "أي تغيير في هذه الوثيقة بعد بدء جمع الأصوات يُنشر كتعديل مؤرخ مع أثره، ولا يُعاد ترتيب النتائج تحته."
+  ],
+  "reporting": {
+    "publishFailures": true,
+    "publishAllDomains": true,
+    "publishRawVotes": true,
+    "publishProtocolAndHashes": true,
+    "publishCode": true,
+    "allowedClaims": [
+      "أفضلية مقاسة على هذه المجموعة وفي هذا البروتوكول فقط",
+      "فروق مع فواصل ثقة وp-values وقرار تعدد المقارنات"
+    ],
+    "forbiddenClaims": [
+      "تفوق عام على نموذج سحابي أو على الذكاء البشري",
+      "دقة مطلقة بلا مجموعة أو فاصل ثقة",
+      "تعميم النتيجة على لهجات أو مجالات لم تُختبر"
+    ]
+  },
+  "results": {
+    "resultFile": null,
+    "resultSha256": null,
+    "publishedAt": null,
+    "status": "not-run"
+  }
+}

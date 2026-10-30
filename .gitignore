@@ -29,3 +29,13 @@ app/src/main/assets/eval_summary.json
 # Python caches
 __pycache__/
 *.pyc
+
+# المرحلة 6 — مفاتيح التوقيع والأسرار (لا تُرفع أبدًا)
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.pem
+keystore.properties
+my-upload-key.jks
+/release/private/

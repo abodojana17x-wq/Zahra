@@ -54,5 +54,17 @@ norm = اهلا وسهلا                          # إزالة التشكيل 
 `run-memory-typecheck.sh` يستخدم `phase04/stubs/` (توقيعات Android/org.json محاكية) ويُثبت الترجمة فقط؛
 لا يشغّل SharedPreferences ولا AndroidKeyStore ولا Robolectric ولا `ZahraRouter` ولا Compose.
 
+## المرحلة 6 — `phase06/`
+
+```bash
+python3 -m venv /tmp/jdkvenv && /tmp/jdkvenv/bin/pip install jdk4py   # مرة واحدة
+JDK4PY_PYTHON=/tmp/jdkvenv/bin/python ./tools/offline-typecheck/phase06/run-tests.sh
+```
+
+يترجم `MiniJson.kt` و`ReleaseInfo.kt` ويشغّل 6 اختبارات لقراءة
+`release_info.json` (رفض المخطط المجهول/الحقول الناقصة/المعرّفات المكررة، وترتيب
+القيود بالخطورة). **ما لا يفعله:** لا Compose (`ReleaseInfoDialog.kt` لا تُترجم)،
+ولا قراءة assets، ولا Robolectric.
+
 `phase03` لا يستخدم `stubs/`: كود الاسترجاع والبوابة **نقيّ** (لا أندرويد ولا `org.json`)، فيُترجم ويُشغَّل
 كما هو. التفاصيل والأرقام في [`evidence/phase-03/README.md`](../../evidence/phase-03/README.md).

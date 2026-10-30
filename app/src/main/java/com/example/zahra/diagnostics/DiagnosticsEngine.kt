@@ -116,7 +116,7 @@ object DiagnosticsEngine {
       val hasInternet = permissions.any {
         it == android.Manifest.permission.INTERNET || it == android.Manifest.permission.ACCESS_NETWORK_STATE
       }
-      (!hasInternet) to if (hasInternet) "الإذن موجود في الـ Manifest" else "لا إذن شبكة — أوفلاين مضمون"
+      (!hasInternet) to if (hasInternet) "الإذن موجود في الـ Manifest" else "لا إذن شبكة — تحقق من المانيفست"
     }
 
     check("memory_prefs", "الذاكرة المحلية قابلة للكتابة والقراءة") {
@@ -137,7 +137,7 @@ object DiagnosticsEngine {
       checks = checks,
       assetCounts = assets,
       networkMode = if (checks.firstOrNull { it.id == "zero_network" }?.passed == true) {
-        "أوفلاين مضمون (لا إذن شبكة)"
+        "بلا إذن شبكة (فحص المانيفست)"
       } else {
         "إذن شبكة موجود في الـ Manifest"
       },
